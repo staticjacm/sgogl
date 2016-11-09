@@ -55,6 +55,18 @@ gr_key_function(&key_function)
 
 To set up a key pressed/released callback function
 
+Use
 
+```c
+void gr_activate_transparency(int);
+void gr_activate_dithering(int);
+void gr_activate_depth_testing(int);
+```
 
-    
+To turn transparency, dithering and depth testing on or off respectively
+
+```c
+void gr_set_depth_test(int, int);
+```
+
+To set the type of depth testing.
