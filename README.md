@@ -9,6 +9,33 @@ This, however, isn't BLT, it's SGOGL. Good luck trying to use it. I understand i
 
 Its kind of just like a proxy for GLFW to make it easy(er) to make a window and start rendering stuff
 
+# Use:
+
+Here is a bare minimum program to get something on the screen:
+
+    #include "sgogl.h"
+    
+    int running = 1;
+    void window_close_cb(){
+      running = 0;
+    }
+    
+    void main(){
+  
+      gr_open();
+      gr_window_close_function(&window_close_cb);
+  
+      while(running){
+        gr_clear();
+        gr_poll_events();
+        gr_view_centered(0.0, 0.0, 1.0, 0.0);
+        gr_draw_point(0.0f, 0.0f, 2.0f);
+        gr_refresh();
+      }
+    }
+
+Then you just need to link to your libsgogl.a (or whatever you called it) lib file and the libglfw3.a lib file... And that's it, you should have a 1 pixel point on your screen
+
 # Credits:
 
 BLT: for inspiration
