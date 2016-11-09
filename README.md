@@ -38,6 +38,9 @@ void main(){
 
 Then you just need to link to your libsgogl.a (or whatever you called it) lib file and the libglfw3.a lib file... And that's it, you should have a 1 pixel point on your screen
 
+See [initialization](documentation_initialization.md) for initialization info
+
+
 ## Credits:
 
 BLT: for inspiration
