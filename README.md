@@ -9,7 +9,7 @@ This, however, isn't BLT, it's SGOGL. Good luck trying to use it. I understand i
 
 Its kind of just like a proxy for GLFW to make it easy(er) to make a window and start rendering stuff
 
-# Use:
+## Use:
 
 Here is a bare minimum program to get something on the screen:
 
@@ -38,7 +38,7 @@ void main(){
 
 Then you just need to link to your libsgogl.a (or whatever you called it) lib file and the libglfw3.a lib file... And that's it, you should have a 1 pixel point on your screen
 
-# Credits:
+## Credits:
 
 BLT: for inspiration
 
