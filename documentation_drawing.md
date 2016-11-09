@@ -6,7 +6,20 @@ Clear the color and depth buffers with
 void gr_clear()
 ```
 
-Clearing the screen fills it with the color 
+Clearing the screen fills it with the color ``(r, g, b, a)`` last supplied to
+
+```c
+void gr_clear_color(float r, float g, float b, float a)
+```
+
+And there is a shortcut function to clear the screen with a particular color
+
+```c
+void gr_clear_colored(float r, float g, float b, float a){
+  glClearColor(r, g, b, a);
+  gr_clear();
+}
+```
 
 And then refresh the screen using
 
