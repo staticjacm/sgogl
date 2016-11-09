@@ -1,6 +1,8 @@
 Use
 
-    void gr_open()
+```c
+void gr_open()
+```
 
 to open a window and initialize sgogl
 
