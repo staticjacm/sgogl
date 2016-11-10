@@ -1,10 +1,11 @@
-#include <stdio.h>
+#include <stdlib.h>
 #include "include/glfw3.h"
 #include "include/soil.h"
 #include <gl/gl.h>
 
 float max_depth = 10.0f;
 int screen_width, screen_height;
+int use_texture_filtering = 1;
 float screen_aspect, x_aspect_mod, y_aspect_mod;
 float view_width, view_height, view_scale;
 float view_left, view_right, view_bottom, view_top;
@@ -380,6 +381,10 @@ void gr_activate_transparency(int blend){
   glAlphaFunc(GL_GREATER, 0.1f);
 }
 
+void gr_activate_linear_filtering(int filtering){
+  use_texture_filtering = filtering;
+}
+
 void gr_activate_dithering(int dither){
   if(dither)
     glEnable(GL_DITHER);
@@ -482,12 +487,12 @@ unsigned int gr_load_image_ram(const unsigned char* const data, unsigned int id,
   return SOIL_create_OGL_texture(data, gr_width, gr_height, channels, id, flags);
 }
 
-unsigned int gr_load_image(char* file, unsigned int id, unsigned int soil_load_flag, unsigned int soil_flags){
+unsigned int gr_load_image_ext(char* file, unsigned int id, unsigned int soil_load_flag, unsigned int soil_flags){
   // Use id = 0 for new id
   return SOIL_load_OGL_texture(file, soil_load_flag, id, soil_flags);
 }
 
-unsigned int gr_load_image_standard(char* file, unsigned int id){
+unsigned int gr_load_image(char* file, unsigned int id){
   return SOIL_load_OGL_texture(file, SOIL_LOAD_AUTO, id, SOIL_FLAG_MULTIPLY_ALPHA);
 }
 
@@ -518,8 +523,10 @@ void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, 
   glTranslatef(-anx, -any, 0.0f);
   
   glEnable(GL_TEXTURE_2D);
-  // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-  // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_SRC_COLOR);
+  if(use_texture_filtering)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  else
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glBindTexture(GL_TEXTURE_2D, tex);
   glBegin(GL_QUADS);
     /*glTexCoord2f(0.0, 0.0);*/ /*glTexCoord2f(1.0, 1.0);*/ glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0, 0.0);

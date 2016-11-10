@@ -422,6 +422,7 @@ int gr_mouse_y();
 /** Setting Variables / Parameters **/
 
 void gr_activate_transparency(int);
+void gr_activate_linear_filtering(int);
 void gr_activate_dithering(int);
 void gr_activate_depth_testing(int);
 
@@ -524,8 +525,8 @@ unsigned int
 **/
 
 unsigned int gr_load_image_ram(const unsigned char* const, unsigned int, int, int, int, unsigned int);
-unsigned int gr_load_image(char*, unsigned int, unsigned int, unsigned int);
-unsigned int gr_load_image_standard(char*, unsigned int);
+unsigned int gr_load_image_ext(char*, unsigned int, unsigned int, unsigned int);
+unsigned int gr_load_image(char*, unsigned int);
 void gr_unload_image(unsigned int);
 int gr_screenshot(char*);
 
