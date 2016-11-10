@@ -174,3 +174,60 @@ enum{
 }
 ```
 
+# Mouse Callback Function
+
+Register a callback for mouse events with
+
+```c
+typedef void (*Mouse_button_cb)(int button, int action, int mods);
+void gr_mouse_button_function(Mouse_button_cb)
+```
+The ``action`` and ``mods`` parameters are similar to the key callback function above and the ``button`` parameter can take the following values
+
+```c
+enum {
+  GR_MOUSE_1      = GLFW_MOUSE_BUTTON_1      ,
+  GR_MOUSE_2      = GLFW_MOUSE_BUTTON_2      ,
+  GR_MOUSE_3      = GLFW_MOUSE_BUTTON_3      ,
+  GR_MOUSE_4      = GLFW_MOUSE_BUTTON_4      ,
+  GR_MOUSE_5      = GLFW_MOUSE_BUTTON_5      ,
+  GR_MOUSE_6      = GLFW_MOUSE_BUTTON_6      ,
+  GR_MOUSE_7      = GLFW_MOUSE_BUTTON_7      ,
+  GR_MOUSE_8      = GLFW_MOUSE_BUTTON_8      ,
+  GR_MOUSE_LAST   = GLFW_MOUSE_BUTTON_LAST   ,
+  GR_MOUSE_LEFT   = GLFW_MOUSE_BUTTON_LEFT   ,
+  GR_MOUSE_RIGHT  = GLFW_MOUSE_BUTTON_RIGHT  ,
+  GR_MOUSE_MIDDLE = GLFW_MOUSE_BUTTON_MIDDLE 
+}
+```
+
+# Mouse Move Function
+
+Register a callback for mouse movement events with
+
+```c
+typedef void (*Mouse_move_cb)(double x, double y);
+void gr_mouse_move_function(Mouse_move_cb)
+```
+
+Where parameters ``x`` and ``y`` are the horizontal and vertical offsets of the mouse on the screen
+
+You can use ``float gr_screen_to_world_x(int x)`` and ``float gr_screen_to_world_y(int y)`` to convert screen coordinates to world coordinates (only when not rotated, though (I might add that later)))
+
+# Other Callback Functions
+
+There are a bunch of other callback functions that I'm too lazy to detail
+
+```c
+void gr_mouse_enter_function(Mouse_enter_cb);
+void gr_mouse_scroll_function(Mouse_scroll_cb);
+void gr_window_position_function(Window_pos_cb);
+void gr_window_size_function(Window_size_cb);
+void gr_window_close_function(Window_close_cb);
+void gr_refresh_function(Window_refresh_cb);
+void gr_window_focus_function(Window_focus_cb);
+void gr_window_minimize_function(Window_iconify_cb);
+void gr_framebuffer_size_function(Framebuffer_size_cb);
+```
+
+It's possible to infer what each callback function needs by looking at the header file (sgogl.h)
