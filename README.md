@@ -41,6 +41,13 @@ Then you just need to link to your libsgogl.a (or whatever you called it) lib fi
 
 See [initialization](./documentation_initialization.md) for initialization info
 
+## Contributing
+
+Feel free to do whatever tf you want, just don't fck my sht up if you know what I mean. And remember that:
+
+*1.* I don't usually work with graphics so forgive my stupidity
+
+*2.* The goal of sgogl is to be as get-up-and-go fast as possible. ie: Just let me draw stuff to my screen, you know? The library should have a base case of operation first and let the user control everything afterwards. What I mean by that is like the about sample program: I don't have to go through a lengthy initialization process, I just call gr_open() and away I go; I can do more initialization through other functions later. If you want more examples of how it should operate just look up BearLibTerminal (its much better than sgogl tobh)
 
 ## Credits:
 
