@@ -1,5 +1,14 @@
 # Basics
 
+Put the view at a particular location with
+
+```c
+void gr_view(float x, float y, float sx, float angle);
+void gr_view_centered(float x, float y, float sx, float angle);
+```
+
+The first puts the bottom-left corner of the screen at ``(x, y)`` with scale ``sx`` and rotated by ``angle``, the centered version puts the center of the screen at ``(x, y)``
+
 Clear the color and depth buffers with 
 
 ```c
