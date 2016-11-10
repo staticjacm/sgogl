@@ -55,5 +55,5 @@ BLT: for inspiration
 
 GLFW: because SGOGL uses it (and for the confidence I got from it to use a really shitty name)
 
-SOIL: Simple Opengl Image Loading Library, or something like that. I also used it too. It's pretty cool
+SOIL: Simple Opengl Image Loading Library, or something like that. I also used it too. It's pretty cool (http://www.lonesock.net/soil.html)
 
