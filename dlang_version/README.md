@@ -8,6 +8,8 @@ implib /system sgogl.lib sgogl.dll
 implib /system glfw3.lib glfw3.dll
 ```
 
+The ``/system`` part is so that implib doesn't prepend an underscore to function names
+
 Then you can use
 
 ```
