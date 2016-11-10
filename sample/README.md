@@ -8,3 +8,5 @@ The important thing to take away from this sample folder is that you need glfw3.
 ```c
 gcc my_program_name_here.c -Lwhatever_folder_contains_the_lib_files -lglfw3 -lsgogl
 ```
+
+Another important note: you need glfw3.dll and sgogl.dll both in your root project folder
