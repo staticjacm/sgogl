@@ -820,4 +820,5 @@ float gr_screen_to_world_y(int);
 /** Initialization **/
 
 void gr_open();
+void gr_close();
 
