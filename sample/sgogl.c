@@ -1,30 +1,211 @@
-#include <stdio.h>
+#include <stdlib.h>
 #include "include/glfw3.h"
+#include "include/SDL2/sdl.h"
 #include "include/soil.h"
 #include <gl/gl.h>
 
 float max_depth = 10.0f;
 int screen_width, screen_height;
+int use_texture_filtering = 1;
 float screen_aspect, x_aspect_mod, y_aspect_mod;
 float view_width, view_height, view_scale;
 float view_left, view_right, view_bottom, view_top;
-int mousex, mousey;
-GLFWwindow* window;
+int mouse_x, mouse_y;
+int bordered, fullscreen, mouse_grabbed;
+SDL_Window* window;
+SDL_GLContext opengl_context;
+SDL_Event current_event;
+int wait_event = 0;
+const Uint8* keystates;
+int mouse_left, mouse_middle, mouse_right;
 
 /******************************/
-/** Proxies for GLFW values **/
+/** Proxies for SDL values **/
+
+
+/**
+Event codes
+*/
+enum {
+  GR_NULL_EVENT,
+  GR_KEY_EVENT,
+  GR_WINDOW_EVENT,
+  GR_QUIT_EVENT,
+  GR_MOUSE_BUTTON_EVENT,
+  GR_MOUSE_MOVE_EVENT,
+  GR_MOUSE_WHEEL_EVENT
+};
+
+/**
+Window event codes
+*/
+enum {                               
+  GR_WINDOW_NONE           = 0,      
+  GR_WINDOW_SHOWN          = 1,      
+  GR_WINDOW_HIDDEN         = 2,      
+  GR_WINDOW_EXPOSED        = 3,      
+                                     
+  GR_WINDOW_MOVED          = 4,      
+                                     
+  GR_WINDOW_RESIZED        = 5,      
+  GR_WINDOW_SIZE_CHANGED   = 6,      
+  GR_WINDOW_MINIMIZED      = 7,      
+  GR_WINDOW_MAXIMIZED      = 8,      
+  GR_WINDOW_RESTORED       = 9,      
+                                     
+  GR_WINDOW_ENTER          = 10,     
+  GR_WINDOW_LEAVE          = 11,     
+  GR_WINDOW_FOCUS_GAINED   = 12,     
+  GR_WINDOW_FOCUS_LOST     = 13,     
+  GR_WINDOW_CLOSE          = 14      
+};
+
+/**
+Mouse button codes
+*/
+enum {
+  GR_MOUSE_LEFT   = 1,
+  GR_MOUSE_RIGHT  = 3,
+  GR_MOUSE_MIDDLE = 2,
+  GR_MOUSE_X1     = 4,
+  GR_MOUSE_X2     = 5
+};
+
+/**
+Key codes
+*/
+enum {
+  GR_A                      = 97,
+  GR_B                      = 98,
+  GR_C                      = 99,
+  GR_D                      = 100,
+  GR_E                      = 101,
+  GR_F                      = 102,
+  GR_G                      = 103,
+  GR_H                      = 104,
+  GR_I                      = 105,
+  GR_J                      = 106,
+  GR_K                      = 107,
+  GR_L                      = 108,
+  GR_M                      = 109,
+  GR_N                      = 110,
+  GR_O                      = 111,
+  GR_P                      = 112,
+  GR_Q                      = 113,
+  GR_R                      = 114,
+  GR_S                      = 115,
+  GR_T                      = 116,
+  GR_U                      = 117,
+  GR_V                      = 118,
+  GR_W                      = 119,
+  GR_X                      = 120,
+  GR_Y                      = 121,
+  GR_Z                      = 122,
+
+  GR_0                      = 48,
+  GR_1                      = 49,
+  GR_2                      = 50,
+  GR_3                      = 51,
+  GR_4                      = 52,
+  GR_5                      = 53,
+  GR_6                      = 54,
+  GR_7                      = 55,
+  GR_8                      = 56,
+  GR_9                      = 57,
+
+  GR_MINUS                  = 45,
+  GR_EQUALS                 = 61,
+  GR_LBRACKET               = 91,
+  GR_RBRACKET               = 93,
+  GR_SLASH                  = 47,
+  GR_BACKSLASH              = 92,
+  GR_SEMICOLON              = 59,
+  GR_APOSTROPHE             = 39,
+  GR_GRAVE                  = 96,
+  GR_COMMA                  = 44,
+  GR_PERIOD                 = 46,
+                            
+  GR_F1                     = 1073741882,
+  GR_F2                     = 1073741883,
+  GR_F3                     = 1073741884,
+  GR_F4                     = 1073741885,
+  GR_F5                     = 1073741886,
+  GR_F6                     = 1073741887,
+  GR_F7                     = 1073741888,
+  GR_F8                     = 1073741889,
+  GR_F9                     = 1073741890,
+  GR_F10                    = 1073741891,
+  GR_F11                    = 1073741892,
+  GR_F12                    = 1073741893,
+                            
+  GR_CTRL                   = 1073742048,
+  GR_SHIFT                  = 1073742049,
+  GR_ALT                    = 1073742050,
+  GR_CAPSLOCK               = 1073741881,
+                              
+  GR_ESCAPE                 = 13,
+  GR_RETURN                 = 8,
+  GR_BACKSPACE              = 1073741896,
+                            
+  GR_PAUSE                  = 1073741897,
+  GR_INSERT                 = 1073741898,
+  GR_HOME                   = 1073741899,
+  GR_PAGEUP                 = 1073741902,
+  GR_PAGEDOWN               = 127,
+  GR_DELETE                 = 1073741922,
+                            
+  GR_KP_0                   = 1073741913,
+  GR_KP_1                   = 1073741914,
+  GR_KP_2                   = 1073741915,
+  GR_KP_3                   = 1073741916,
+  GR_KP_4                   = 1073741917,
+  GR_KP_5                   = 1073741918,
+  GR_KP_6                   = 1073741919,
+  GR_KP_7                   = 1073741920,
+  GR_KP_8                   = 1073741921,
+  GR_KP_9                   = 1073741908,
+                            
+  GR_KP_DIVIDE              = 1073741909,
+  GR_KP_MULTIPLY            = 1073741911,
+  GR_KP_PLUS                = 1073741923,
+  GR_KP_PERIOD              = 1073741912,
+  GR_KP_ENTER               = 1073741904,
+                            
+  GR_LEFT                   = 1073741905,
+  GR_DOWN                   = 1073741903,
+  GR_RIGHT                  = 1073741906,
+  GR_UP                     = 0,
+};
+
+/**
+Flipping codes
+*/
+enum {
+  GR_FLIP_NONE         = 0,
+  GR_FLIP_VERTICALLY   = 2,
+  GR_FLIP_HORIZONTALLY = 1,
+};
 
 enum {
-                /* The unknown key */                                           
+  GR_WINDOW_WINDOWED,
+  GR_WINDOW_FULLSCREEN,
+  GR_WINDOW_FULLSCREEN_DESKTOP
+};
+
+
+/*
+
+enum {
+                // The unknown key                                           
   GR_UNKNOWN             = GLFW_KEY_UNKNOWN            ,     
   
-               /* Printable keys */
+               // Printable keys
   GR_SPACE               = GLFW_KEY_SPACE              ,     
-  GR_APOSTROPHE          = GLFW_KEY_APOSTROPHE         ,  /* ' */     
-  GR_COMMA               = GLFW_KEY_COMMA              ,  /* , */     
-  GR_MINUS               = GLFW_KEY_MINUS              ,  /* - */     
-  GR_PERIOD              = GLFW_KEY_PERIOD             ,  /* . */     
-  GR_SLASH               = GLFW_KEY_SLASH              ,  /* / */     
+  GR_APOSTROPHE          = GLFW_KEY_APOSTROPHE         ,  // '      
+  GR_COMMA               = GLFW_KEY_COMMA              ,  // ,      
+  GR_MINUS               = GLFW_KEY_MINUS              ,  // -      
+  GR_PERIOD              = GLFW_KEY_PERIOD             ,  // .      
+  GR_SLASH               = GLFW_KEY_SLASH              ,  // /      
   GR_0                   = GLFW_KEY_0                  ,     
   GR_1                   = GLFW_KEY_1                  ,     
   GR_2                   = GLFW_KEY_2                  ,     
@@ -35,8 +216,8 @@ enum {
   GR_7                   = GLFW_KEY_7                  ,     
   GR_8                   = GLFW_KEY_8                  ,     
   GR_9                   = GLFW_KEY_9                  ,     
-  GR_SEMICOLON           = GLFW_KEY_SEMICOLON          ,  /* ; */     
-  GR_EQUAL               = GLFW_KEY_EQUAL              ,  /* = */     
+  GR_SEMICOLON           = GLFW_KEY_SEMICOLON          ,  // ;     
+  GR_EQUAL               = GLFW_KEY_EQUAL              ,  // =     
   GR_A                   = GLFW_KEY_A                  ,     
   GR_B                   = GLFW_KEY_B                  ,     
   GR_C                   = GLFW_KEY_C                  ,     
@@ -63,14 +244,14 @@ enum {
   GR_X                   = GLFW_KEY_X                  ,     
   GR_Y                   = GLFW_KEY_Y                  ,     
   GR_Z                   = GLFW_KEY_Z                  ,     
-  GR_LEFT_BRACKET        = GLFW_KEY_LEFT_BRACKET       ,  /* [ */     
-  GR_BACKSLASH           = GLFW_KEY_BACKSLASH          ,  /* \ */     
-  GR_RIGHT_BRACKET       = GLFW_KEY_RIGHT_BRACKET      ,  /* ] */     
-  GR_GRAVE_ACCENT        = GLFW_KEY_GRAVE_ACCENT       ,  /* ` */     
-  GR_WORLD_1             = GLFW_KEY_WORLD_1            ,  /* non-US #1 */     
-  GR_WORLD_2             = GLFW_KEY_WORLD_2            ,  /* non-US #2 */     
+  GR_LEFT_BRACKET        = GLFW_KEY_LEFT_BRACKET       ,  // [     
+  GR_BACKSLASH           = GLFW_KEY_BACKSLASH          ,  // \     
+  GR_RIGHT_BRACKET       = GLFW_KEY_RIGHT_BRACKET      ,  // ]     
+  GR_GRAVE_ACCENT        = GLFW_KEY_GRAVE_ACCENT       ,  // `     
+  GR_WORLD_1             = GLFW_KEY_WORLD_1            ,  // non-US #1     
+  GR_WORLD_2             = GLFW_KEY_WORLD_2            ,  // non-US #2     
                          
-          /* Function keys */  
+          // Function keys
   GR_ESCAPE              = GLFW_KEY_ESCAPE             ,     
   GR_ENTER               = GLFW_KEY_ENTER              ,     
   GR_TAB                 = GLFW_KEY_TAB                ,     
@@ -179,6 +360,8 @@ enum {
   GR_MAXIMIZED      = GLFW_MAXIMIZED    
 };
 
+*/
+
 /*********************/
 /** Window Resizing **/
 
@@ -197,6 +380,8 @@ void calc_aspect(){
 
 /***************/
 /** Callbacks **/
+
+/*
 
 typedef void (*Key_cb)(int, int, int); // key, action, mods
 typedef void (*Mouse_button_cb)(int, int, int); // button, action, mods
@@ -339,6 +524,8 @@ void gr_framebuffer_size_function(Framebuffer_size_cb cb){
   framebuffer_size_cb = cb;
 }
 
+*/
+
 /*******************/
 /** Informational **/
 
@@ -356,9 +543,6 @@ float gr_view_bottom(){ return view_bottom; }
 float gr_view_top(){ return view_top; }
 
 float gr_max_depth(){ return max_depth; }
-
-int gr_mouse_x(){ return (int)mousex; }
-int gr_mouse_y(){ return (int)mousey; }
 
 /************************************/
 /** Setting Variables / Parameters **/
@@ -378,6 +562,10 @@ void gr_activate_transparency(int blend){
   }
   glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
   glAlphaFunc(GL_GREATER, 0.1f);
+}
+
+void gr_activate_linear_filtering(int filtering){
+  use_texture_filtering = filtering;
 }
 
 void gr_activate_dithering(int dither){
@@ -403,6 +591,46 @@ void gr_activate_depth_testing(int deptht){
   else
     glDisable(GL_DEPTH_TEST);
   glDepthFunc(DT_LESS);
+}
+
+void graphics_toggle_window_bordered(){ bordered = !bordered; SDL_SetWindowBordered(window, bordered); }
+void graphics_set_window_brightness(float b){ SDL_SetWindowBrightness(window, b); }
+void graphics_set_window_fullscreen(){ fullscreen = GR_WINDOW_FULLSCREEN; SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); }
+void graphics_set_window_fullscreen_desktop(){ fullscreen = GR_WINDOW_FULLSCREEN_DESKTOP; SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP); }
+void graphics_set_window_windowed(){ fullscreen = GR_WINDOW_WINDOWED; SDL_SetWindowFullscreen(window, 0); }
+void graphics_toggle_mouse_grabbed(){ mouse_grabbed = !mouse_grabbed; SDL_SetWindowGrab(window, mouse_grabbed); }
+int  graphics_set_window_icon(char* file){
+  SDL_Surface* icon = SDL_LoadBMP(file);
+  if(icon != NULL){
+    SDL_SetWindowIcon(window, icon);
+    return 0;
+  }
+  return 1;
+}
+//Tested: Doesn't work?
+void gr_set_input_focus(){
+  //SDL_SetWindowInputFocus(window);
+  SDL_RaiseWindow(window);
+}
+void gr_set_window_max_size(int w, int h){ SDL_SetWindowMaximumSize(window, w, h); }
+void gr_set_window_min_size(int w, int h){ SDL_SetWindowMinimumSize(window, w, h); }
+void gr_set_window_position(int x, int y){ SDL_SetWindowPosition(window, x, y); }
+void gr_set_window_size(int w, int h){ screen_width = w; screen_height = h; SDL_SetWindowSize(window, w, h); }
+void gr_set_window_title(char* title){ SDL_SetWindowTitle(window, title); }
+
+void gr_popup_error(char* message){ SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "error", message, window); }
+void gr_popup_warning(char* message){ SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "warning", message, window); }
+void gr_popup_info(char* message){ SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "info", message, window); }
+
+int gr_get_window_width(){
+  int w;
+  SDL_GetWindowSize(window, &w, NULL);
+  return w;
+}
+int gr_get_window_height(){
+  int h;
+  SDL_GetWindowSize(window, NULL, &h);
+  return h;
 }
 
 /************/
@@ -482,12 +710,12 @@ unsigned int gr_load_image_ram(const unsigned char* const data, unsigned int id,
   return SOIL_create_OGL_texture(data, gr_width, gr_height, channels, id, flags);
 }
 
-unsigned int gr_load_image(char* file, unsigned int id, unsigned int soil_load_flag, unsigned int soil_flags){
+unsigned int gr_load_image_ext(char* file, unsigned int id, unsigned int soil_load_flag, unsigned int soil_flags){
   // Use id = 0 for new id
   return SOIL_load_OGL_texture(file, soil_load_flag, id, soil_flags);
 }
 
-unsigned int gr_load_image_standard(char* file, unsigned int id){
+unsigned int gr_load_image(char* file, unsigned int id){
   return SOIL_load_OGL_texture(file, SOIL_LOAD_AUTO, id, SOIL_FLAG_MULTIPLY_ALPHA);
 }
 
@@ -518,8 +746,10 @@ void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, 
   glTranslatef(-anx, -any, 0.0f);
   
   glEnable(GL_TEXTURE_2D);
-  // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-  // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_SRC_COLOR);
+  if(use_texture_filtering)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  else
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glBindTexture(GL_TEXTURE_2D, tex);
   glBegin(GL_QUADS);
     /*glTexCoord2f(0.0, 0.0);*/ /*glTexCoord2f(1.0, 1.0);*/ glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0, 0.0);
@@ -569,7 +799,8 @@ void gr_draw_line_sp(float x0, float y0, float z0, float x1, float y1, float z1)
 }
 
 void gr_refresh(){
-  glfwSwapBuffers(window);
+  // glfwSwapBuffers(window);
+  SDL_GL_SwapWindow(window);
 }
 
 void gr_clear_depth(){
@@ -587,10 +818,131 @@ void gr_clear_colored(float r, float g, float b, float a){
 }
 
 /*************/
-/** Polling **/
+/** Events **/
 
-void gr_poll_events(){
-  glfwPollEvents();
+/**
+gr_register_events should be called before:
+  graphics_has_event
+  graphics_read_keystates
+  graphics_read_event
+*/
+void gr_register_events(){
+  SDL_PumpEvents();
+}
+
+int gr_has_event(){
+  return SDL_HasEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+}
+
+/**
+Call gr_read_mouse() to update the mouse values then called the getters
+*/
+void gr_read_mouse(){
+  uint32_t field = SDL_GetRelativeMouseState(&mouse_x, &mouse_y);
+  // uint32_t field = SDL_GetMouseState(&mouse_x, &mouse_y);
+  mouse_left   = SDL_BUTTON(SDL_BUTTON_LEFT);
+  mouse_middle = SDL_BUTTON(SDL_BUTTON_MIDDLE);
+  mouse_right  = SDL_BUTTON(SDL_BUTTON_RIGHT);
+}
+int gr_mouse_x(){ return mouse_x; }
+int gr_mouse_y(){ return mouse_y; }
+int gr_mouse_left(){ return mouse_left; }
+int gr_mouse_middle(){ return mouse_middle; }
+int gr_mouse_right(){ return mouse_right; }
+
+void gr_set_wait_event(int value){
+  wait_event = value;
+}
+int gr_read(){
+  if(wait_event)
+    SDL_WaitEvent(&current_event);
+  else
+    SDL_PollEvent(&current_event);
+  switch(current_event.type){
+    case SDL_QUIT:
+      return GR_QUIT_EVENT;
+    case SDL_KEYDOWN:
+    case SDL_KEYUP:
+      return GR_KEY_EVENT;
+    case SDL_WINDOWEVENT:
+      return GR_WINDOW_EVENT;
+    case SDL_MOUSEBUTTONDOWN:
+    case SDL_MOUSEBUTTONUP:
+      return GR_MOUSE_BUTTON_EVENT;
+    case SDL_MOUSEMOTION:
+      return GR_MOUSE_MOVE_EVENT;
+    case SDL_MOUSEWHEEL:
+      return GR_MOUSE_WHEEL_EVENT;
+    default:
+      return GR_NULL_EVENT;
+  }
+  return GR_NULL_EVENT;
+}
+
+
+/**
+Key event functions
+*/
+int gr_key_repeated(){
+  return current_event.key.repeat;
+}
+
+int gr_key_pressed(){
+  return current_event.key.state;
+}
+
+int gr_key(){
+  return current_event.key.keysym.sym;
+}
+
+/**
+Mouse button event functions
+*/
+int gr_mouse_button(){
+  return current_event.button.button;
+}
+
+int gr_mouse_clicks(){
+  return current_event.button.clicks;
+}
+
+int gr_mouse_button_x(){
+  return current_event.button.x;
+}
+
+int gr_mouse_button_y(){
+  return current_event.button.y;
+}
+
+/**
+Mouse movement event functions
+*/
+int gr_mouse_move_x(){
+  return current_event.motion.x;
+}
+int gr_mouse_move_y(){
+  return current_event.motion.y;
+}
+
+int gr_mouse_move_xrel(){
+  return current_event.motion.xrel;
+}
+int gr_mouse_move_yrel(){
+  return current_event.motion.yrel;
+}
+
+/**
+Mouse wheel event functions
+*/
+int gr_wheel(){
+  return current_event.wheel.y;
+}
+
+/**
+Window event functions
+*/
+int gr_window_event(){
+  return current_event.window.event;
 }
 
 /**********/
@@ -635,15 +987,25 @@ float gr_screen_to_world_y(int y){
 /** Initialization **/
 
 void gr_open(){
-  glfwInit();
   
-  window = glfwCreateWindow(640, 480, "window", NULL, NULL);
-  glfwMakeContextCurrent(window);
-  glfwGetWindowSize(window, &screen_width, &screen_height);
+  SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+  
+  // glfwInit();
+  
+  // window = glfwCreateWindow(640, 480, "window", NULL, NULL);
+  // glfwMakeContextCurrent(window);
+  // glfwGetWindowSize(window, &screen_width, &screen_height);
+  window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+  opengl_context = SDL_GL_CreateContext(window);
+  SDL_GetWindowSize(window, &screen_width, &screen_height);
   calc_aspect();
   
   gr_activate_transparency(1);
   gr_activate_depth_testing(1);
   // glEnable(GL_CULL_FACE);
   // glEnable(GL_BLEND);
+}
+
+void gr_close(){
+  SDL_Quit;
 }

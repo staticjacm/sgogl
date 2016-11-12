@@ -1,17 +1,193 @@
 
 
+
+/******************************/
+/** Proxies for SDL values **/
+
+
+/**
+Event codes
+*/
+enum {
+  GR_NULL_EVENT,
+  GR_KEY_EVENT,
+  GR_WINDOW_EVENT,
+  GR_CLOSE,
+  GR_MOUSE_BUTTON_EVENT,
+  GR_MOUSE_MOVE_EVENT,
+  GR_MOUSE_WHEEL_EVENT
+};
+
+/**
+Window event codes
+*/
+enum {                               
+  GR_WINDOW_NONE           = 0,      
+  GR_WINDOW_SHOWN          = 1,      
+  GR_WINDOW_HIDDEN         = 2,      
+  GR_WINDOW_EXPOSED        = 3,      
+                                     
+  GR_WINDOW_MOVED          = 4,      
+                                     
+  GR_WINDOW_RESIZED        = 5,      
+  GR_WINDOW_SIZE_CHANGED   = 6,      
+  GR_WINDOW_MINIMIZED      = 7,      
+  GR_WINDOW_MAXIMIZED      = 8,      
+  GR_WINDOW_RESTORED       = 9,      
+                                     
+  GR_WINDOW_ENTER          = 10,     
+  GR_WINDOW_LEAVE          = 11,     
+  GR_WINDOW_FOCUS_GAINED   = 12,     
+  GR_WINDOW_FOCUS_LOST     = 13,     
+  GR_WINDOW_CLOSE          = 14      
+};
+
+/**
+Mouse button codes
+*/
+enum {
+  GR_MOUSE_LEFT   = 1,
+  GR_MOUSE_RIGHT  = 3,
+  GR_MOUSE_MIDDLE = 2,
+  GR_MOUSE_X1     = 4,
+  GR_MOUSE_X2     = 5
+};
+
+/**
+Key codes
+*/
+enum {
+  GR_A                      = 97,
+  GR_B                      = 98,
+  GR_C                      = 99,
+  GR_D                      = 100,
+  GR_E                      = 101,
+  GR_F                      = 102,
+  GR_G                      = 103,
+  GR_H                      = 104,
+  GR_I                      = 105,
+  GR_J                      = 106,
+  GR_K                      = 107,
+  GR_L                      = 108,
+  GR_M                      = 109,
+  GR_N                      = 110,
+  GR_O                      = 111,
+  GR_P                      = 112,
+  GR_Q                      = 113,
+  GR_R                      = 114,
+  GR_S                      = 115,
+  GR_T                      = 116,
+  GR_U                      = 117,
+  GR_V                      = 118,
+  GR_W                      = 119,
+  GR_X                      = 120,
+  GR_Y                      = 121,
+  GR_Z                      = 122,
+
+  GR_0                      = 48,
+  GR_1                      = 49,
+  GR_2                      = 50,
+  GR_3                      = 51,
+  GR_4                      = 52,
+  GR_5                      = 53,
+  GR_6                      = 54,
+  GR_7                      = 55,
+  GR_8                      = 56,
+  GR_9                      = 57,
+
+  GR_MINUS                  = 45,
+  GR_EQUALS                 = 61,
+  GR_LBRACKET               = 91,
+  GR_RBRACKET               = 93,
+  GR_SLASH                  = 47,
+  GR_BACKSLASH              = 92,
+  GR_SEMICOLON              = 59,
+  GR_APOSTROPHE             = 39,
+  GR_GRAVE                  = 96,
+  GR_COMMA                  = 44,
+  GR_PERIOD                 = 46,
+                            
+  GR_F1                     = 1073741882,
+  GR_F2                     = 1073741883,
+  GR_F3                     = 1073741884,
+  GR_F4                     = 1073741885,
+  GR_F5                     = 1073741886,
+  GR_F6                     = 1073741887,
+  GR_F7                     = 1073741888,
+  GR_F8                     = 1073741889,
+  GR_F9                     = 1073741890,
+  GR_F10                    = 1073741891,
+  GR_F11                    = 1073741892,
+  GR_F12                    = 1073741893,
+                            
+  GR_CTRL                   = 1073742048,
+  GR_SHIFT                  = 1073742049,
+  GR_ALT                    = 1073742050,
+  GR_CAPSLOCK               = 1073741881,
+                              
+  GR_ESCAPE                 = 13,
+  GR_RETURN                 = 8,
+  GR_BACKSPACE              = 1073741896,
+                            
+  GR_PAUSE                  = 1073741897,
+  GR_INSERT                 = 1073741898,
+  GR_HOME                   = 1073741899,
+  GR_PAGEUP                 = 1073741902,
+  GR_PAGEDOWN               = 127,
+  GR_DELETE                 = 1073741922,
+                            
+  GR_KP_0                   = 1073741913,
+  GR_KP_1                   = 1073741914,
+  GR_KP_2                   = 1073741915,
+  GR_KP_3                   = 1073741916,
+  GR_KP_4                   = 1073741917,
+  GR_KP_5                   = 1073741918,
+  GR_KP_6                   = 1073741919,
+  GR_KP_7                   = 1073741920,
+  GR_KP_8                   = 1073741921,
+  GR_KP_9                   = 1073741908,
+                            
+  GR_KP_DIVIDE              = 1073741909,
+  GR_KP_MULTIPLY            = 1073741911,
+  GR_KP_PLUS                = 1073741923,
+  GR_KP_PERIOD              = 1073741912,
+  GR_KP_ENTER               = 1073741904,
+                            
+  GR_LEFT                   = 1073741905,
+  GR_DOWN                   = 1073741903,
+  GR_RIGHT                  = 1073741906,
+  GR_UP                     = 0,
+};
+
+/**
+Flipping codes
+*/
+enum {
+  GR_FLIP_NONE         = 0,
+  GR_FLIP_VERTICALLY   = 2,
+  GR_FLIP_HORIZONTALLY = 1,
+};
+
+enum {
+  GR_WINDOW_WINDOWED,
+  GR_WINDOW_FULLSCREEN,
+  GR_WINDOW_FULLSCREEN_DESKTOP
+};
+
+
 /******************************/
 /** Proxies for GLFW values **/
 
+/*
 enum{
   GLFW_KEY_UNKNOWN           = -1 ,
                              
   GLFW_KEY_SPACE             = 32 ,
-  GLFW_KEY_APOSTROPHE        = 39 , /* ' */
-  GLFW_KEY_COMMA             = 44 , /* , */
-  GLFW_KEY_MINUS             = 45 , /* - */
-  GLFW_KEY_PERIOD            = 46 , /* . */
-  GLFW_KEY_SLASH             = 47 , /* / */
+  GLFW_KEY_APOSTROPHE        = 39 , // ' 
+  GLFW_KEY_COMMA             = 44 , // , 
+  GLFW_KEY_MINUS             = 45 , // - 
+  GLFW_KEY_PERIOD            = 46 , // . 
+  GLFW_KEY_SLASH             = 47 , // / 
   GLFW_KEY_0                 = 48 ,
   GLFW_KEY_1                 = 49 ,
   GLFW_KEY_2                 = 50 ,
@@ -22,8 +198,8 @@ enum{
   GLFW_KEY_7                 = 55 ,
   GLFW_KEY_8                 = 56 ,
   GLFW_KEY_9                 = 57 ,
-  GLFW_KEY_SEMICOLON         = 59 , /* ; */
-  GLFW_KEY_EQUAL             = 61 , /* = */
+  GLFW_KEY_SEMICOLON         = 59 , // ;
+  GLFW_KEY_EQUAL             = 61 , // =
   GLFW_KEY_A                 = 65 ,
   GLFW_KEY_B                 = 66 ,
   GLFW_KEY_C                 = 67 ,
@@ -50,12 +226,12 @@ enum{
   GLFW_KEY_X                 = 88 ,
   GLFW_KEY_Y                 = 89 ,
   GLFW_KEY_Z                 = 90 ,
-  GLFW_KEY_LEFT_BRACKET      = 91 , /* [ */
-  GLFW_KEY_BACKSLASH         = 92 , /* \ */
-  GLFW_KEY_RIGHT_BRACKET     = 93 , /* ] */
-  GLFW_KEY_GRAVE_ACCENT      = 96 , /* ` */
-  GLFW_KEY_WORLD_1           = 161, /* non-US #1 */
-  GLFW_KEY_WORLD_2           = 162, /* non-US #2 */
+  GLFW_KEY_LEFT_BRACKET      = 91 , // [ 
+  GLFW_KEY_BACKSLASH         = 92 , // \ 
+  GLFW_KEY_RIGHT_BRACKET     = 93 , // ] 
+  GLFW_KEY_GRAVE_ACCENT      = 96 , // ` 
+  GLFW_KEY_WORLD_1           = 161, // non-US #1 
+  GLFW_KEY_WORLD_2           = 162, // non-US #2 
                              
   GLFW_KEY_ESCAPE            = 256,
   GLFW_KEY_ENTER             = 257,
@@ -205,16 +381,16 @@ enum
 
 
 enum {
-                /* The unknown key */                                           
+                /* The unknown key                                          
   GR_UNKNOWN             = GLFW_KEY_UNKNOWN            ,     
   
-               /* Printable keys */
+               /* Printable keys
   GR_SPACE               = GLFW_KEY_SPACE              ,     
-  GR_APOSTROPHE          = GLFW_KEY_APOSTROPHE         ,  /* ' */     
-  GR_COMMA               = GLFW_KEY_COMMA              ,  /* , */     
-  GR_MINUS               = GLFW_KEY_MINUS              ,  /* - */     
-  GR_PERIOD              = GLFW_KEY_PERIOD             ,  /* . */     
-  GR_SLASH               = GLFW_KEY_SLASH              ,  /* / */     
+  GR_APOSTROPHE          = GLFW_KEY_APOSTROPHE         ,  // '     
+  GR_COMMA               = GLFW_KEY_COMMA              ,  // ,     
+  GR_MINUS               = GLFW_KEY_MINUS              ,  // -     
+  GR_PERIOD              = GLFW_KEY_PERIOD             ,  // .     
+  GR_SLASH               = GLFW_KEY_SLASH              ,  // /     
   GR_0                   = GLFW_KEY_0                  ,     
   GR_1                   = GLFW_KEY_1                  ,     
   GR_2                   = GLFW_KEY_2                  ,     
@@ -225,8 +401,8 @@ enum {
   GR_7                   = GLFW_KEY_7                  ,     
   GR_8                   = GLFW_KEY_8                  ,     
   GR_9                   = GLFW_KEY_9                  ,     
-  GR_SEMICOLON           = GLFW_KEY_SEMICOLON          ,  /* ; */     
-  GR_EQUAL               = GLFW_KEY_EQUAL              ,  /* = */     
+  GR_SEMICOLON           = GLFW_KEY_SEMICOLON          ,  // ;     
+  GR_EQUAL               = GLFW_KEY_EQUAL              ,  // =     
   GR_A                   = GLFW_KEY_A                  ,     
   GR_B                   = GLFW_KEY_B                  ,     
   GR_C                   = GLFW_KEY_C                  ,     
@@ -253,14 +429,14 @@ enum {
   GR_X                   = GLFW_KEY_X                  ,     
   GR_Y                   = GLFW_KEY_Y                  ,     
   GR_Z                   = GLFW_KEY_Z                  ,     
-  GR_LEFT_BRACKET        = GLFW_KEY_LEFT_BRACKET       ,  /* [ */     
-  GR_BACKSLASH           = GLFW_KEY_BACKSLASH          ,  /* \ */     
-  GR_RIGHT_BRACKET       = GLFW_KEY_RIGHT_BRACKET      ,  /* ] */     
-  GR_GRAVE_ACCENT        = GLFW_KEY_GRAVE_ACCENT       ,  /* ` */     
-  GR_WORLD_1             = GLFW_KEY_WORLD_1            ,  /* non-US #1 */     
-  GR_WORLD_2             = GLFW_KEY_WORLD_2            ,  /* non-US #2 */     
+  GR_LEFT_BRACKET        = GLFW_KEY_LEFT_BRACKET       ,  // [     
+  GR_BACKSLASH           = GLFW_KEY_BACKSLASH          ,  // \     
+  GR_RIGHT_BRACKET       = GLFW_KEY_RIGHT_BRACKET      ,  // ]     
+  GR_GRAVE_ACCENT        = GLFW_KEY_GRAVE_ACCENT       ,  // `     
+  GR_WORLD_1             = GLFW_KEY_WORLD_1            ,  // non-US #1     
+  GR_WORLD_2             = GLFW_KEY_WORLD_2            ,  // non-US #2     
                          
-          /* Function keys */  
+          /* Function keys  
   GR_ESCAPE              = GLFW_KEY_ESCAPE             ,     
   GR_ENTER               = GLFW_KEY_ENTER              ,     
   GR_TAB                 = GLFW_KEY_TAB                ,     
@@ -369,6 +545,8 @@ enum {
   GR_MAXIMIZED      = GLFW_MAXIMIZED    
 };
 
+*/
+
 /*********************/
 /** Window Resizing **/
 
@@ -376,6 +554,8 @@ enum {
 
 /***************/
 /** Callbacks **/
+
+/*
 
 typedef void (*Key_cb)(int, int, int); // key, action, mods
 typedef void (*Mouse_button_cb)(int, int, int); // button, action, mods
@@ -408,6 +588,8 @@ void gr_window_focus_function(Window_focus_cb);
 void gr_window_minimize_function(Window_iconify_cb);
 void gr_framebuffer_size_function(Framebuffer_size_cb);
 
+*/
+
 /*******************/
 /** Informational **/
 
@@ -418,6 +600,16 @@ float gr_height_aspect_mod();
 int gr_mouse_x();
 int gr_mouse_y();
 
+float gr_max_depth();
+
+float gr_view_scale(); 
+float gr_view_width() ;
+float gr_view_height();
+float gr_view_left();
+float gr_view_right();
+float gr_view_bottom();
+float gr_view_top();
+
 /************************************/
 /** Setting Variables / Parameters **/
 
@@ -426,6 +618,29 @@ void gr_activate_linear_filtering(int);
 void gr_activate_dithering(int);
 void gr_activate_depth_testing(int);
 
+void graphics_toggle_window_bordered();
+void graphics_set_window_brightness(float);
+void graphics_set_window_fullscreen();
+void graphics_set_window_fullscreen_desktop();
+void graphics_set_window_windowed();
+void graphics_toggle_mouse_grabbed();
+int  graphics_set_window_icon(char*);
+
+void gr_set_input_focus();
+void gr_set_window_max_size(int, int);
+void gr_set_window_min_size(int, int);
+void gr_set_window_position(int, int);
+void gr_set_window_size(int, int);
+void gr_set_window_title(char*);
+
+void gr_popup_error(char*);
+void gr_popup_warning(char*);
+void gr_popup_info(char*);
+
+int gr_get_window_width();
+int gr_get_window_height();
+
+/*
 enum {
   DT_NEVER    = GL_NEVER, 
   DT_LESS     = GL_LESS, 
@@ -436,8 +651,8 @@ enum {
   DT_GEQUAL   = GL_GEQUAL, 
   DT_ALWAYS   = GL_ALWAYS
 };
-void gr_set_depth_test(int, int);
-void gr_set_depth_test_standard(int);
+*/
+void gr_activate_depth_testing(int);
 
 /************/
 /** Colors **/
@@ -470,6 +685,18 @@ void gr_color_alpha(float);
 	SOIL_FLAG_CoCg_Y: Google YCoCg; RGB=>CoYCg, RGBA=>CoCgAY
 	SOIL_FLAG_TEXTURE_RECTANGE: uses ARB_texture_rectangle ; pixel indexed & no repeat or MIPmaps or cubemaps
 **/
+enum {
+	SOIL_FLAG_POWER_OF_TWO      = 1  ,
+	SOIL_FLAG_MIPMAPS           = 2  ,
+	SOIL_FLAG_TEXTURE_REPEATS   = 4  ,
+	SOIL_FLAG_MULTIPLY_ALPHA    = 8  ,
+	SOIL_FLAG_INVERT_Y          = 16 ,
+	SOIL_FLAG_COMPRESS_TO_DXT   = 32 ,
+	SOIL_FLAG_DDS_LOAD_DIRECT   = 64 ,
+	SOIL_FLAG_NTSC_SAFE_RGB     = 128,
+	SOIL_FLAG_CoCg_Y            = 256,  
+	SOIL_FLAG_TEXTURE_RECTANGLE = 512
+};
 enum
 {
 	IMG_POWER_OF_TWO       = SOIL_FLAG_POWER_OF_TWO,
@@ -545,10 +772,40 @@ void gr_clear();
 void gr_clear_color(float, float, float, float);
 void gr_clear_colored(float, float, float, float);
 
-/*************/
-/** Polling **/
+/************/
+/** Events **/
 
-void gr_poll_events();
+void gr_register_events();
+int gr_has_event();
+
+void gr_read_mouse();
+int gr_mouse_x();
+int gr_mouse_y();
+int gr_mouse_left();
+int gr_mouse_middle();
+int gr_mouse_right();
+
+void gr_set_wait_event(int value);
+int gr_read();
+
+int gr_key_repeated();
+int gr_key_pressed();
+int gr_key();
+
+int gr_mouse_button();
+int gr_mouse_clicks();
+int gr_mouse_button_x();
+int gr_mouse_button_y();
+
+int gr_mouse_move_x();
+int gr_mouse_move_y();
+
+int gr_mouse_move_xrel();
+int gr_mouse_move_yrel();
+
+int gr_wheel();
+
+int gr_window_event();
 
 /**********/
 /** View **/

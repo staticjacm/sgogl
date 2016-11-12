@@ -1,1 +1,1 @@
-gcc sgogl_test.c -Llib -lglfw3 -lsgogl
+gcc sgogl_test.c -Llib -lsgogl
