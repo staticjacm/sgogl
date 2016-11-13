@@ -652,7 +652,7 @@ enum {
   DT_ALWAYS   = GL_ALWAYS
 };
 */
-void gr_activate_depth_testing(int);
+// void gr_activate_depth_testing(int);
 
 /************/
 /** Colors **/

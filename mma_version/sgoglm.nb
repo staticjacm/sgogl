@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     90944,       2447]
-NotebookOptionsPosition[     87429,       2348]
-NotebookOutlinePosition[     87769,       2363]
-CellTagsIndexPosition[     87726,       2360]
+NotebookDataLength[     87956,       2366]
+NotebookOptionsPosition[     84957,       2282]
+NotebookOutlinePosition[     85297,       2297]
+CellTagsIndexPosition[     85254,       2294]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -44,17 +44,18 @@ GRRead[]\n\t\tIf[event==GRCLOSE, running=false]\n\t]\n\tGRViewCentered[0, 0, \
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{
-  "SGOGLM", "=", 
-   "\"\<U:\\\\save\\\\lib\\\\sgogl\\\\mlib\\\\test\\\\sgoglM.dll\>\""}], 
-  ";"}]], "Input",
+  RowBox[{"SGOGLM", "="}], 
+  RowBox[{"(*", 
+   RowBox[{"Path", " ", "to", " ", 
+    RowBox[{"sgoglM", ".", "dll"}], " ", "here"}], "*)"}], ";"}]], "Input",
  InitializationCell->True,
  CellChangeTimes->{{3.6677752338665457`*^9, 3.6677752384045553`*^9}, {
    3.6677766071792283`*^9, 3.6677766861105375`*^9}, {3.6677776121221137`*^9, 
    3.667777612564407*^9}, 3.667846211828804*^9, {3.6678539711061487`*^9, 
    3.6678539829590025`*^9}, {3.6688780369645243`*^9, 
    3.6688780416116023`*^9}, {3.687960988868774*^9, 3.6879609909984665`*^9}, {
-   3.687980688184542*^9, 3.6879806953192754`*^9}, 3.687991966518428*^9}],
+   3.687980688184542*^9, 3.6879806953192754`*^9}, 3.687991966518428*^9, {
+   3.6880348790689883`*^9, 3.688034892346798*^9}}],
 
 Cell[TextData[StyleBox["Constants:",
  FontSize->24]], "Text",
@@ -461,35 +462,20 @@ Cell[BoxData[{
    3.6879876260272617`*^9, 3.6879876294145107`*^9}, 3.6879923312685003`*^9}]
 }, Closed]],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[
- RowBox[{"lflt", "=", 
-  RowBox[{"LibraryFunctionLoad", "[", 
-   RowBox[{"SGOGLM", ",", "\"\<tester\>\"", ",", 
-    RowBox[{"{", "}"}], ",", "Integer"}], "]"}]}]], "Input",
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Load", " ", "this", " ", "to", " ", "test", " ", "whether", " ", "or", 
+    " ", "not", " ", "the", " ", "dll", " ", "is", " ", "loading", " ", 
+    "correctly"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"lflt", "=", 
+   RowBox[{"LibraryFunctionLoad", "[", 
+    RowBox[{"SGOGLM", ",", "\"\<tester\>\"", ",", 
+     RowBox[{"{", "}"}], ",", "Integer"}], "]"}]}]}]], "Input",
  CellChangeTimes->{{3.6879918947675657`*^9, 3.687991936115254*^9}, {
   3.687992021994236*^9, 3.6879920222153826`*^9}, {3.687992118642572*^9, 
-  3.6879921279627542`*^9}}],
-
-Cell[BoxData[
- TemplateBox[{
-  "LibraryFunction","libload",
-   "\"The function \\!\\(\\*RowBox[{\\\"\\\\\\\"tester\\\\\\\"\\\"}]\\) was \
-not loaded from the file \
-\\!\\(\\*RowBox[{\\\"\\\\\\\"U:\\\\\\\\\\\\\\\\save\\\\\\\\\\\\\\\\lib\\\\\\\\\
-\\\\\\\\sgogl\\\\\\\\\\\\\\\\mlib\\\\\\\\\\\\\\\\test\\\\\\\\\\\\\\\\sgoglM.\
-dll\\\\\\\"\\\"}]\\).\"",2,727,21,23200187693230798256,"Local"},
-  "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.6879919369107823`*^9, 3.687992022681692*^9, 
-  3.687992128340004*^9, 3.6879922882099295`*^9, 3.6879923360096455`*^9, 
-  3.6880007941740522`*^9}],
-
-Cell[BoxData["$Failed"], "Output",
- CellChangeTimes->{3.687991936913789*^9, 3.687992022699705*^9, 
-  3.6879921283570156`*^9, 3.6879922882309437`*^9, 3.687992336026657*^9, 
-  3.6880007941920657`*^9}]
-}, Open  ]],
+  3.6879921279627542`*^9}, {3.6880349001289606`*^9, 3.688034914602566*^9}}],
 
 Cell[CellGroupData[{
 
@@ -2138,48 +2124,6 @@ Cell[BoxData[{
    3.687991764577182*^9}}]
 }, Closed]],
 
-Cell[BoxData[
- TemplateBox[{
-  "LibraryFunction","libload",
-   "\"The function \\!\\(\\*RowBox[{\\\"\\\\\\\"gr_width_m\\\\\\\"\\\"}]\\) \
-was not loaded from the file \
-\\!\\(\\*RowBox[{\\\"\\\\\\\"U:\\\\\\\\\\\\\\\\save\\\\\\\\\\\\\\\\lib\\\\\\\\\
-\\\\\\\\sgogl\\\\\\\\\\\\\\\\mlib\\\\\\\\\\\\\\\\test\\\\\\\\\\\\\\\\sgoglM.\
-dll\\\\\\\"\\\"}]\\).\"",2,417,12,23200187693230798256,"Local"},
-  "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.6879918071394234`*^9, 3.687991886088806*^9}],
-
-Cell[BoxData[
- TemplateBox[{
-  "LibraryFunction","libload",
-   "\"The function \\!\\(\\*RowBox[{\\\"\\\\\\\"gr_height_m\\\\\\\"\\\"}]\\) \
-was not loaded from the file \
-\\!\\(\\*RowBox[{\\\"\\\\\\\"U:\\\\\\\\\\\\\\\\save\\\\\\\\\\\\\\\\lib\\\\\\\\\
-\\\\\\\\sgogl\\\\\\\\\\\\\\\\mlib\\\\\\\\\\\\\\\\test\\\\\\\\\\\\\\\\sgoglM.\
-dll\\\\\\\"\\\"}]\\).\"",2,417,13,23200187693230798256,"Local"},
-  "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.6879918071394234`*^9, 3.6879918861128216`*^9}],
-
-Cell[BoxData[
- TemplateBox[{
-  "LibraryFunction","libload",
-   "\"The function \\!\\(\\*RowBox[{\\\"\\\\\\\"gr_width_aspect_mod_m\\\\\\\"\
-\\\"}]\\) was not loaded from the file \
-\\!\\(\\*RowBox[{\\\"\\\\\\\"U:\\\\\\\\\\\\\\\\save\\\\\\\\\\\\\\\\lib\\\\\\\\\
-\\\\\\\\sgogl\\\\\\\\\\\\\\\\mlib\\\\\\\\\\\\\\\\test\\\\\\\\\\\\\\\\sgoglM.\
-dll\\\\\\\"\\\"}]\\).\"",2,417,14,23200187693230798256,"Local"},
-  "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.6879918071394234`*^9, 3.6879918861318336`*^9}],
-
-Cell[BoxData[
- TemplateBox[{
-  "General","stop",
-   "\"Further output of \\!\\(\\*StyleBox[RowBox[{\\\"LibraryFunction\\\", \\\
-\"::\\\", \\\"libload\\\"}], \\\"MessageName\\\"]\\) will be suppressed \
-during this calculation.\"",2,417,15,23200187693230798256,"Local"},
-  "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.6879918071394234`*^9, 3.6879918861548495`*^9}],
-
 Cell[" ", "Text",
  Editable->False,
  Selectable->False,
@@ -2290,61 +2234,51 @@ Cell[TextData[StyleBox["Example:",
 
 Cell[BoxData[
  RowBox[{"Quiet", "@", 
-  RowBox[{"UnloadBLTFunctions", "[", "]"}]}]], "Input",
+  RowBox[{"UnloadSGOGLFunctions", "[", "]"}]}]], "Input",
  CellChangeTimes->{{3.6677778128448954`*^9, 3.667777828762429*^9}, {
-  3.667819375591814*^9, 3.667819376319295*^9}}],
+  3.667819375591814*^9, 3.667819376319295*^9}, {3.688034944111146*^9, 
+  3.688034945048765*^9}}],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"LoadBLTFunctions", "[", "]"}], ";"}]], "Input",
+  RowBox[{"LoadSGOGLFunctions", "[", "]"}], ";"}]], "Input",
  InitializationCell->True,
  CellChangeTimes->{{3.667777843122944*^9, 3.667777845360427*^9}, {
-   3.6678303750359135`*^9, 3.6678303760215654`*^9}, 3.6678462914485703`*^9}],
-
-Cell[BoxData[
- RowBox[{"BLTOpen", "[", "]"}]], "Input",
- CellChangeTimes->{{3.667842346695793*^9, 3.6678423481787777`*^9}, {
-  3.6678438297583113`*^9, 3.6678438307719812`*^9}}],
-
-Cell[BoxData[
- RowBox[{"BLTRefresh", "[", "]"}]], "Input",
- CellChangeTimes->{{3.6678423530309935`*^9, 3.66784235497628*^9}}],
-
-Cell[BoxData[
- RowBox[{"BLTClose", "[", "]"}]], "Input",
- CellChangeTimes->{{3.6678431277072473`*^9, 3.6678431293003078`*^9}}],
-
-Cell[CellGroupData[{
+   3.6678303750359135`*^9, 3.6678303760215654`*^9}, 3.6678462914485703`*^9, {
+   3.688034947552426*^9, 3.6880349485951185`*^9}}],
 
 Cell[BoxData[{
+ RowBox[{"running", " ", "=", " ", "True"}], "\n", 
  RowBox[{
-  RowBox[{"BLTOpen", "[", "]"}], "\n"}], "\[IndentingNewLine]", 
- RowBox[{"BLTPrint", "[", 
-  RowBox[{"1", ",", "1", ",", "\"\<Hello, World!\>\""}], "]"}], "\n", 
- RowBox[{
-  RowBox[{"BLTRefresh", "[", "]"}], "\n"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"While", "[", 
+  RowBox[{
+   RowBox[{"WindowCloseFunction", "[", "]"}], ":=", 
+   RowBox[{"(", "\n", "\t", 
+    RowBox[{"running", " ", "=", " ", "False"}], "\n", ")"}]}], "\n"}], "\n", 
+ RowBox[{"GROpen", "[", "]"}], "\n", 
+ RowBox[{"While", "[", 
+  RowBox[{"running", ",", "\n", "\t", 
    RowBox[{
+    RowBox[{"GRClear", "[", "]"}], ";", "\n", "\t", 
+    RowBox[{"GRRegisterEvents", "[", "]"}], ";", "\n", "\t", 
     RowBox[{
-     RowBox[{"BLTRead", "[", "]"}], "\[NotEqual]", "TKCLOSE"}], ","}], "]"}], 
-  "\n"}], "\[IndentingNewLine]", 
- RowBox[{"BLTClose", "[", "]"}]}], "Input",
- CellChangeTimes->{{3.667845905069378*^9, 3.6678459985914664`*^9}, 
-   3.6678460892385406`*^9}],
-
-Cell[BoxData["1"], "Output",
- CellChangeTimes->{
-  3.667845906415271*^9, {3.667845937536895*^9, 3.6678459433447456`*^9}, {
-   3.6678459900027733`*^9, 3.6678459993829904`*^9}, 3.6678460897278643`*^9, 
-   3.6678463022887583`*^9}],
-
-Cell[BoxData["13"], "Output",
- CellChangeTimes->{
-  3.667845906415271*^9, {3.667845937536895*^9, 3.6678459433447456`*^9}, {
-   3.6678459900027733`*^9, 3.6678459993829904`*^9}, 3.6678460897278643`*^9, 
-   3.6678463022937574`*^9}]
-}, Open  ]]
+     RowBox[{"While", "[", 
+      RowBox[{
+       RowBox[{"GRHasEvent", "[", "]"}], ",", "\n", "\t\t", 
+       RowBox[{"event", " ", "=", " ", 
+        RowBox[{
+         RowBox[{"GRRead", "[", "]"}], "\n", "\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"event", "==", "GRCLOSE"}], ",", " ", 
+           RowBox[{"running", "=", "false"}]}], "]"}]}]}]}], "\n", "\t", 
+      "]"}], "\n", "\t", 
+     RowBox[{"GRViewCentered", "[", 
+      RowBox[{"0", ",", " ", "0", ",", " ", "1", ",", " ", "0"}], "]"}]}], 
+    ";", "\n", "\t", 
+    RowBox[{"GRDrawPoint", "[", 
+     RowBox[{"0", ",", " ", "0", ",", " ", "2"}], "]"}], ";", "\n", "\t", 
+    RowBox[{"GRRefresh", "[", "]"}]}]}], "\n", "]"}]}], "Input",
+ CellChangeTimes->{{3.688034942066786*^9, 3.688034942068788*^9}}]
 },
 WindowSize->{898, 692},
 WindowMargins->{{Automatic, 0}, {Automatic, 0}},
@@ -2363,92 +2297,77 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[558, 20, 1132, 22, 486, "Text"],
-Cell[1693, 44, 600, 12, 46, "Input",
+Cell[1693, 44, 687, 13, 46, "Input",
  InitializationCell->True],
-Cell[2296, 58, 334, 5, 41, "Text",
+Cell[2383, 59, 334, 5, 41, "Text",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}],
 Cell[CellGroupData[{
-Cell[2655, 67, 260, 6, 46, "Input",
+Cell[2742, 68, 260, 6, 46, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[2918, 75, 915, 20, 161, "Input",
+Cell[3005, 76, 915, 20, 161, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[3836, 97, 1643, 37, 313, "Input",
+Cell[3923, 98, 1643, 37, 313, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[5482, 136, 796, 17, 123, "Input",
+Cell[5569, 137, 796, 17, 123, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[6281, 155, 7036, 203, 1928, "Input",
+Cell[6368, 156, 7036, 203, 1928, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[13320, 360, 678, 13, 85, "Input",
+Cell[13407, 361, 678, 13, 85, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[14001, 375, 715, 13, 85, "Input",
+Cell[14088, 376, 715, 13, 85, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[14719, 390, 1993, 50, 427, "Input",
+Cell[14806, 391, 1993, 50, 427, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True],
-Cell[16715, 442, 831, 18, 123, "Input",
+Cell[16802, 443, 831, 18, 123, "Input",
  CellGroupingRules->{"GroupTogetherGrouping", 10002.},
  InitializationCell->True]
 }, Closed]],
+Cell[17648, 464, 649, 13, 44, "Input"],
 Cell[CellGroupData[{
-Cell[17583, 465, 356, 7, 24, "Input"],
-Cell[17942, 474, 594, 11, 21, "Message"],
-Cell[18539, 487, 198, 3, 30, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[18774, 495, 187, 3, 41, "Text",
+Cell[18322, 481, 187, 3, 41, "Text",
  CellGroupingRules->{GroupTogetherGrouping, 10002.}],
-Cell[18964, 500, 18631, 406, 2042, "Input",
+Cell[18512, 486, 18631, 406, 2042, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10002.},
  InitializationCell->True],
-Cell[37598, 908, 1565, 31, 180, "Input",
+Cell[37146, 894, 1565, 31, 180, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10002.},
  InitializationCell->True],
-Cell[39166, 941, 801, 18, 104, "Input",
+Cell[38714, 927, 801, 18, 104, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10002.},
  InitializationCell->True],
-Cell[39970, 961, 40078, 1176, 4417, "Input",
+Cell[39518, 947, 40078, 1176, 4417, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10002.},
  InitializationCell->True]
 }, Closed]],
-Cell[80063, 2140, 498, 9, 21, "Message"],
-Cell[80564, 2151, 501, 9, 21, "Message"],
-Cell[81068, 2162, 511, 9, 21, "Message"],
-Cell[81582, 2173, 378, 7, 21, "Message"],
-Cell[81963, 2182, 271, 9, 10, "Text"],
+Cell[79611, 2126, 271, 9, 10, "Text"],
 Cell[CellGroupData[{
-Cell[82259, 2195, 261, 4, 41, "Text",
+Cell[79907, 2139, 261, 4, 41, "Text",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[82523, 2201, 980, 26, 85, "Input",
+Cell[80171, 2145, 980, 26, 85, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  InitializationCell->True],
-Cell[83506, 2229, 648, 15, 85, "Input",
+Cell[81154, 2173, 648, 15, 85, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  InitializationCell->True],
-Cell[84157, 2246, 417, 12, 5, "Text",
+Cell[81805, 2190, 417, 12, 5, "Text",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[84589, 2261, 273, 9, 5, "Text"],
-Cell[84865, 2272, 271, 9, 10, "Text"],
-Cell[85139, 2283, 305, 5, 41, "Text",
+Cell[82237, 2205, 273, 9, 5, "Text"],
+Cell[82513, 2216, 271, 9, 10, "Text"],
+Cell[82787, 2227, 305, 5, 41, "Text",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}],
-Cell[85447, 2290, 210, 4, 30, "Input"],
-Cell[85660, 2296, 253, 5, 46, "Input",
+Cell[83095, 2234, 261, 5, 30, "Input"],
+Cell[83359, 2241, 307, 6, 46, "Input",
  InitializationCell->True],
-Cell[85916, 2303, 176, 3, 30, "Input"],
-Cell[86095, 2308, 125, 2, 30, "Input"],
-Cell[86223, 2312, 126, 2, 30, "Input"],
-Cell[CellGroupData[{
-Cell[86374, 2318, 578, 15, 164, "Input"],
-Cell[86955, 2335, 227, 4, 30, "Output"],
-Cell[87185, 2341, 228, 4, 30, "Output"]
-}, Open  ]]
+Cell[83669, 2249, 1284, 31, 335, "Input"]
 }
 ]
 *)
