@@ -55,7 +55,7 @@ Feel free to do whatever tf you want, just don't fck my sht up if you know what 
 BLT: for inspiration
 
 ~~GLFW: because SGOGL uses it (and for the confidence I got from it to use a really shitty name)~~
-It used to use GLFW but I found the callback mechanism for dealing with events too importable (integrating it with mathematica was horrific)
+It used to use GLFW but I found the callback mechanism for dealing with events too inportable (integrating it with mathematica was horrific)
 
 SDL2: because SDL2 uses it for window creation, events, etc
 
