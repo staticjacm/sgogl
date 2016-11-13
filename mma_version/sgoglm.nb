@@ -1,0 +1,2455 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     90944,       2447]
+NotebookOptionsPosition[     87429,       2348]
+NotebookOutlinePosition[     87769,       2363]
+CellTagsIndexPosition[     87726,       2360]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[TextData[{
+ "You must have the sgoglM.dll file in one of the ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " dll search paths (where the ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " executable is does just fine).\n\nAlso, the SGOGLM string must be the path \
+to the sgoglM.dll file (which is just a proxy for loading the functions from \
+the sgogl.dll into ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ ")\n\nExample usage:\n=============\nrunning = True\n\
+WindowCloseFunction[]:=(\n\trunning = False\n)\n\nGROpen[]\nWhile[running,\n\t\
+GRClear[];\n\tGRRegisterEvents[];\n\tWhile[GRHasEvent[],\n\t\tevent = \
+GRRead[]\n\t\tIf[event==GRCLOSE, running=false]\n\t]\n\tGRViewCentered[0, 0, \
+1, 0];\n\tGRDrawPoint[0, 0, 2];\n\tGRRefresh[]\n]"
+}], "Text",
+ CellChangeTimes->{{3.667845544245911*^9, 3.667845901586069*^9}, {
+   3.6678460063085804`*^9, 3.6678460837048717`*^9}, 3.667846116367518*^9, {
+   3.6678462353133707`*^9, 3.6678462703986225`*^9}, {3.6879606110646935`*^9, 
+   3.6879606469555845`*^9}, {3.6879608440154862`*^9, 
+   3.6879609831779966`*^9}, {3.687980572307949*^9, 3.6879806692029476`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "SGOGLM", "=", 
+   "\"\<U:\\\\save\\\\lib\\\\sgogl\\\\mlib\\\\test\\\\sgoglM.dll\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.6677752338665457`*^9, 3.6677752384045553`*^9}, {
+   3.6677766071792283`*^9, 3.6677766861105375`*^9}, {3.6677776121221137`*^9, 
+   3.667777612564407*^9}, 3.667846211828804*^9, {3.6678539711061487`*^9, 
+   3.6678539829590025`*^9}, {3.6688780369645243`*^9, 
+   3.6688780416116023`*^9}, {3.687960988868774*^9, 3.6879609909984665`*^9}, {
+   3.687980688184542*^9, 3.6879806953192754`*^9}, 3.687991966518428*^9}],
+
+Cell[TextData[StyleBox["Constants:",
+ FontSize->24]], "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.6676849127030582`*^9, 3.6676849174522047`*^9}, {
+  3.6676856430389676`*^9, 3.6676856454735837`*^9}, {3.667687356039325*^9, 
+  3.667687356953656*^9}, {3.667731969867097*^9, 3.6677319709267993`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GRDefaultDepth", "=", "1"}], ";"}]], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6879911441236825`*^9, 3.6879911510162573`*^9}, 
+   3.6879923312664976`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"GRNULEVENT", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRKEYEVENT", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWEVENT", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRCLOSE", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRMOUSEBUTTONEVENT", "=", "4"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRMOUSEMOVEEVENT", "=", "5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRMOUSEWHEELEVENT", "=", "6"}], ";"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6676852257909384`*^9, 3.6676852304500265`*^9}, {
+   3.6676853131408267`*^9, 3.667685440689705*^9}, {3.667685544633591*^9, 
+   3.6676855898156943`*^9}, 3.6676856430399675`*^9, {3.687984904761218*^9, 
+   3.6879849736844854`*^9}, 3.687992331267499*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"GRWINDOWNONE", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWSHOWN", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWHIDDEN", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWEXPOSED", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWMOVED", "=", "4"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWRESIZED", "=", "5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWSIZECHANGED", "=", "6"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWMINIMIZED", "=", "7"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWMAXIMIZED", "=", "8"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWRESTORED", "=", "9"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWENTER", "=", "10"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWLEAVE", "=", "11"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWFOCUSGAINED", "=", "12"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWFOCUSLOST", "=", "13"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWCLOSE", "=", "14"}], ";"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6676852257909384`*^9, 3.6676852304500265`*^9}, {
+   3.6676853131408267`*^9, 3.667685440689705*^9}, {3.667685544633591*^9, 
+   3.6676855898156943`*^9}, 3.6676856430399675`*^9, {3.687984904761218*^9, 
+   3.6879849797580347`*^9}, {3.687985160302862*^9, 3.6879852305669374`*^9}, 
+   3.687992331267499*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"GRMOUSELEFT", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRMOUSERIGHT", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRMOUSEMIDDLE", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRMOUSEX1", "=", "4"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRMOUSEX2", "=", "5"}], ";"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6676852257909384`*^9, 3.6676852304500265`*^9}, {
+   3.6676853131408267`*^9, 3.667685440689705*^9}, {3.667685544633591*^9, 
+   3.6676855898156943`*^9}, 3.6676856430399675`*^9, {3.687984904761218*^9, 
+   3.6879849797580347`*^9}, {3.687985160302862*^9, 3.6879852562439747`*^9}, 
+   3.687992331267499*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"TKA", " ", "=", " ", "97"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKB", " ", "=", " ", "98"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKC", " ", "=", " ", "99"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKD", " ", "=", " ", "100"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKE", " ", "=", " ", "101"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKF", " ", "=", " ", "102"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKG", " ", "=", " ", "103"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKH", " ", "=", " ", "104"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKI", " ", "=", " ", "105"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKJ", " ", "=", " ", "106"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKK", " ", "=", " ", "107"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKL", " ", "=", " ", "108"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKM", " ", "=", " ", "109"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKN", " ", "=", " ", "110"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKO", " ", "=", " ", "111"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKP", " ", "=", " ", "112"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKQ", " ", "=", " ", "113"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKR", " ", "=", " ", "114"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKS", " ", "=", " ", "115"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKT", " ", "=", " ", "116"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKU", " ", "=", " ", "117"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKV", " ", "=", " ", "118"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKW", " ", "=", " ", "119"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKX", " ", "=", " ", "120"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TKY", " ", "=", " ", "121"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TKZ", " ", "=", " ", "122"}], ";"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{"TK0", " ", "=", " ", "48"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TK1", " ", "=", " ", "49"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TK2", " ", "=", " ", "50"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TK3", " ", "=", " ", "51"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TK4", " ", "=", " ", "52"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TK5", " ", "=", " ", "53"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TK6", " ", "=", " ", "54"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TK7", " ", "=", " ", "55"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"TK8", " ", "=", " ", "56"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TK9", " ", "=", " ", "57"}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRMINUS", "=", "45"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GREQUALS", "=", "61"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRLBRACKET", "=", "91"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRRBRACKET", "=", "93"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRSLASH", "=", "47"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRBACKSLASH", "=", "92"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRSEMICOLON", "=", "59"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRAPOSTROPHE", "=", "39"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRGRAVE", "=", "96"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRCOMMA", "=", "44"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRPERIOD", "=", "46"}], ";"}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"GRF1", "=", "1073741882"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF2", "=", "1073741883"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF3", "=", "1073741884"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF4", "=", "1073741885"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF5", "=", "1073741886"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF6", "=", "1073741887"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF7", "=", "1073741888"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF8", "=", "1073741889"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF9", "=", "1073741890"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF10", "=", "1073741891"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRF11", "=", "1073741892"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRF12", "=", "1073741893"}], ";"}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"GRCTRL", "=", "1073742048"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRSHIFT", "=", "1073742049"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRALT", "=", "1073742050"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRCAPSLOCK", "=", "1073741881"}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"GRESCAPE", "=", "13"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRRETURN", "=", "8"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRBACKSPACE", "=", "1073741896"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRPAUSE", "=", "1073741897"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRINSERT", "=", "1073741898"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRHOME", "=", "1073741899"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRPAGEUP", "=", "1073741902"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRPAGEDOWN", "=", "127"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDELETE", "=", "1073741922"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRKP0", "=", "1073741913"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKP1", "=", "1073741914"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKP2", "=", "1073741915"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKP3", "=", "1073741916"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKP4", "=", "1073741917"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKP5", "=", "1073741918"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKP6", "=", "1073741919"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKP7", "=", "1073741920"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKP8", "=", "1073741921"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRKP9", "=", "1073741908"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRKPDIVIDE", "=", "1073741909"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKPMULTIPLY", "=", "1073741911"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKPPLUS", "=", "1073741923"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRKPPERIOD", "=", "1073741912"}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"GRKPENTER", "=", "1073741904"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRLEFT", "=", "1073741905"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRDOWN", "=", "1073741903"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRRIGHT", "=", "1073741906"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GRUP", "=", "0"}], ";"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6676852257909384`*^9, 3.6676852304500265`*^9}, {
+   3.6676853131408267`*^9, 3.667685440689705*^9}, {3.667685544633591*^9, 
+   3.6676855898156943`*^9}, 3.6676856430399675`*^9, 3.687984904761218*^9, {
+   3.6879852658193274`*^9, 3.6879856581608133`*^9}, 3.687985709604948*^9, 
+   3.687992331267499*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"GRFLIPNONE", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRFLIPVERTICALLY", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRFLIPHORIZONTALLY", "=", "1"}], ";"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6676852257909384`*^9, 3.6676852304500265`*^9}, {
+   3.6676853131408267`*^9, 3.667685440689705*^9}, {3.667685544633591*^9, 
+   3.6676855898156943`*^9}, 3.6676856430399675`*^9, 3.687984904761218*^9, {
+   3.6879852658193274`*^9, 3.6879856581608133`*^9}, {3.687985709604948*^9, 
+   3.6879857313563805`*^9}, 3.6879923312685003`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"GRWINDOWWINDOWED", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWFULLSCREEN", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRWINDOWFULLSCREENDESKTOP", "=", "2"}], ";"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6676852257909384`*^9, 3.6676852304500265`*^9}, {
+   3.6676853131408267`*^9, 3.667685440689705*^9}, {3.667685544633591*^9, 
+   3.6676855898156943`*^9}, 3.6676856430399675`*^9, 3.687984904761218*^9, {
+   3.6879852658193274`*^9, 3.6879856581608133`*^9}, {3.687985709604948*^9, 
+   3.6879857530587797`*^9}, 3.687987485648179*^9, 3.6879923312685003`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"IMGFLAGPOWEROFTWO", "=", "1"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGFLAGMIPMAPS", "=", "2"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGFLAGTEXTUREREPEATS", "=", "4"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGFLAGMULTIPLYALPHA", "=", "8"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGFLAGINVERTY", "=", "16"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGFLAGCOMPRESSTODXT", "=", "32"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGFLAGDDSLOADDIRECT", "=", "64"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGFLAGNTSCSAFERGB", "=", "128"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGFLAGCoCgY", "=", "256"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"IMGFLAGTEXTURERECTANGLE", "=", "512"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SOILFLAGPOWEROFTWO", "=", "1"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGMIPMAPS", "=", "2"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGTEXTUREREPEATS", "=", "4"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGMULTIPLYALPHA", "=", "8"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGINVERTY", "=", "16"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGCOMPRESSTODXT", "=", "32"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGDDSLOADDIRECT", "=", "64"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGNTSCSAFERGB", "=", "128"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGCoCgY", "=", "256"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SOILFLAGTEXTURERECTANGLE", "=", "512"}], ";"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6676852257909384`*^9, 3.6676852304500265`*^9}, {
+   3.6676853131408267`*^9, 3.667685440689705*^9}, {3.667685544633591*^9, 
+   3.6676855898156943`*^9}, 3.6676856430399675`*^9, 3.687984904761218*^9, {
+   3.6879852658193274`*^9, 3.6879856581608133`*^9}, {3.687985709604948*^9, 
+   3.6879857530587797`*^9}, {3.687987485648179*^9, 3.687987516071364*^9}, {
+   3.6879875755547733`*^9, 3.6879876073158474`*^9}, 3.6879923312685003`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"IMGAUTO", "=", "0"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGL", "=", "1"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGLA", "=", "2"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGRGB", "=", "3"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"IMGRGBA", "=", "4"}], ";"}]}], "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6676852257909384`*^9, 3.6676852304500265`*^9}, {
+   3.6676853131408267`*^9, 3.667685440689705*^9}, {3.667685544633591*^9, 
+   3.6676855898156943`*^9}, 3.6676856430399675`*^9, 3.687984904761218*^9, {
+   3.6879852658193274`*^9, 3.6879856581608133`*^9}, {3.687985709604948*^9, 
+   3.6879857530587797`*^9}, {3.687987485648179*^9, 3.6879875689824123`*^9}, {
+   3.6879876260272617`*^9, 3.6879876294145107`*^9}, 3.6879923312685003`*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"lflt", "=", 
+  RowBox[{"LibraryFunctionLoad", "[", 
+   RowBox[{"SGOGLM", ",", "\"\<tester\>\"", ",", 
+    RowBox[{"{", "}"}], ",", "Integer"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6879918947675657`*^9, 3.687991936115254*^9}, {
+  3.687992021994236*^9, 3.6879920222153826`*^9}, {3.687992118642572*^9, 
+  3.6879921279627542`*^9}}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "LibraryFunction","libload",
+   "\"The function \\!\\(\\*RowBox[{\\\"\\\\\\\"tester\\\\\\\"\\\"}]\\) was \
+not loaded from the file \
+\\!\\(\\*RowBox[{\\\"\\\\\\\"U:\\\\\\\\\\\\\\\\save\\\\\\\\\\\\\\\\lib\\\\\\\\\
+\\\\\\\\sgogl\\\\\\\\\\\\\\\\mlib\\\\\\\\\\\\\\\\test\\\\\\\\\\\\\\\\sgoglM.\
+dll\\\\\\\"\\\"}]\\).\"",2,727,21,23200187693230798256,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.6879919369107823`*^9, 3.687992022681692*^9, 
+  3.687992128340004*^9, 3.6879922882099295`*^9, 3.6879923360096455`*^9, 
+  3.6880007941740522`*^9}],
+
+Cell[BoxData["$Failed"], "Output",
+ CellChangeTimes->{3.687991936913789*^9, 3.687992022699705*^9, 
+  3.6879921283570156`*^9, 3.6879922882309437`*^9, 3.687992336026657*^9, 
+  3.6880007941920657`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[StyleBox["Load Functions:",
+ FontSize->24]], "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ CellChangeTimes->{{3.667841023960845*^9, 3.6678410454650955`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SGOGLFunctionList", "=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\"\<Width\>\"", ",", "\"\<gr_width_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Height\>\"", ",", "\"\<gr_height_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<WidthAspectMod\>\"", ",", "\"\<gr_width_aspect_mod_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<HeightAspectMod\>\"", ",", "\"\<gr_height_aspect_mod_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseX\>\"", ",", "\"\<gr_mouse_x_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseY\>\"", ",", "\"\<gr_mouse_y_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MaxDepth\>\"", ",", "\"\<gr_max_depth_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ViewScale\>\"", ",", "\"\<gr_view_scale_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ViewWidth\>\"", ",", "\"\<gr_view_width_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ViewHeight\>\"", ",", "\"\<gr_view_height_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ViewLeft\>\"", ",", "\"\<gr_view_left_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ViewRight\>\"", ",", "\"\<gr_view_right_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ViewBottom\>\"", ",", "\"\<gr_view_bottom_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ViewTop\>\"", ",", "\"\<gr_view_top_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Real"}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<ActivateTransparency\>\"", ",", 
+       "\"\<gr_activate_transparency_m\>\"", ",", 
+       RowBox[{"{", "Integer", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<ActivateLinearFiltering\>\"", ",", 
+       "\"\<gr_activate_linear_filtering_m\>\"", ",", 
+       RowBox[{"{", "Integer", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<ActivateDithering\>\"", ",", "\"\<gr_activate_dithering_m\>\"", 
+       ",", 
+       RowBox[{"{", "Integer", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<ActivateDepthTesting\>\"", ",", 
+       "\"\<gr_activate_depth_testing_m\>\"", ",", 
+       RowBox[{"{", "Integer", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<ToggleWindowBordered\>\"", ",", 
+       "\"\<gr_toggle_window_bordered_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowBrightness\>\"", ",", 
+       "\"\<gr_set_window_brightness_m\>\"", ",", 
+       RowBox[{"{", "Real", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowFullscrene\>\"", ",", 
+       "\"\<gr_set_window_fullscreen_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowFullscreneDesktop\>\"", ",", 
+       "\"\<gr_set_window_fullscreen_desktop_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowWindowed\>\"", ",", "\"\<gr_set_window_windowed_m\>\"", 
+       ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<ToggleMouseGrabbed\>\"", ",", "\"\<gr_toggle_mouse_grabbed_m\>\"", 
+       ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowIcon\>\"", ",", "\"\<gr_set_window_icon_m\>\"", ",", 
+       RowBox[{"{", "\"\<UTF8String\>\"", "}"}], ",", "Integer"}], "}"}], ",",
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetInputFocus\>\"", ",", "\"\<gr_set_input_focus_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowMaxSize\>\"", ",", "\"\<gr_set_window_max_size_m\>\"", 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"Integer", ",", "Integer"}], "}"}], ",", "\"\<Void\>\""}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowMinSize\>\"", ",", "\"\<gr_set_window_min_size_m\>\"", 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"Integer", ",", "Integer"}], "}"}], ",", "\"\<Void\>\""}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowPosition\>\"", ",", "\"\<gr_set_window_position_m\>\"", 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"Integer", ",", "Integer"}], "}"}], ",", "\"\<Void\>\""}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowSize\>\"", ",", "\"\<gr_set_window_size_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Integer", ",", "Integer"}], "}"}], ",", "\"\<Void\>\""}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<SetWindowTitle\>\"", ",", "\"\<gr_set_window_title_m\>\"", ",", 
+       RowBox[{"{", "\"\<UTF8String\>\"", "}"}], ",", "\"\<Void\>\""}], "}"}],
+      ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<PopupError\>\"", ",", "\"\<gr_popup_error_m\>\"", ",", 
+       RowBox[{"{", "\"\<UTF8String\>\"", "}"}], ",", "\"\<Void\>\""}], "}"}],
+      ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<PopupWarning\>\"", ",", "\"\<gr_popup_warning_m\>\"", ",", 
+       RowBox[{"{", "\"\<UTF8String\>\"", "}"}], ",", "\"\<Void\>\""}], "}"}],
+      ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<PopupInfo\>\"", ",", "\"\<gr_popup_info_m\>\"", ",", 
+       RowBox[{"{", "\"\<UTF8String\>\"", "}"}], ",", "\"\<Void\>\""}], "}"}],
+      ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<GetWindowWidth\>\"", ",", "\"\<gr_get_window_width_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<GetWindowHeight\>\"", ",", "\"\<gr_get_window_height_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Color\>\"", ",", "\"\<gr_color_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "Real", ",", "Real", ",", "Real"}], "}"}], ",", 
+       "\"\<Void\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ColorAlpha\>\"", ",", "\"\<gr_color_alpha_m\>\"", ",", 
+       RowBox[{"{", "Real", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<LoadImageExt\>\"", ",", "\"\<gr_load_image_ext_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<UTF8String\>\"", ",", " ", "Integer", ",", " ", "Integer", ",", 
+         " ", "Integer"}], "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<LoadImage\>\"", ",", "\"\<gr_load_image_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<UTF8String\>\"", ",", " ", "Integer"}], "}"}], ",", 
+       "Integer"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<UnloadImage\>\"", ",", "\"\<gr_unload_image_m\>\"", ",", 
+       RowBox[{"{", "Integer", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Screenshot\>\"", ",", "\"\<gr_screenshot_m\>\"", ",", 
+       RowBox[{"{", "\"\<UTF8String\>\"", "}"}], ",", "Integer"}], "}"}], ",",
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Draw\>\"", ",", "\"\<gr_draw_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{
+        "Integer", ",", " ", "Real", ",", "Real", ",", "Real", ",", "Real", 
+         ",", "Real", ",", "Real", ",", "Real", ",", "Real"}], "}"}], ",", 
+       "\"\<Void\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<DrawCentered\>\"", ",", "\"\<gr_draw_centered_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{
+        "Integer", ",", " ", "Real", ",", "Real", ",", "Real", ",", "Real", 
+         ",", "Real", ",", "Real"}], "}"}], ",", "\"\<Void\>\""}], "}"}], ",",
+      "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<PointSize\>\"", ",", "\"\<gr_point_size_m\>\"", ",", 
+       RowBox[{"{", "Real", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<DrawPoint\>\"", ",", "\"\<gr_draw_point_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "Real", ",", "Real"}], "}"}], ",", 
+       "\"\<Void\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<DrawLine\>\"", ",", "\"\<gr_draw_line_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "Real", ",", "Real", ",", "Real", ",", "Real"}], 
+        "}"}], ",", "\"\<Void\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<DrawLineSpecial\>\"", ",", "\"\<gr_draw_line_sp_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{
+        "Real", ",", "Real", ",", "Real", ",", "Real", ",", "Real", ",", 
+         "Real"}], "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Refresh\>\"", ",", "\"\<gr_refresh_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ClearDepth\>\"", ",", "\"\<gr_clear_depth_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Clear\>\"", ",", "\"\<gr_clear_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ClearColor\>\"", ",", "\"\<gr_clear_color_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "Real", ",", "Real", ",", "Real"}], "}"}], ",", 
+       "\"\<Void\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ClearColored\>\"", ",", "\"\<gr_clear_colored_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "Real", ",", "Real", ",", "Real"}], "}"}], ",", 
+       "\"\<Void\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<RegisterEvents\>\"", ",", "\"\<gr_register_events_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<HasEvent\>\"", ",", "\"\<gr_has_event_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ReadMouse\>\"", ",", "\"\<gr_read_mouse_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseX\>\"", ",", "\"\<gr_mouse_x_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseY\>\"", ",", "\"\<gr_mouse_y_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseLeft\>\"", ",", "\"\<gr_mouse_left_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseMiddle\>\"", ",", "\"\<gr_mouse_middle_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseRight\>\"", ",", "\"\<gr_mouse_right_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<SetWaitEvent\>\"", ",", "\"\<gr_set_wait_event_m\>\"", ",", 
+       RowBox[{"{", "Integer", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Read\>\"", ",", "\"\<gr_read_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<KeyRepeated\>\"", ",", "\"\<gr_key_repeated_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<KeyPressed\>\"", ",", "\"\<gr_key_pressed_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Key\>\"", ",", "\"\<gr_key_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseButton\>\"", ",", "\"\<gr_mouse_button_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseClicks\>\"", ",", "\"\<gr_mouse_clicks_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseButtonX\>\"", ",", "\"\<gr_mouse_button_x_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseButtonY\>\"", ",", "\"\<gr_mouse_button_y_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouseMoveX\>\"", ",", "\"\<gr_mouse_move_x_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<MouesMoveY\>\"", ",", "\"\<gr_mouse_move_y_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<MouseMoveXRel\>\"", ",", "\"\<gr_mouse_move_xrel_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<MouesMoveYRel\>\"", ",", "\"\<gr_mouse_move_yrel_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Wheel\>\"", ",", "\"\<gr_wheel_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<WindowEvent\>\"", ",", "\"\<gr_window_event_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "Integer"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<View\>\"", ",", "\"\<gr_view_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "Real", ",", "Real", ",", "Real"}], "}"}], ",", 
+       "\"\<Void\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ViewCentered\>\"", ",", "\"\<gr_view_centered_m\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "Real", ",", "Real", ",", "Real"}], "}"}], ",", 
+       "\"\<Void\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<ScreenToWorldX\>\"", ",", "\"\<gr_screen_to_world_x_m\>\"", ",", 
+       RowBox[{"{", "Integer", "}"}], ",", "Real"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<ScreenToWorldY\>\"", ",", "\"\<gr_screen_to_world_y_m\>\"", ",", 
+       RowBox[{"{", "Integer", "}"}], ",", "Real"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Open\>\"", ",", "\"\<gr_open_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Close\>\"", ",", "\"\<gr_close_m\>\"", ",", 
+       RowBox[{"{", "}"}], ",", "\"\<Void\>\""}], "}"}]}], 
+    "\[IndentingNewLine]", "}"}]}], ";"}]], "Input",
+ PageWidth->Infinity,
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.667776722035347*^9, 3.667776866031407*^9}, {
+   3.6677774170204697`*^9, 3.66777743841765*^9}, {3.6677775067512827`*^9, 
+   3.667777518702202*^9}, {3.6677776151961517`*^9, 3.6677776182902007`*^9}, {
+   3.667819223273868*^9, 3.667819355889759*^9}, {3.667820865726153*^9, 
+   3.667820913320693*^9}, {3.667830350787842*^9, 3.6678303827850485`*^9}, {
+   3.667831072828574*^9, 3.667831187571617*^9}, {3.66784076520737*^9, 
+   3.667840931288428*^9}, 3.6678410454650955`*^9, {3.6879858747142744`*^9, 
+   3.6879859460039167`*^9}, {3.687986001959044*^9, 3.687986212172298*^9}, {
+   3.6879863835797806`*^9, 3.687986504023539*^9}, {3.687986622262992*^9, 
+   3.687986654235207*^9}, {3.6879871869277635`*^9, 3.687987298946904*^9}, {
+   3.687987331672618*^9, 3.6879874646122217`*^9}, {3.687987652296692*^9, 
+   3.6879883580533056`*^9}, {3.6879885932831116`*^9, 3.6879885939095244`*^9}, 
+   3.687991866135568*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"LoadSGOGLFunctions", "[", "]"}], ":=", 
+  RowBox[{"(", "\[IndentingNewLine]", 
+   RowBox[{"SGOGL", "=", 
+    RowBox[{"Association", "@@", 
+     RowBox[{"Join", "[", "\[IndentingNewLine]", 
+      RowBox[{"Table", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"SGOGLFunctionList", "\[LeftDoubleBracket]", 
+          RowBox[{"i", ",", "1"}], "\[RightDoubleBracket]"}], "\[Rule]", 
+         RowBox[{"LibraryFunctionLoad", "[", 
+          RowBox[{"SGOGLM", ",", 
+           RowBox[{"SGOGLFunctionList", "\[LeftDoubleBracket]", 
+            RowBox[{"i", ",", "2"}], "\[RightDoubleBracket]"}], ",", 
+           RowBox[{"SGOGLFunctionList", "\[LeftDoubleBracket]", 
+            RowBox[{"i", ",", "3"}], "\[RightDoubleBracket]"}], ",", 
+           RowBox[{"SGOGLFunctionList", "\[LeftDoubleBracket]", 
+            RowBox[{"i", ",", "4"}], "\[RightDoubleBracket]"}]}], "]"}]}], 
+        "\[IndentingNewLine]", ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", 
+          RowBox[{"Length", "[", "SGOGLFunctionList", "]"}]}], "}"}]}], "]"}],
+       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+   ")"}]}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6677774690412917`*^9, 3.667777656691409*^9}, {
+   3.6677778184485936`*^9, 3.667777818670741*^9}, 3.6678410454650955`*^9, {
+   3.667841417479363*^9, 3.667841470004174*^9}, {3.687985801615774*^9, 
+   3.6879858317447643`*^9}, {3.6879886030706034`*^9, 3.6879886047877436`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"UnloadSGOGLFunctions", "[", "]"}], ":=", "\[IndentingNewLine]", 
+  RowBox[{"Do", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"LibraryFunctionUnload", "[", 
+     RowBox[{"SGOGL", "[", 
+      RowBox[{"SGOGLFunctionList", "\[LeftDoubleBracket]", 
+       RowBox[{"i", ",", "1"}], "\[RightDoubleBracket]"}], "]"}], "]"}], 
+    "\[IndentingNewLine]", ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", 
+      RowBox[{"Length", "[", "SGOGLFunctionList", "]"}]}], "}"}]}], 
+   "]"}]}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6677769999148817`*^9, 3.667777034732954*^9}, {
+   3.667777661990919*^9, 3.6677778231557255`*^9}, 3.667841045466097*^9, {
+   3.6879885658649206`*^9, 3.687988579280819*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"LoadSGOGLFunctions", "[", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "\[IndentingNewLine]", 
+   RowBox[{
+   "GRWidth", ",", "GRHeight", ",", "\[IndentingNewLine]", "GRWidthAspectMod",
+     ",", "GRHeightAspectMod", ",", "\[IndentingNewLine]", "GRMouseX", ",", 
+    "GRMouseY", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    "GRMaxDepth", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    "GRViewScale", ",", "\[IndentingNewLine]", "GRViewWidth", ",", 
+    "GRViewHeight", ",", "\[IndentingNewLine]", "GRViewLeft", ",", 
+    "GRViewRight", ",", "GRViewBottom", ",", "GRViewTop", ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "GRActivateTransparency", 
+    ",", "\[IndentingNewLine]", "GRLinearFiltering", ",", 
+    "\[IndentingNewLine]", "GRActivateDithering", ",", "\[IndentingNewLine]", 
+    "GRActivateDepthTesting", ",", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "GRToggleWindowBordered", ",", 
+    "\[IndentingNewLine]", "GRSetWindowBrightness", ",", 
+    "\[IndentingNewLine]", "GRSetWindowFullscreen", ",", 
+    "\[IndentingNewLine]", "GRSetWindowFullscreenDesktop", ",", 
+    "\[IndentingNewLine]", "GRSetWindowWindowed", ",", "\[IndentingNewLine]", 
+    "GRToggleMouseGrabbed", ",", "\[IndentingNewLine]", "GRSetWindowIcon", 
+    ",", "\[IndentingNewLine]", "\[IndentingNewLine]", "GRSetInputFocus", ",",
+     "\[IndentingNewLine]", "GRSetWindowMaxSize", ",", "\[IndentingNewLine]", 
+    "GRSetWindowMinSize", ",", "\[IndentingNewLine]", "GRSetWindowPosition", 
+    ",", "\[IndentingNewLine]", "GRSetWindowSize", ",", "\[IndentingNewLine]",
+     "GRSetWindowTitle", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    "GRPopupError", ",", "\[IndentingNewLine]", "GRPopupWarning", ",", 
+    "\[IndentingNewLine]", "GRPopupInfo", ",", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "GRGetWindowWidth", ",", "\[IndentingNewLine]", 
+    "GRGetWindowHeight", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    "GRColor", ",", "\[IndentingNewLine]", "GRColorAlpha", ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "GRLoadImageExt", ",", 
+    "\[IndentingNewLine]", "GRLoadImage", ",", "\[IndentingNewLine]", 
+    "GRUnloadImage", ",", "\[IndentingNewLine]", "GRScreenshot", ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "GRDraw", ",", 
+    "\[IndentingNewLine]", "GRDrawCentered", ",", "\[IndentingNewLine]", 
+    "GRPointSize", ",", "\[IndentingNewLine]", "GRDrawPoint", ",", 
+    "\[IndentingNewLine]", "GRDrawLine", ",", "\[IndentingNewLine]", 
+    "GRDrawLineSpecial", ",", "\[IndentingNewLine]", "GRRefresh", ",", 
+    "\[IndentingNewLine]", "GRClearDepth", ",", "\[IndentingNewLine]", 
+    "GRClear", ",", "\[IndentingNewLine]", "GRClearColor", ",", 
+    "\[IndentingNewLine]", "GRClearColored", ",", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "GRRegisterEvents", ",", "\[IndentingNewLine]", 
+    "GRHasEvent", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    "GRReadMouse", ",", "\[IndentingNewLine]", "GRMouseX", ",", "GRMouseY", 
+    ",", "\[IndentingNewLine]", "GRMouseLeft", ",", "\[IndentingNewLine]", 
+    "GRMouseMiddle", ",", "\[IndentingNewLine]", "GRMouseRight", ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "GRSetWaitEvent", ",", 
+    "\[IndentingNewLine]", "GRRead", ",", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "GRKeyRepeated", ",", "\[IndentingNewLine]", 
+    "GRKeyPressed", ",", "\[IndentingNewLine]", "GRKey", ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "GRMouseButton", ",", 
+    "\[IndentingNewLine]", "GRMouseClicks", ",", "\[IndentingNewLine]", 
+    "GRMouseButtonX", ",", "GRMouseButtonY", ",", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "GRMouseMoveX", ",", "GRMouseMoveY", ",", 
+    "\[IndentingNewLine]", "GRMouseMoveXRel", ",", "GRMouseMoveYRel", ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "GRWheel", ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "GRWindowEvent", ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "GRView", ",", 
+    "\[IndentingNewLine]", "GRViewCentered", ",", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "GRScreenToWorldX", ",", "\[IndentingNewLine]", 
+    "GRScreenToWorldY", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    "GROpen", ",", "\[IndentingNewLine]", "GRClose"}], "\[IndentingNewLine]", 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRWidth", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<Width\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRHeight", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<Height\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRWidthAspectMod", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<WidthAspectMod\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRHeightAspectMod", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<HeightAspectMod\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseX", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseX\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRMouseY", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<MouseY\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRMaxDepth", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<MaxDepth\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRViewScale", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ViewScale\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRViewWidth", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ViewWidth\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRViewHeight", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ViewHeight\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRViewLeft", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ViewLeft\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRViewRight", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ViewRight\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRViewBottom", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ViewBottom\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRViewTop", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<ViewTop\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRActivateTransparency", "[", "a_Integer", "]"}], ":=", 
+      RowBox[{"#", "[", "a", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ActivateTransparency\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRActivateLinearFiltering", "[", "a_Integer", "]"}], ":=", 
+      RowBox[{"#", "[", "a", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ActivateLinearFiltering\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRActivateDithering", "[", "a_Integer", "]"}], ":=", 
+      RowBox[{"#", "[", "a", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ActivateDithering\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRActivateDepthTesting", "[", "a_Integer", "]"}], ":=", 
+       RowBox[{"#", "[", "a", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<ActivateDepthTesting\>\"", "]"}], "]"}], ";"}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRToggleWindowBordered", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ToggleWindowBordered\>\"", "]"}], "]"}], ";"}], 
+"\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWindowBrightness", "[", "b_", "]"}], ":=", 
+      RowBox[{"#", "[", "b", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWindowBrightness\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWindowFullscreen", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWindowFullscreen\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWindowFullscreenDesktop", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWindowFullscreenDesktop\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWindowWindowed", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWindowWindowed\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRToggleMouseGrabbed", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ToggleMouseGrabbed\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRSetWindowIcon", "[", "file_String", "]"}], ":=", 
+       RowBox[{"#", "[", "file", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<SetWindowIcon\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetInputFocus", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetInputFocus\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWindowMaxSize", "[", 
+       RowBox[{"x_Integer", ",", "y_Integer"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"x", ",", "y"}], "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWindowMaxSize\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRSetWindowMaxSize", "[", 
+    RowBox[{"{", 
+     RowBox[{"x_Integer", ",", "y_Integer"}], "}"}], "]"}], ":=", 
+   RowBox[{"GRSetWindowMaxSize", "[", 
+    RowBox[{"x", ",", "y"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWindowMinSize", "[", 
+       RowBox[{"x_Integer", ",", "y_Integer"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"x", ",", "y"}], "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWindowMinSize\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRSetWindowMinSize", "[", 
+    RowBox[{"{", 
+     RowBox[{"x_Integer", ",", "y_Integer"}], "}"}], "]"}], ":=", 
+   RowBox[{"GRSetWindowMinSize", "[", 
+    RowBox[{"x", ",", "y"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWindowPosition", "[", 
+       RowBox[{"x_Integer", ",", "y_Integer"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"x", ",", "y"}], "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWindowPosition\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRSetWindowPosition", "[", 
+    RowBox[{"{", 
+     RowBox[{"x_Integer", ",", "y_Integer"}], "}"}], "]"}], ":=", 
+   RowBox[{"GRSetWindowPosition", "[", 
+    RowBox[{"x", ",", "y"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWindowSize", "[", 
+       RowBox[{"x_Integer", ",", "y_Integer"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"x", ",", "y"}], "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWindowSize\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRSetWindowSize", "[", 
+    RowBox[{"{", 
+     RowBox[{"x_Integer", ",", "y_Integer"}], "}"}], "]"}], ":=", 
+   RowBox[{"GRSetWindowSize", "[", 
+    RowBox[{"x", ",", "y"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRSetWindowTitle", "[", "title_String", "]"}], ":=", 
+       RowBox[{"#", "[", "title", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<SetWindowTitle\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRPopupError", "[", "message_String", "]"}], ":=", 
+      RowBox[{"#", "[", "message", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<PopupError\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRPopupWarning", "[", "message_String", "]"}], ":=", 
+      RowBox[{"#", "[", "message", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<PopupWarning\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRPopupInfo", "[", "message_String", "]"}], ":=", 
+       RowBox[{"#", "[", "message", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<PopupInfo\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRGetWindowWidth", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<GetWindowWidth\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRGetWindowHeight", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<GetWindowHeight\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GRGetWindowDimensions", "[", "]"}], ":=", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"GRGetWindowWidth", "[", "]"}], ",", 
+      RowBox[{"GRGetWindowHeight", "[", "]"}]}], "}"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRColor", "[", 
+       RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"r", ",", "g", ",", "b", ",", "a"}], "]"}]}], ")"}], "&"}], 
+   "[", 
+   RowBox[{"SGOGL", "[", "\"\<Color\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRColor", "[", 
+   RowBox[{"{", 
+    RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "}"}], "]"}], ":=", 
+  RowBox[{"GRColor", "[", 
+   RowBox[{"r", ",", "g", ",", "b", ",", "a"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GRColor", "[", 
+   RowBox[{"RGBColor", "[", 
+    RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "]"}], "]"}], ":=", 
+  RowBox[{"GRColor", "[", 
+   RowBox[{"r", ",", "g", ",", "b", ",", "a"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRColorAlpha", "[", "a_", "]"}], ":=", 
+       RowBox[{"#", "[", "a", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<ColorAlpha\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRLoadImageExt", "[", 
+       RowBox[{
+       "file_String", ",", "id_Integer", ",", "fileflags_Integer", ",", 
+        "soilflags_Integer"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"file", ",", "id", ",", "fileflags", ",", "soilflags"}], 
+       "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<LoadImageExt\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRLoadImage", "[", 
+       RowBox[{"file_String", ",", "id_Integer"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"file", ",", "id"}], "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<LoadImage\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRUnloadImage", "[", "id_Integer", "]"}], ":=", 
+      RowBox[{"#", "[", "id", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<UnloadImage\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRScreenshot", "[", "file_String", "]"}], ":=", 
+       RowBox[{"#", "[", "file", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<Screenshot\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRDraw", "[", 
+       RowBox[{
+       "id_Integer", ",", "x_", ",", "y_", ",", "z_", ",", "anx_", ",", 
+        "any_", ",", "angle_", ",", "sx_", ",", "sy_"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{
+       "id", ",", "x", ",", "y", ",", "z", ",", "anx", ",", "any", ",", 
+        "angle", ",", "sx", ",", "sy"}], "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<Draw\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDraw", "[", 
+    RowBox[{"id_Integer", ",", 
+     RowBox[{"{", 
+      RowBox[{"x_", ",", "y_"}], "}"}], ",", "z_", ",", 
+     RowBox[{"{", 
+      RowBox[{"anx_", ",", "any_"}], "}"}], ",", "angle_", ",", 
+     RowBox[{"{", 
+      RowBox[{"sx_", ",", "sy_"}], "}"}]}], "]"}], ":=", 
+   RowBox[{"GRDraw", "[", 
+    RowBox[{
+    "id", ",", "x", ",", "y", ",", "z", ",", "anx", ",", "any", ",", "angle", 
+     ",", "sx", ",", "sy"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRDrawCentered", "[", 
+       RowBox[{
+       "id_Integer", ",", "x_", ",", "y_", ",", "z_", ",", "angle_", ",", 
+        "sx_", ",", "sy_"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{
+       "id", ",", "x", ",", "y", ",", "z", ",", "angle", ",", "sx", ",", 
+        "sy"}], "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<DrawCentered\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawCentered", "[", 
+    RowBox[{"id_Integer", ",", 
+     RowBox[{"{", 
+      RowBox[{"x_", ",", "y_"}], "}"}], ",", "z_", ",", "angle_", ",", 
+     RowBox[{"{", 
+      RowBox[{"sx_", ",", "sy_"}], "}"}]}], "]"}], ":=", 
+   RowBox[{"GRDrawCentered", "[", 
+    RowBox[{
+    "id", ",", "x", ",", "y", ",", "z", ",", "angle", ",", "sx", ",", "sy"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRPointSize", "[", "r_", "]"}], ":=", 
+      RowBox[{"#", "[", "r", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<PointSize\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRDrawPoint", "[", 
+       RowBox[{"x_", ",", "y_", ",", "z_"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"x", ",", "y", ",", "z"}], "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<DrawPoint\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawPoint", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x_", ",", "y_"}], "}"}], ",", "z_"}], "]"}], ":=", 
+   RowBox[{"GRDrawPoint", "[", 
+    RowBox[{"x", ",", "y", ",", "z"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawPoint", "[", 
+    RowBox[{
+     RowBox[{"Point", "[", 
+      RowBox[{"{", 
+       RowBox[{"x_", ",", "y_"}], "}"}], "]"}], ",", "z_"}], "]"}], ":=", 
+   RowBox[{"GRDrawPoint", "[", 
+    RowBox[{"x", ",", "y", ",", "z"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawPoint", "[", 
+    RowBox[{"Point", "[", 
+     RowBox[{"{", 
+      RowBox[{"x_", ",", "y_"}], "}"}], "]"}], "]"}], ":=", 
+   RowBox[{"GRDrawPoint", "[", 
+    RowBox[{"x", ",", "y", ",", "GRDefaultDepth"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRDrawLine", "[", 
+       RowBox[{"x0_", ",", "y0_", ",", "x1_", ",", "y1_", ",", "z_"}], "]"}], 
+      ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"x0", ",", "y0", ",", "x1", ",", "y1", ",", "z"}], "]"}]}], 
+     ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<DrawLine\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLine", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x0_", ",", "y0_"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x1_", ",", "y1_"}], "}"}], ",", "z_"}], "]"}], ":=", 
+   RowBox[{"GRDrawLine", "[", 
+    RowBox[{"x0", ",", "y0", ",", "x1", ",", "y1", ",", "z"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLine", "[", 
+    RowBox[{"l_List", ",", "z_"}], "]"}], ":=", 
+   RowBox[{"Do", "[", 
+    RowBox[{
+     RowBox[{"GRDrawLine", "[", 
+      RowBox[{
+       RowBox[{"l", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], 
+       ",", 
+       RowBox[{"l", "\[LeftDoubleBracket]", 
+        RowBox[{"i", "+", "1"}], "\[RightDoubleBracket]"}], ",", "z"}], "]"}],
+      ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", 
+       RowBox[{
+        RowBox[{"Length", "[", "l", "]"}], "-", "1"}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLine", "[", "l_List", "]"}], ":=", 
+   RowBox[{"GRDrawLine", "[", 
+    RowBox[{"l", ",", "GRDefaultDepth"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLine", "[", 
+    RowBox[{"l_Line", ",", "z_"}], "]"}], ":=", 
+   RowBox[{"GRDrawLine", "[", 
+    RowBox[{
+     RowBox[{"l", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], ",",
+      "z"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLine", "[", "l_Line", "]"}], ":=", 
+   RowBox[{"GRDrawLine", "[", 
+    RowBox[{"l", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRDrawLineSpecial", "[", 
+       RowBox[{
+       "x0_", ",", "y0_", ",", "z0_", ",", "x1_", ",", "y1_", ",", "z1_"}], 
+       "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"x0", ",", "y0", ",", "z0", ",", "x1", ",", "y1", ",", "z1"}], 
+       "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<DrawLineSpecial\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLineSpecial", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x0_", ",", "y0_"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x1_", ",", "y1_"}], "}"}], ",", "z_"}], "]"}], ":=", 
+   RowBox[{"GRDrawLine", "[", 
+    RowBox[{"x0", ",", "y0", ",", "x1", ",", "y1", ",", "z"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLineSpecial", "[", 
+    RowBox[{"l_List", ",", "z_"}], "]"}], ":=", 
+   RowBox[{"Do", "[", 
+    RowBox[{
+     RowBox[{"GRDrawLineSpecial", "[", 
+      RowBox[{
+       RowBox[{"l", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], 
+       ",", 
+       RowBox[{"l", "\[LeftDoubleBracket]", 
+        RowBox[{"i", "+", "1"}], "\[RightDoubleBracket]"}], ",", "z"}], "]"}],
+      ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", 
+       RowBox[{
+        RowBox[{"Length", "[", "l", "]"}], "-", "1"}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLineSpecial", "[", "l_List", "]"}], ":=", 
+   RowBox[{"GRDrawLineSpecial", "[", 
+    RowBox[{"l", ",", "GRDefaultDepth"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLineSpecial", "[", 
+    RowBox[{"l_Line", ",", "z_"}], "]"}], ":=", 
+   RowBox[{"GRDrawLineSpecial", "[", 
+    RowBox[{
+     RowBox[{"l", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], ",",
+      "z"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRDrawLineSpecial", "[", "l_Line", "]"}], ":=", 
+   RowBox[{"GRDrawLineSpecial", "[", 
+    RowBox[{"l", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRRefresh", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<Refresh\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRClearDepth", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ClearDepth\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRClear", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<Clear\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRClearColor", "[", 
+       RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"r", ",", "g", ",", "b", ",", "a"}], "]"}]}], ")"}], "&"}], 
+   "[", 
+   RowBox[{"SGOGL", "[", "\"\<ClearColor\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRClearColor", "[", 
+    RowBox[{"{", 
+     RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "}"}], "]"}], ":=", 
+   RowBox[{"GRClearColor", "[", 
+    RowBox[{"r", ",", "g", ",", "b", ",", "a"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRClearColor", "[", 
+    RowBox[{"RGBColor", "[", 
+     RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "]"}], "]"}], ":=", 
+   RowBox[{"GRClearColor", "[", 
+    RowBox[{"r", ",", "g", ",", "b", ",", "a"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRClearColored", "[", 
+       RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"r", ",", "g", ",", "b", ",", "a"}], "]"}]}], ")"}], "&"}], 
+   "[", 
+   RowBox[{"SGOGL", "[", "\"\<ClearColored\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRClearColored", "[", 
+    RowBox[{"{", 
+     RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "}"}], "]"}], ":=", 
+   RowBox[{"GRClearColored", "[", 
+    RowBox[{"r", ",", "g", ",", "b", ",", "a"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GRClearColored", "[", 
+     RowBox[{"RGBColor", "[", 
+      RowBox[{"r_", ",", "g_", ",", "b_", ",", "a_"}], "]"}], "]"}], ":=", 
+    RowBox[{"GRClearColored", "[", 
+     RowBox[{"r", ",", "g", ",", "b", ",", "a"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRRegisterEvents", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<RegisterEvents\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRHasEvent", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<HasEvent\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRReadMouse", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ReadMouse\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseX", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseX\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseY", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseY\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRMouse", "[", "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"GRMouseX", "[", "]"}], ",", 
+     RowBox[{"GRMouseY", "[", "]"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseLeft", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseLeft\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseMiddle", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseMiddle\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRMouseRight", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<MouseRight\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRSetWaitEvent", "[", "a_Integer", "]"}], ":=", 
+      RowBox[{"#", "[", "a", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<SetWaitEvent\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRRead", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<Read\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRKeyRepeated", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<KeyRepeated\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRKeyPressed", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<KeyPressed\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRKey", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<Key\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseButton", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseButton\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseClicks", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseClicks\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseButtonX", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseButtonX\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseButtonY", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseButtonY\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GRMouseButton", "[", "]"}], ":=", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"GRMouseButtonX", "[", "]"}], ",", 
+      RowBox[{"GRMouseButtonY", "[", "]"}]}], "}"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseMoveX", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseMoveX\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseMoveY", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseMoveY\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GRMouseMove", "[", "]"}], ":=", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"GRMouseMoveX", "[", "]"}], ",", 
+      RowBox[{"GRMouseMoveY", "[", "]"}]}], "}"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseMoveXRel", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseMoveXRel\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRMouseMoveYRel", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<MouseMoveYRel\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GRMouseMoveRel", "[", "]"}], ":=", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"GRMouseMoveXRel", "[", "]"}], ",", 
+      RowBox[{"GRMouseMoveYRel", "[", "]"}]}], "}"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRWheel", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<Wheel\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRWindowEvent", "[", "]"}], ":=", 
+       RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<WindowEvent\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRView", "[", 
+       RowBox[{"x_", ",", "y_", ",", "s_", ",", "angle_"}], "]"}], ":=", 
+      RowBox[{"#", "[", 
+       RowBox[{"x", ",", "y", ",", "s", ",", "angle"}], "]"}]}], ")"}], "&"}],
+    "[", 
+   RowBox[{"SGOGL", "[", "\"\<View\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"GRViewCentered", "[", 
+        RowBox[{"x_", ",", "y_", ",", "s_", ",", "angle_"}], "]"}], ":=", 
+       RowBox[{"#", "[", 
+        RowBox[{"x", ",", "y", ",", "s", ",", "angle"}], "]"}]}], ")"}], 
+     "&"}], "[", 
+    RowBox[{"SGOGL", "[", "\"\<ViewCentered\>\"", "]"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRScreenToWorldX", "[", "x_Integer", "]"}], ":=", 
+      RowBox[{"#", "[", "x", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ScreenToWorldX\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRScreenToWorldY", "[", "y_Integer", "]"}], ":=", 
+      RowBox[{"#", "[", "y", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<ScreenToWorldY\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GRScreenToWorld", "[", 
+    RowBox[{"x_Integer", ",", "y_Integer"}], "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"GRScreenToWorldX", "[", "x", "]"}], ",", 
+     RowBox[{"GRScreenToWorldY", "[", "y", "]"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GRScreenToWorld", "[", 
+     RowBox[{"{", 
+      RowBox[{"x_Integer", ",", "y_Integer"}], "}"}], "]"}], ":=", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"GRScreenToWorldX", "[", "x", "]"}], ",", 
+      RowBox[{"GRScreenToWorldY", "[", "y", "]"}]}], "}"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GROpen", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<Open\>\"", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"GRClose", "[", "]"}], ":=", 
+      RowBox[{"#", "[", "]"}]}], ")"}], "&"}], "[", 
+   RowBox[{"SGOGL", "[", "\"\<Close\>\"", "]"}], "]"}], ";"}]}], "Input",
+ PageWidth->Infinity,
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.6678414848838444`*^9, 3.6678415195248*^9}, {
+   3.66784156002164*^9, 3.6678419354891033`*^9}, {3.6678419691273975`*^9, 
+   3.6678423301428213`*^9}, {3.667842440712429*^9, 3.6678424556553316`*^9}, {
+   3.6678432521096907`*^9, 3.66784353843894*^9}, {3.6678435755965643`*^9, 
+   3.6678435960831423`*^9}, {3.6678436502988834`*^9, 
+   3.6678437823173757`*^9}, {3.6678446554730177`*^9, 
+   3.6678446618242264`*^9}, {3.6678452900723267`*^9, 3.6678452924829226`*^9}, 
+   3.6879885179681373`*^9, {3.687988634404393*^9, 3.687988713414876*^9}, {
+   3.687988770009427*^9, 3.687988877045803*^9}, {3.6879889146807756`*^9, 
+   3.6879891433698263`*^9}, {3.687989174994808*^9, 3.687989352638548*^9}, {
+   3.6879893876851172`*^9, 3.687989990169051*^9}, {3.6879900814776373`*^9, 
+   3.6879911271133957`*^9}, {3.6879911651266212`*^9, 3.687991254467884*^9}, {
+   3.6879913855001926`*^9, 3.687991427042756*^9}, {3.68799148886878*^9, 
+   3.687991764577182*^9}}]
+}, Closed]],
+
+Cell[BoxData[
+ TemplateBox[{
+  "LibraryFunction","libload",
+   "\"The function \\!\\(\\*RowBox[{\\\"\\\\\\\"gr_width_m\\\\\\\"\\\"}]\\) \
+was not loaded from the file \
+\\!\\(\\*RowBox[{\\\"\\\\\\\"U:\\\\\\\\\\\\\\\\save\\\\\\\\\\\\\\\\lib\\\\\\\\\
+\\\\\\\\sgogl\\\\\\\\\\\\\\\\mlib\\\\\\\\\\\\\\\\test\\\\\\\\\\\\\\\\sgoglM.\
+dll\\\\\\\"\\\"}]\\).\"",2,417,12,23200187693230798256,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.6879918071394234`*^9, 3.687991886088806*^9}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "LibraryFunction","libload",
+   "\"The function \\!\\(\\*RowBox[{\\\"\\\\\\\"gr_height_m\\\\\\\"\\\"}]\\) \
+was not loaded from the file \
+\\!\\(\\*RowBox[{\\\"\\\\\\\"U:\\\\\\\\\\\\\\\\save\\\\\\\\\\\\\\\\lib\\\\\\\\\
+\\\\\\\\sgogl\\\\\\\\\\\\\\\\mlib\\\\\\\\\\\\\\\\test\\\\\\\\\\\\\\\\sgoglM.\
+dll\\\\\\\"\\\"}]\\).\"",2,417,13,23200187693230798256,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.6879918071394234`*^9, 3.6879918861128216`*^9}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "LibraryFunction","libload",
+   "\"The function \\!\\(\\*RowBox[{\\\"\\\\\\\"gr_width_aspect_mod_m\\\\\\\"\
+\\\"}]\\) was not loaded from the file \
+\\!\\(\\*RowBox[{\\\"\\\\\\\"U:\\\\\\\\\\\\\\\\save\\\\\\\\\\\\\\\\lib\\\\\\\\\
+\\\\\\\\sgogl\\\\\\\\\\\\\\\\mlib\\\\\\\\\\\\\\\\test\\\\\\\\\\\\\\\\sgoglM.\
+dll\\\\\\\"\\\"}]\\).\"",2,417,14,23200187693230798256,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.6879918071394234`*^9, 3.6879918861318336`*^9}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "General","stop",
+   "\"Further output of \\!\\(\\*StyleBox[RowBox[{\\\"LibraryFunction\\\", \\\
+\"::\\\", \\\"libload\\\"}], \\\"MessageName\\\"]\\) will be suppressed \
+during this calculation.\"",2,417,15,23200187693230798256,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.6879918071394234`*^9, 3.6879918861548495`*^9}],
+
+Cell[" ", "Text",
+ Editable->False,
+ Selectable->False,
+ CellFrame->{{0, 0}, {0, 3}},
+ ShowCellBracket->False,
+ CellMargins->{{0, 0}, {1, 1}},
+ CellElementSpacings->{"CellMinHeight"->1},
+ CellFrameMargins->0,
+ CellFrameColor->RGBColor[0, 0, 1],
+ CellSize->{Inherited, 5}],
+
+Cell[CellGroupData[{
+
+Cell[TextData[StyleBox["Utility Functions",
+ FontSize->24]], "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6677351836085763`*^9, 3.667735186181278*^9}, 
+   3.667841134959672*^9, {3.667845510803749*^9, 3.667845515812069*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", "EchoTiming", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"EchoTiming", "[", "e_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"Echo", "[", 
+        RowBox[{
+         RowBox[{"#", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+         ",", "\"\<timing: \>\""}], "]"}], ";", 
+       RowBox[{"#", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+      ")"}], "&"}], "[", 
+    RowBox[{"AbsoluteTiming", "[", "e", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Attributes", "[", "EchoTiming", "]"}], "=", 
+   RowBox[{"{", "HoldAll", "}"}]}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.667735308356183*^9, 3.6677353884672737`*^9}, 
+   3.667735569654708*^9, 3.667841134959672*^9, {3.667845510803749*^9, 
+   3.667845515812069*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", "ATiming", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ATiming", "[", "e_", "]"}], ":=", 
+  RowBox[{
+   RowBox[{"AbsoluteTiming", "[", "e", "]"}], "\[LeftDoubleBracket]", "1", 
+   "\[RightDoubleBracket]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Attributes", "[", "ATiming", "]"}], "=", 
+   RowBox[{"{", "HoldAll", "}"}]}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ InitializationCell->True,
+ CellChangeTimes->{{3.667735554979983*^9, 3.6677355846506467`*^9}, 
+   3.667841134959672*^9, {3.667845510803749*^9, 3.667845515812069*^9}}],
+
+Cell[" ", "Text",
+ Editable->False,
+ Selectable->False,
+ CellFrame->{{0, 0}, {0, 0.5}},
+ ShowCellBracket->False,
+ CellMargins->{{0, 0}, {1, 1}},
+ CellElementSpacings->{"CellMinHeight"->1},
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellFrameMargins->0,
+ CellFrameColor->RGBColor[0, 0, 1],
+ CellSize->{Inherited, 3},
+ CellChangeTimes->{
+  3.667841134959672*^9, {3.667845510803749*^9, 3.667845515813069*^9}}]
+}, Open  ]],
+
+Cell[" ", "Text",
+ Editable->False,
+ Selectable->False,
+ CellFrame->{{0, 0}, {0, 0.5}},
+ ShowCellBracket->False,
+ CellMargins->{{0, 0}, {1, 1}},
+ CellElementSpacings->{"CellMinHeight"->1},
+ CellFrameMargins->0,
+ CellFrameColor->RGBColor[0, 0, 1],
+ CellSize->{Inherited, 3}],
+
+Cell[" ", "Text",
+ Editable->False,
+ Selectable->False,
+ CellFrame->{{0, 0}, {0, 3}},
+ ShowCellBracket->False,
+ CellMargins->{{0, 0}, {1, 1}},
+ CellElementSpacings->{"CellMinHeight"->1},
+ CellFrameMargins->0,
+ CellFrameColor->RGBColor[0, 0, 1],
+ CellSize->{Inherited, 5}],
+
+Cell[TextData[StyleBox["Example:",
+ FontSize->24]], "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.6677351836085763`*^9, 3.667735201431388*^9}, 
+   3.667841169167343*^9, {3.66784551080475*^9, 3.6678455180835733`*^9}, {
+   3.6684306424311748`*^9, 3.668430644030233*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Quiet", "@", 
+  RowBox[{"UnloadBLTFunctions", "[", "]"}]}]], "Input",
+ CellChangeTimes->{{3.6677778128448954`*^9, 3.667777828762429*^9}, {
+  3.667819375591814*^9, 3.667819376319295*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"LoadBLTFunctions", "[", "]"}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.667777843122944*^9, 3.667777845360427*^9}, {
+   3.6678303750359135`*^9, 3.6678303760215654`*^9}, 3.6678462914485703`*^9}],
+
+Cell[BoxData[
+ RowBox[{"BLTOpen", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.667842346695793*^9, 3.6678423481787777`*^9}, {
+  3.6678438297583113`*^9, 3.6678438307719812`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"BLTRefresh", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.6678423530309935`*^9, 3.66784235497628*^9}}],
+
+Cell[BoxData[
+ RowBox[{"BLTClose", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.6678431277072473`*^9, 3.6678431293003078`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"BLTOpen", "[", "]"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{"BLTPrint", "[", 
+  RowBox[{"1", ",", "1", ",", "\"\<Hello, World!\>\""}], "]"}], "\n", 
+ RowBox[{
+  RowBox[{"BLTRefresh", "[", "]"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"While", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"BLTRead", "[", "]"}], "\[NotEqual]", "TKCLOSE"}], ","}], "]"}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{"BLTClose", "[", "]"}]}], "Input",
+ CellChangeTimes->{{3.667845905069378*^9, 3.6678459985914664`*^9}, 
+   3.6678460892385406`*^9}],
+
+Cell[BoxData["1"], "Output",
+ CellChangeTimes->{
+  3.667845906415271*^9, {3.667845937536895*^9, 3.6678459433447456`*^9}, {
+   3.6678459900027733`*^9, 3.6678459993829904`*^9}, 3.6678460897278643`*^9, 
+   3.6678463022887583`*^9}],
+
+Cell[BoxData["13"], "Output",
+ CellChangeTimes->{
+  3.667845906415271*^9, {3.667845937536895*^9, 3.6678459433447456`*^9}, {
+   3.6678459900027733`*^9, 3.6678459993829904`*^9}, 3.6678460897278643`*^9, 
+   3.6678463022937574`*^9}]
+}, Open  ]]
+},
+WindowSize->{898, 692},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"11.0 for Microsoft Windows (64-bit) (July 28, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1132, 22, 486, "Text"],
+Cell[1693, 44, 600, 12, 46, "Input",
+ InitializationCell->True],
+Cell[2296, 58, 334, 5, 41, "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[CellGroupData[{
+Cell[2655, 67, 260, 6, 46, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True],
+Cell[2918, 75, 915, 20, 161, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True],
+Cell[3836, 97, 1643, 37, 313, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True],
+Cell[5482, 136, 796, 17, 123, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True],
+Cell[6281, 155, 7036, 203, 1928, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True],
+Cell[13320, 360, 678, 13, 85, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True],
+Cell[14001, 375, 715, 13, 85, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True],
+Cell[14719, 390, 1993, 50, 427, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True],
+Cell[16715, 442, 831, 18, 123, "Input",
+ CellGroupingRules->{"GroupTogetherGrouping", 10002.},
+ InitializationCell->True]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[17583, 465, 356, 7, 24, "Input"],
+Cell[17942, 474, 594, 11, 21, "Message"],
+Cell[18539, 487, 198, 3, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[18774, 495, 187, 3, 41, "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.}],
+Cell[18964, 500, 18631, 406, 2042, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ InitializationCell->True],
+Cell[37598, 908, 1565, 31, 180, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ InitializationCell->True],
+Cell[39166, 941, 801, 18, 104, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ InitializationCell->True],
+Cell[39970, 961, 40078, 1176, 4417, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10002.},
+ InitializationCell->True]
+}, Closed]],
+Cell[80063, 2140, 498, 9, 21, "Message"],
+Cell[80564, 2151, 501, 9, 21, "Message"],
+Cell[81068, 2162, 511, 9, 21, "Message"],
+Cell[81582, 2173, 378, 7, 21, "Message"],
+Cell[81963, 2182, 271, 9, 10, "Text"],
+Cell[CellGroupData[{
+Cell[82259, 2195, 261, 4, 41, "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[82523, 2201, 980, 26, 85, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ InitializationCell->True],
+Cell[83506, 2229, 648, 15, 85, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ InitializationCell->True],
+Cell[84157, 2246, 417, 12, 5, "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Open  ]],
+Cell[84589, 2261, 273, 9, 5, "Text"],
+Cell[84865, 2272, 271, 9, 10, "Text"],
+Cell[85139, 2283, 305, 5, 41, "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[85447, 2290, 210, 4, 30, "Input"],
+Cell[85660, 2296, 253, 5, 46, "Input",
+ InitializationCell->True],
+Cell[85916, 2303, 176, 3, 30, "Input"],
+Cell[86095, 2308, 125, 2, 30, "Input"],
+Cell[86223, 2312, 126, 2, 30, "Input"],
+Cell[CellGroupData[{
+Cell[86374, 2318, 578, 15, 164, "Input"],
+Cell[86955, 2335, 227, 4, 30, "Output"],
+Cell[87185, 2341, 228, 4, 30, "Output"]
+}, Open  ]]
+}
+]
+*)
+
