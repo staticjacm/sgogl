@@ -618,13 +618,13 @@ void gr_activate_linear_filtering(int);
 void gr_activate_dithering(int);
 void gr_activate_depth_testing(int);
 
-void graphics_toggle_window_bordered();
-void graphics_set_window_brightness(float);
-void graphics_set_window_fullscreen();
-void graphics_set_window_fullscreen_desktop();
-void graphics_set_window_windowed();
-void graphics_toggle_mouse_grabbed();
-int  graphics_set_window_icon(char*);
+void gr_toggle_window_bordered();
+void gr_set_window_brightness(float);
+void gr_set_window_fullscreen();
+void gr_set_window_fullscreen_desktop();
+void gr_set_window_windowed();
+void gr_toggle_mouse_grabbed();
+int  gr_set_window_icon(char*);
 
 void gr_set_input_focus();
 void gr_set_window_max_size(int, int);

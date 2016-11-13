@@ -593,13 +593,13 @@ void gr_activate_depth_testing(int deptht){
   glDepthFunc(DT_LESS);
 }
 
-void graphics_toggle_window_bordered(){ bordered = !bordered; SDL_SetWindowBordered(window, bordered); }
-void graphics_set_window_brightness(float b){ SDL_SetWindowBrightness(window, b); }
-void graphics_set_window_fullscreen(){ fullscreen = GR_WINDOW_FULLSCREEN; SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); }
-void graphics_set_window_fullscreen_desktop(){ fullscreen = GR_WINDOW_FULLSCREEN_DESKTOP; SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP); }
-void graphics_set_window_windowed(){ fullscreen = GR_WINDOW_WINDOWED; SDL_SetWindowFullscreen(window, 0); }
-void graphics_toggle_mouse_grabbed(){ mouse_grabbed = !mouse_grabbed; SDL_SetWindowGrab(window, mouse_grabbed); }
-int  graphics_set_window_icon(char* file){
+void gr_toggle_window_bordered(){ bordered = !bordered; SDL_SetWindowBordered(window, bordered); }
+void gr_set_window_brightness(float b){ SDL_SetWindowBrightness(window, b); }
+void gr_set_window_fullscreen(){ fullscreen = GR_WINDOW_FULLSCREEN; SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); }
+void gr_set_window_fullscreen_desktop(){ fullscreen = GR_WINDOW_FULLSCREEN_DESKTOP; SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP); }
+void gr_set_window_windowed(){ fullscreen = GR_WINDOW_WINDOWED; SDL_SetWindowFullscreen(window, 0); }
+void gr_toggle_mouse_grabbed(){ mouse_grabbed = !mouse_grabbed; SDL_SetWindowGrab(window, mouse_grabbed); }
+int  gr_set_window_icon(char* file){
   SDL_Surface* icon = SDL_LoadBMP(file);
   if(icon != NULL){
     SDL_SetWindowIcon(window, icon);
