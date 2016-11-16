@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "include/glfw3.h"
+#define SDL_MAIN_HANDLED
 #include "include/SDL2/sdl.h"
 #include "include/soil.h"
 #include <gl/gl.h>
@@ -12,6 +13,7 @@ float view_width, view_height, view_scale;
 float view_left, view_right, view_bottom, view_top;
 int mouse_x, mouse_y;
 int bordered, fullscreen, mouse_grabbed;
+int is_open = 0;
 SDL_Window* window;
 SDL_GLContext opengl_context;
 SDL_Event current_event;
@@ -987,25 +989,32 @@ float gr_screen_to_world_y(int y){
 /** Initialization **/
 
 void gr_open(){
-  
-  SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS);
-  
-  // glfwInit();
-  
-  // window = glfwCreateWindow(640, 480, "window", NULL, NULL);
-  // glfwMakeContextCurrent(window);
-  // glfwGetWindowSize(window, &screen_width, &screen_height);
-  window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-  opengl_context = SDL_GL_CreateContext(window);
-  SDL_GetWindowSize(window, &screen_width, &screen_height);
-  calc_aspect();
-  
-  gr_activate_transparency(1);
-  gr_activate_depth_testing(1);
-  // glEnable(GL_CULL_FACE);
-  // glEnable(GL_BLEND);
+  if(!is_open){
+    is_open = 1;
+    SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+    
+    // glfwInit();
+    
+    // window = glfwCreateWindow(640, 480, "window", NULL, NULL);
+    // glfwMakeContextCurrent(window);
+    // glfwGetWindowSize(window, &screen_width, &screen_height);
+    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    opengl_context = SDL_GL_CreateContext(window);
+    SDL_GetWindowSize(window, &screen_width, &screen_height);
+    calc_aspect();
+    
+    gr_activate_transparency(1);
+    gr_activate_depth_testing(1);
+    // glEnable(GL_CULL_FACE);
+    // glEnable(GL_BLEND);
+  }
 }
 
 void gr_close(){
-  SDL_Quit;
+  if(is_open){
+    is_open = 0;
+    SDL_GL_DeleteContext(opengl_context);
+    SDL_DestroyWindow(window);
+    SDL_Quit;
+  }
 }
