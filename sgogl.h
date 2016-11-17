@@ -597,8 +597,6 @@ int gr_width();
 int gr_height();
 float gr_width_aspect_mod();
 float gr_height_aspect_mod();
-int gr_mouse_x();
-int gr_mouse_y();
 
 float gr_max_depth();
 
@@ -612,6 +610,10 @@ float gr_view_top();
 
 /************************************/
 /** Setting Variables / Parameters **/
+
+void gr_activate_events(int);
+
+void gr_set_max_depth(float);
 
 void gr_activate_transparency(int);
 void gr_activate_linear_filtering(int);
@@ -785,7 +787,7 @@ int gr_mouse_left();
 int gr_mouse_middle();
 int gr_mouse_right();
 
-void gr_set_wait_event(int value);
+void gr_set_wait_event(int);
 int gr_read();
 
 int gr_key_repeated();
@@ -819,6 +821,6 @@ float gr_screen_to_world_y(int);
 /********************/
 /** Initialization **/
 
-void gr_open();
+int gr_open();
 void gr_close();
 

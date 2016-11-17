@@ -106,6 +106,16 @@ DLLEXPORT int gr_view_top_m(stdargs){
    return LIBRARY_NO_ERROR;
 }
 
+// void gr_activate_events(int);
+DLLEXPORT int gr_activate_events_m(stdargs){
+   gr_activate_events(mgi(Args[0]));
+   return LIBRARY_NO_ERROR;
+}
+// void gr_set_max_depth(float);
+DLLEXPORT int gr_set_max_depth_m(stdargs){
+   gr_set_max_depth(mgd(Args[0]));
+   return LIBRARY_NO_ERROR;
+}
 // void gr_activate_transparency(int);
 DLLEXPORT int gr_activate_transparency_m(stdargs){
    gr_activate_transparency(mgi(Args[0]));
@@ -443,12 +453,12 @@ DLLEXPORT int gr_window_event_m(stdargs){
 
 // void gr_view(float, float, float, float);
 DLLEXPORT int gr_view_m(stdargs){
-   gr_view((float)mgd(Args[0]), (float)mgd(Args[0]), (float)mgd(Args[0]), (float)mgd(Args[0]));
+   gr_view((float)mgd(Args[0]), (float)mgd(Args[1]), (float)mgd(Args[2]), (float)mgd(Args[3]));
    return LIBRARY_NO_ERROR;
 }
 // void gr_view_centered(float, float, float, float);
 DLLEXPORT int gr_view_centered_m(stdargs){
-   gr_view_centered((float)mgd(Args[0]), (float)mgd(Args[0]), (float)mgd(Args[0]), (float)mgd(Args[0]));
+   gr_view_centered((float)mgd(Args[0]), (float)mgd(Args[1]), (float)mgd(Args[2]), (float)mgd(Args[3]));
    return LIBRARY_NO_ERROR;
 }
 
@@ -465,7 +475,7 @@ DLLEXPORT int gr_screen_to_world_y_m(stdargs){
 
 // void gr_open();
 DLLEXPORT int gr_open_m(stdargs){
-   gr_open();
+   mreti(gr_open());
    return LIBRARY_NO_ERROR;
 }
 // void gr_close();
