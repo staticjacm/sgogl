@@ -544,7 +544,8 @@ int gr_has_event(){
 Call gr_read_mouse() to update the mouse values then called the getters
 */
 void gr_read_mouse(){
-  uint32_t field = SDL_GetRelativeMouseState(&mouse_x, &mouse_y);
+  // uint32_t field = SDL_GetRelativeMouseState(&mouse_x, &mouse_y);
+  uint32_t field = SDL_GetMouseState(&mouse_x, &mouse_y);
   // uint32_t field = SDL_GetMouseState(&mouse_x, &mouse_y);
   mouse_left   = SDL_BUTTON(SDL_BUTTON_LEFT);
   mouse_middle = SDL_BUTTON(SDL_BUTTON_MIDDLE);
