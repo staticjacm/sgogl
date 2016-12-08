@@ -2,6 +2,7 @@
 #include "include/glfw3.h"
 #define SDL_MAIN_HANDLED
 #include "include/SDL2/sdl.h"
+#include "include/SDL2/sdl_mixer.h"
 #include "include/soil.h"
 #include <gl/gl.h>
 
@@ -21,6 +22,8 @@ SDL_Event current_event;
 int wait_event = 0;
 const Uint8* keystates;
 int mouse_left, mouse_middle, mouse_right;
+Mix_Chunk** mix_chunk_list = NULL;
+int mix_chunk_list_length = 0;
 
 /******************************/
 /** Proxies for SDL values **/
@@ -194,6 +197,11 @@ enum {
   GR_UP                     = 0,
 };
 
+enum {
+  GR_RELEASED = 0,
+  GR_PRESSED  = 1
+};
+
 /**
 Flipping codes
 */
@@ -280,6 +288,10 @@ void gr_activate_dithering(int dither){
     glEnable(GL_DITHER);
   else
     glDisable(GL_DITHER);
+}
+
+void gr_set_opengl_doublebuffering(int buffering){
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, buffering);
 }
 
 enum {
@@ -438,6 +450,133 @@ int gr_screenshot(char* file){
   SOIL_save_screenshot(file, SOIL_SAVE_TYPE_BMP, 0, 0, screen_width, screen_height);
 } 
 
+/***********/
+/** Audio **/
+
+void resize_mix_chunk_list(int size){
+  // I hope this does what I think it does otherwise there will be MEMORY LEAKS right here
+  if(size < mix_chunk_list_length)
+    for(int i = size; i < mix_chunk_list_length; i++){
+      if(mix_chunk_list[i] != NULL)
+        Mix_FreeChunk(mix_chunk_list[i]);
+      mix_chunk_list[i] = NULL;
+    }
+  mix_chunk_list = (Mix_Chunk**)realloc(mix_chunk_list, size * sizeof(Mix_Chunk*));
+  mix_chunk_list_length = size;
+  for(int i = size; i < mix_chunk_list_length; i++)
+    mix_chunk_list[i] = NULL;
+}
+
+int find_available_mix_chunk_list_id(){
+  // Search the list for a null list location
+  // There may be a better (faster) way to do this, but it probably isn't necessary
+  for(int i = 0; i < mix_chunk_list_length; i++){
+    if(mix_chunk_list[i] == NULL)
+      return i;
+  }
+  // If it reaches here a location wasn't found. So, create one by resizing the list:
+  resize_mix_chunk_list(mix_chunk_list_length * 2);
+  return mix_chunk_list_length;
+}
+
+int gr_load_wav(char* file, int id){
+  // Use id = 0 for new id
+  if(id < 0)
+    return -1;
+  if(id == 0){
+    int true_id = find_available_mix_chunk_list_id();
+    mix_chunk_list[true_id] = Mix_LoadWAV(file);
+    if(mix_chunk_list[true_id] != NULL)
+      return true_id;
+  }
+  // id is greated than mix_chunk_list_length
+  else if(mix_chunk_list_length <= id){
+    resize_mix_chunk_list(mix_chunk_list_length * 2);
+    mix_chunk_list[id] = Mix_LoadWAV(file);
+    if(mix_chunk_list[id] != NULL)
+      return id;
+  }
+  // List location is free
+  else if(mix_chunk_list[id] == NULL){
+    mix_chunk_list[id] = Mix_LoadWAV(file);
+    if(mix_chunk_list[id] != NULL)
+      return id;
+  }
+  // List location is in use - must be freed
+  else {
+    /* 
+    Here I quote the sdl_mixer devs:
+      Do not use chunk after this without loading a new sample to it. 
+      Note: It's a bad idea to free a chunk that is still being played... 
+    */
+    Mix_FreeChunk(mix_chunk_list[id]);
+    mix_chunk_list[id] = Mix_LoadWAV(file);
+    if(mix_chunk_list[id] != NULL)
+      return id;
+  }
+  return -1;
+}
+void gr_unload_audio(int id){
+  if( 0 < id && id < mix_chunk_list_length && mix_chunk_list[id] != NULL)
+    Mix_FreeChunk(mix_chunk_list[id]);
+}
+
+void gr_set_channel_number(int number){
+  Mix_AllocateChannels(number);
+}
+
+// Warning: using an id not explicitly registered using one of the above functions
+// produces undefined behavior. Bounds checks et al are left out for speed
+int gr_play_once(int id){
+  return Mix_PlayChannel(-1, mix_chunk_list[id], 0);
+}
+int gr_play_once_on(int id, int channel){
+  return Mix_PlayChannel(channel, mix_chunk_list[id], 0);
+}
+int gr_play(int id, int loops){
+  return Mix_PlayChannel(-1, mix_chunk_list[id], loops);
+}
+int gr_play_on(int id, int loops, int channel){
+  return Mix_PlayChannel(channel, mix_chunk_list[id], loops);
+}
+int gr_play_timed(int id, int time_ms){
+  return Mix_PlayChannelTimed(-1, mix_chunk_list[id], -1, time_ms);
+}
+int gr_play_timed_on(int id, int channel, int time_ms){
+  return Mix_PlayChannelTimed(channel, mix_chunk_list[id], -1, time_ms);
+}
+
+void gr_pause(int channel){
+  Mix_Pause(channel);
+}
+int gr_paused(int channel){
+  return Mix_Paused(channel);
+}
+void gr_stop(int channel){
+  Mix_HaltChannel(channel);
+}
+int gr_stopped(int channel){
+  // -1 -> number of channels playing
+  return Mix_Playing(channel);
+}
+
+void gr_set_volume(int channel, int volume){
+  // Use -1 for all channels
+  Mix_Volume(channel, volume);
+}
+void gr_set_panning(int channel, int v_left, int v_right){
+  Mix_SetPanning(channel, v_left, v_right);
+}
+void gr_set_mono(int channel){
+  Mix_SetPanning(channel, 255, 255);
+}
+void gr_set_attenuation(int channel, int distance){
+  Mix_SetDistance(channel, distance);
+}
+void gr_set_no_attenuation(int channel){
+  Mix_SetDistance(channel, 0);
+}
+
 /*************/
 /** Drawing **/
 
@@ -506,7 +645,6 @@ void gr_draw_line_sp(float x0, float y0, float z0, float x1, float y1, float z1)
 }
 
 void gr_refresh(){
-  // glfwSwapBuffers(window);
   SDL_GL_SwapWindow(window);
 }
 
@@ -522,6 +660,9 @@ void gr_clear_color(float r, float g, float b, float a){
 void gr_clear_colored(float r, float g, float b, float a){
   glClearColor(r, g, b, a);
   gr_clear();
+}
+void gr_wait_for_render(){
+  glFinish();
 }
 
 /*************/
@@ -607,6 +748,10 @@ Mouse button event functions
 */
 int gr_mouse_button(){
   return current_event.button.button;
+}
+int gr_mouse_state(){
+  // returns what type of button event it was (press, release)
+  return current_event.button.state;
 }
 
 int gr_mouse_clicks(){
@@ -698,6 +843,9 @@ int gr_open(){
     is_open = 1;
     init_error = 0;
     SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+    Mix_Init(0);
+    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
+    resize_mix_chunk_list(64);
     
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if(window == NULL)

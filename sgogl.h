@@ -159,6 +159,11 @@ enum {
   GR_UP                     = 0,
 };
 
+enum {
+  GR_RELEASED = 0,
+  GR_PRESSED  = 1
+};
+
 /**
 Flipping codes
 */
@@ -620,6 +625,9 @@ void gr_activate_linear_filtering(int);
 void gr_activate_dithering(int);
 void gr_activate_depth_testing(int);
 
+// set before starting
+void gr_set_opengl_doublebuffering(int);
+
 void gr_toggle_window_bordered();
 void gr_set_window_brightness(float);
 void gr_set_window_fullscreen();
@@ -759,6 +767,36 @@ unsigned int gr_load_image(char*, unsigned int);
 void gr_unload_image(unsigned int);
 int gr_screenshot(char*);
 
+/***********/
+/** Audio **/
+
+int find_available_mix_chunk_list_id();
+
+int gr_load_wav(char*, int);
+void gr_unload_audio(int);
+
+void gr_set_channel_number(int);
+
+// Warning: using an id not explicitly registered using one of the above functions
+// produces undefined behavior. Bounds checks et al are left out for speed
+int gr_play_once(int);
+int gr_play_once_on(int, int);
+int gr_play(int, int);
+int gr_play_on(int, int, int);
+int gr_play_timed(int, int);
+int gr_play_timed_on(int, int, int);
+
+void gr_pause(int);
+int gr_paused(int);
+void gr_stop(int);
+int gr_stopped(int);
+
+void gr_set_volume(int, int);
+void gr_set_panning(int, int, int);
+void gr_set_mono(int);
+void gr_set_attenuation(int, int);
+void gr_set_no_attenuation(int);
+
 /*************/
 /** Drawing **/
 
@@ -773,6 +811,7 @@ void gr_clear_depth();
 void gr_clear();
 void gr_clear_color(float, float, float, float);
 void gr_clear_colored(float, float, float, float);
+void gr_wait_for_render();
 
 /************/
 /** Events **/
@@ -795,6 +834,7 @@ int gr_key_pressed();
 int gr_key();
 
 int gr_mouse_button();
+int gr_mouse_state();
 int gr_mouse_clicks();
 int gr_mouse_button_x();
 int gr_mouse_button_y();
