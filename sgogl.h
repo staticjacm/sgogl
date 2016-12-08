@@ -787,6 +787,7 @@ int gr_play_timed(int, int);
 int gr_play_timed_on(int, int, int);
 
 void gr_pause(int);
+void gr_resume(int);
 int gr_paused(int);
 void gr_stop(int);
 int gr_stopped(int);

@@ -549,6 +549,9 @@ int gr_play_timed_on(int id, int channel, int time_ms){
 void gr_pause(int channel){
   Mix_Pause(channel);
 }
+void gr_resume(int channel){
+  Mix_Resume(channel);
+}
 int gr_paused(int channel){
   return Mix_Paused(channel);
 }
