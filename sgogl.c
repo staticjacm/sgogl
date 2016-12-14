@@ -1,18 +1,44 @@
 #include <stdlib.h>
-#include "include/glfw3.h"
+// #define GLEW_STATIC
+#include <glad/glad.h>
+#include <glad/glad.c>
+// #include <gl/gl.h>
+#include <SDL2/sdl.h>
+#include <SDL2/sdl_mixer.h>
+#include <soil.h>
+#include "sgogl.h"
+// #include "include/glfw3.h"
 #define SDL_MAIN_HANDLED
-#include "include/SDL2/sdl.h"
-#include "include/SDL2/sdl_mixer.h"
-#include "include/soil.h"
-#include <gl/gl.h>
 
 float max_depth = 10.0f;
-int screen_width, screen_height;
 int use_texture_filtering = 1;
-float screen_aspect, x_aspect_mod, y_aspect_mod;
+int texture_filter = GL_LINEAR;
+// aspect_ratio is determined by the window size
+// window sizes ~= window size
+// aspect mods are for modifying width, height after aspect_ratio is calculated
+int default_window_width = 640, default_window_height = 480;
+float window_aspect_ratio, window_x_aspect_mod, window_y_aspect_mod;
+int window_width, window_height;
+// screen sizes ~= internal rendering size
+// aspect mods are for modifying screen_height, view_height after aspect_ratio is calculated
+int screen_keep_window_aspect = 0; // should the screen automatically fit its size to match the window's aspect ratio?
+int center_screen = 0; // if screen_keep_window_aspect is false then should the screen be placed centered in the window?
+int stretch_screen = 0; // should the screen completely ignore aspect ratios and simply stretch to the window?
+int default_screen_width = 640, default_screen_height = 480;
+float screen_aspect_ratio;
+float screen_x_aspect_mod, screen_y_aspect_mod;
+int screen_width, screen_height;
+// the sub viewport is where the screen is projected to in the viewport which is projected to the window
+int sub_viewport_x0 = 0, sub_viewport_y0 = 0; // where is the screen situated in the window
+int sub_viewport_x1 = 0, sub_viewport_y1 = 0; // where is the screen situated in the window
+int sub_viewport_width, sub_viewport_height; // what size is the screen in the window
+unsigned int framebuffer;
+unsigned int renderbuffer_color, renderbuffer_depth;
+// view sizes ~= camera in world size
 float view_width, view_height, view_scale;
 float view_left, view_right, view_bottom, view_top;
 int mouse_x, mouse_y;
+int mouse_x_delta, mouse_y_delta;
 int bordered, fullscreen, mouse_grabbed;
 int is_open = 0;
 int init_error = 0;
@@ -25,222 +51,194 @@ int mouse_left, mouse_middle, mouse_right;
 Mix_Chunk** mix_chunk_list = NULL;
 int mix_chunk_list_length = 0;
 
-/******************************/
-/** Proxies for SDL values **/
+/******************/
+/** Sub-Viewport **/
 
-/**
-IERROR_SDL_WINDOW:
-  "Conflicting window flags specified"
-  "Window is too large."
-  "No OpenGL support in video driver"
-IERROR_SDL_GL
-  "The specified window isn't an OpenGL window"
-  
-**/
-enum {
-  IERROR_SDL_NONE      = 0b000,
-  IERROR_SDL_WINDOW    = 0b001,
-  IERROR_SDL_GL        = 0b010
-};
-
-/**
-Event codes
-*/
-enum {
-  GR_NULL_EVENT,
-  GR_KEY_EVENT,
-  GR_WINDOW_EVENT,
-  GR_QUIT_EVENT,
-  GR_MOUSE_BUTTON_EVENT,
-  GR_MOUSE_MOVE_EVENT,
-  GR_MOUSE_WHEEL_EVENT
-};
-
-/**
-Window event codes
-*/
-enum {                               
-  GR_WINDOW_NONE           = 0,      
-  GR_WINDOW_SHOWN          = 1,      
-  GR_WINDOW_HIDDEN         = 2,      
-  GR_WINDOW_EXPOSED        = 3,      
-                                     
-  GR_WINDOW_MOVED          = 4,      
-                                     
-  GR_WINDOW_RESIZED        = 5,      
-  GR_WINDOW_SIZE_CHANGED   = 6,      
-  GR_WINDOW_MINIMIZED      = 7,      
-  GR_WINDOW_MAXIMIZED      = 8,      
-  GR_WINDOW_RESTORED       = 9,      
-                                     
-  GR_WINDOW_ENTER          = 10,     
-  GR_WINDOW_LEAVE          = 11,     
-  GR_WINDOW_FOCUS_GAINED   = 12,     
-  GR_WINDOW_FOCUS_LOST     = 13,     
-  GR_WINDOW_CLOSE          = 14      
-};
-
-/**
-Mouse button codes
-*/
-enum {
-  GR_MOUSE_LEFT   = 1,
-  GR_MOUSE_RIGHT  = 3,
-  GR_MOUSE_MIDDLE = 2,
-  GR_MOUSE_X1     = 4,
-  GR_MOUSE_X2     = 5
-};
-
-/**
-Key codes
-*/
-enum {
-  GR_A                      = 97,
-  GR_B                      = 98,
-  GR_C                      = 99,
-  GR_D                      = 100,
-  GR_E                      = 101,
-  GR_F                      = 102,
-  GR_G                      = 103,
-  GR_H                      = 104,
-  GR_I                      = 105,
-  GR_J                      = 106,
-  GR_K                      = 107,
-  GR_L                      = 108,
-  GR_M                      = 109,
-  GR_N                      = 110,
-  GR_O                      = 111,
-  GR_P                      = 112,
-  GR_Q                      = 113,
-  GR_R                      = 114,
-  GR_S                      = 115,
-  GR_T                      = 116,
-  GR_U                      = 117,
-  GR_V                      = 118,
-  GR_W                      = 119,
-  GR_X                      = 120,
-  GR_Y                      = 121,
-  GR_Z                      = 122,
-
-  GR_0                      = 48,
-  GR_1                      = 49,
-  GR_2                      = 50,
-  GR_3                      = 51,
-  GR_4                      = 52,
-  GR_5                      = 53,
-  GR_6                      = 54,
-  GR_7                      = 55,
-  GR_8                      = 56,
-  GR_9                      = 57,
-
-  GR_MINUS                  = 45,
-  GR_EQUALS                 = 61,
-  GR_LBRACKET               = 91,
-  GR_RBRACKET               = 93,
-  GR_SLASH                  = 47,
-  GR_BACKSLASH              = 92,
-  GR_SEMICOLON              = 59,
-  GR_APOSTROPHE             = 39,
-  GR_GRAVE                  = 96,
-  GR_COMMA                  = 44,
-  GR_PERIOD                 = 46,
-                            
-  GR_F1                     = 1073741882,
-  GR_F2                     = 1073741883,
-  GR_F3                     = 1073741884,
-  GR_F4                     = 1073741885,
-  GR_F5                     = 1073741886,
-  GR_F6                     = 1073741887,
-  GR_F7                     = 1073741888,
-  GR_F8                     = 1073741889,
-  GR_F9                     = 1073741890,
-  GR_F10                    = 1073741891,
-  GR_F11                    = 1073741892,
-  GR_F12                    = 1073741893,
-                            
-  GR_CTRL                   = 1073742048,
-  GR_SHIFT                  = 1073742049,
-  GR_ALT                    = 1073742050,
-  GR_CAPSLOCK               = 1073741881,
-                              
-  GR_ESCAPE                 = 13,
-  GR_RETURN                 = 8,
-  GR_BACKSPACE              = 1073741896,
-                            
-  GR_PAUSE                  = 1073741897,
-  GR_INSERT                 = 1073741898,
-  GR_HOME                   = 1073741899,
-  GR_PAGEUP                 = 1073741902,
-  GR_PAGEDOWN               = 127,
-  GR_DELETE                 = 1073741922,
-                            
-  GR_KP_0                   = 1073741913,
-  GR_KP_1                   = 1073741914,
-  GR_KP_2                   = 1073741915,
-  GR_KP_3                   = 1073741916,
-  GR_KP_4                   = 1073741917,
-  GR_KP_5                   = 1073741918,
-  GR_KP_6                   = 1073741919,
-  GR_KP_7                   = 1073741920,
-  GR_KP_8                   = 1073741921,
-  GR_KP_9                   = 1073741908,
-                            
-  GR_KP_DIVIDE              = 1073741909,
-  GR_KP_MULTIPLY            = 1073741911,
-  GR_KP_PLUS                = 1073741923,
-  GR_KP_PERIOD              = 1073741912,
-  GR_KP_ENTER               = 1073741904,
-                            
-  GR_LEFT                   = 1073741905,
-  GR_DOWN                   = 1073741903,
-  GR_RIGHT                  = 1073741906,
-  GR_UP                     = 0,
-};
-
-enum {
-  GR_RELEASED = 0,
-  GR_PRESSED  = 1
-};
-
-/**
-Flipping codes
-*/
-enum {
-  GR_FLIP_NONE         = 0,
-  GR_FLIP_VERTICALLY   = 2,
-  GR_FLIP_HORIZONTALLY = 1,
-};
-
-enum {
-  GR_WINDOW_WINDOWED,
-  GR_WINDOW_FULLSCREEN,
-  GR_WINDOW_FULLSCREEN_DESKTOP
-};
-
+void update_sub_viewport(){
+  if(stretch_screen){
+    sub_viewport_width = window_width;
+    sub_viewport_height = window_height;
+    sub_viewport_x0 = 0;
+    sub_viewport_y0 = 0;
+    sub_viewport_x1 = window_width;
+    sub_viewport_y1 = window_height;
+  }
+  else {
+    if(screen_aspect_ratio > window_aspect_ratio){
+      sub_viewport_width  = window_width;
+      sub_viewport_height = (int)((float)window_width/screen_aspect_ratio);
+      if(center_screen){
+        sub_viewport_x0 = 0;
+        sub_viewport_x1 = window_width;
+        sub_viewport_y0 = (window_height - sub_viewport_height)/2;
+        sub_viewport_y1 = (window_height + sub_viewport_height)/2;
+      }
+      else {
+        sub_viewport_x0 = 0;
+        sub_viewport_y0 = 0;
+        sub_viewport_x1 = sub_viewport_width;
+        sub_viewport_y1 = sub_viewport_height;
+      }
+    }
+    else {
+      sub_viewport_width  = (int)((float)window_height*screen_aspect_ratio);
+      sub_viewport_height = window_height;
+      if(center_screen){
+        sub_viewport_x0 = (window_width - sub_viewport_width)/2;
+        sub_viewport_x1 = (window_width + sub_viewport_width)/2;
+        sub_viewport_y0 = 0;
+        sub_viewport_y1 = window_height;
+      }
+      else {
+        sub_viewport_x0 = 0;
+        sub_viewport_y0 = 0;
+        sub_viewport_x1 = sub_viewport_width;
+        sub_viewport_y1 = sub_viewport_height;
+      }
+    }
+  }
+}
 
 /*********************/
 /** Window Resizing **/
 
-void calc_aspect(){
-  screen_aspect = (float)screen_width/(float)screen_height;
-  glViewport(0, 0, screen_width, screen_height);
-  if(screen_aspect > 1){
-    x_aspect_mod = screen_aspect;
-    y_aspect_mod = 1;
+void calc_window_aspect(){
+  window_aspect_ratio = (float)window_width/(float)window_height;
+  if(window_aspect_ratio > 1){
+    window_x_aspect_mod = window_aspect_ratio;
+    window_y_aspect_mod = 1;
   }
   else {
-    x_aspect_mod = 1;
-    y_aspect_mod = 1/screen_aspect;
+    window_x_aspect_mod = 1;
+    window_y_aspect_mod = 1/window_aspect_ratio;
   }
 }
+
+void gr_set_window_max_size(int w, int h){ SDL_SetWindowMaximumSize(window, w, h); }
+void gr_set_window_min_size(int w, int h){ SDL_SetWindowMinimumSize(window, w, h); }
+
+void gr_set_window_size(int w, int h){
+  window_width = w; window_height = h;
+  if(window_width  < 1) window_width  = 1;
+  if(window_height < 1) window_height = 1;
+  SDL_SetWindowSize(window, w, h);
+  calc_window_aspect();
+  if(screen_keep_window_aspect){
+    if(w > h){
+      screen_width = w;
+      screen_height = (int)((float)w/window_aspect_ratio);
+    }
+    else {
+      screen_width = (int)((float)h*window_aspect_ratio);
+      screen_height = h;
+    }
+    screen_aspect_ratio = window_aspect_ratio;
+  }
+  update_sub_viewport();
+}
+
+void sync_window_size(){
+  SDL_GetWindowSize(window, &window_width, &window_height);
+  calc_window_aspect();
+  update_sub_viewport();
+}
+
+/*********************/
+/** Screen Resizing **/
+
+void calc_screen_aspect(){
+  screen_aspect_ratio = (float)screen_width/(float)screen_height;
+  if(screen_aspect_ratio > 1){
+    screen_x_aspect_mod = screen_aspect_ratio;
+    screen_y_aspect_mod = 1;
+  }
+  else {
+    screen_x_aspect_mod = 1;
+    screen_y_aspect_mod = 1/screen_aspect_ratio;
+  }
+}
+
+void gr_set_screen_size(int w, int h){
+  if(screen_keep_window_aspect){
+    if(w > h){
+      screen_width = w;
+      screen_height = (int)((float)w/window_aspect_ratio);
+    }
+    else {
+      screen_width = (int)((float)h*window_aspect_ratio);
+      screen_height = h;
+    }
+  }
+  else {
+    screen_width = w;
+    screen_height = h;
+  }
+  if(screen_width  < 1) screen_width  = 1;
+  if(screen_height < 1) screen_height = 1;
+  /*
+  From the opengl.org wiki:
+  "
+  calling this function [glRenderbufferStorage] on a renderbuffer that has already had this function called on it will cause it to deallocate any resources associated with the previous call and allocate new storage.
+  Note: You are strongly advised not to do this. If you need a new renderbuffer, just delete the old object and create a new one. Recreating a renderbuffer with the same object name can cause completeness problems, particularly if it is attached to another object at the time.
+  "
+  I'm not sure what a 'completeness problem' is but I know these renderbuffers are only used wrt renderbuffer_color and renderbuffer_depth
+  */
+  glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_color);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, screen_width, screen_height);
+  glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_depth);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, screen_width, screen_height);
+  calc_screen_aspect();
+  update_sub_viewport();
+}
+
+/**********/
+/** View **/
+
+void gr_view(float x, float y, float s, float ang){
+  glMatrixMode(GL_PROJECTION);
+  float sp = 1/s;
+  glLoadIdentity();
+  view_scale = s;
+  view_width = s*screen_x_aspect_mod; view_height = s*screen_y_aspect_mod;
+  view_left = x; view_right = x + view_width;
+  view_bottom = y; view_top = y + view_height;
+  glOrtho(view_left, view_right, view_bottom, view_top, 0, -max_depth);
+  glRotatef(ang, 0, 0, 1);
+}
+
+void gr_view_centered(float x, float y, float s, float ang){
+  glMatrixMode(GL_PROJECTION);
+  float sp = 1/s;
+  glLoadIdentity();
+  view_scale = s;
+  view_width = s*screen_x_aspect_mod; view_height = s*screen_y_aspect_mod;
+  view_left = x - view_width/2; view_right = x + view_width/2;
+  view_bottom = y - view_height/2; view_top = y + view_height/2;
+  glOrtho(view_left, view_right, view_bottom, view_top, 0, -max_depth);
+  glRotatef(ang, 0, 0, 1);
+}
+
+// These should be called gr_window_to_world_*
+float gr_screen_to_world_x(int x){
+  return view_left + view_width * ((float)(x - sub_viewport_x0) / (float)sub_viewport_width);
+}
+float gr_screen_to_world_y(int y){
+  return view_top -  view_height * ((float)(y - sub_viewport_y0) / (float)sub_viewport_height);
+}
+
 
 /*******************/
 /** Informational **/
 
-int gr_width(){ return screen_width; }
-int gr_height(){ return screen_height; }
-float gr_width_aspect_mod(){ return x_aspect_mod; }
-float gr_height_aspect_mod(){ return y_aspect_mod; }
+int gr_screen_width(){ return screen_width; }
+int gr_screen_height(){ return screen_height; }
+float gr_screen_x_aspect_mod(){ return screen_x_aspect_mod; }
+float gr_screen_y_aspect_mod(){ return screen_y_aspect_mod; }
+
+int gr_window_width(){ return window_width; }
+int gr_window_height(){ return window_height; }
+float gr_width_window_aspect_mod(){ return window_x_aspect_mod; }
+float gr_height_window_aspect_mod(){ return window_y_aspect_mod; }
 
 float gr_view_scale(){ return view_scale; }
 float gr_view_width(){ return view_width; }
@@ -252,8 +250,32 @@ float gr_view_top(){ return view_top; }
 
 float gr_max_depth(){ return max_depth; }
 
+int gr_get_window_width(){
+  sync_window_size;
+  return window_width;
+}
+int gr_get_window_height(){
+  sync_window_size;
+  return window_height;
+}
+
 /************************************/
 /** Setting Variables / Parameters **/
+
+void gr_set_keep_window_aspect(int value){
+  screen_keep_window_aspect = value;
+  update_sub_viewport();
+}
+
+void gr_set_center_screen(int value){
+  center_screen = value;
+  update_sub_viewport();
+}
+
+void gr_set_stretch_screen(int value){
+  stretch_screen = value;
+  update_sub_viewport();
+}
 
 void gr_activate_events(int val){
   if(val)
@@ -280,7 +302,14 @@ void gr_activate_transparency(int blend){
 }
 
 void gr_activate_linear_filtering(int filtering){
-  use_texture_filtering = filtering;
+  if(filtering){
+    use_texture_filtering = 1;
+    texture_filter = GL_LINEAR;
+  }
+  else {
+    use_texture_filtering = 0;
+    texture_filter = GL_NEAREST;
+  }
 }
 
 void gr_activate_dithering(int dither){
@@ -331,26 +360,13 @@ void gr_set_input_focus(){
   //SDL_SetWindowInputFocus(window);
   SDL_RaiseWindow(window);
 }
-void gr_set_window_max_size(int w, int h){ SDL_SetWindowMaximumSize(window, w, h); }
-void gr_set_window_min_size(int w, int h){ SDL_SetWindowMinimumSize(window, w, h); }
+
 void gr_set_window_position(int x, int y){ SDL_SetWindowPosition(window, x, y); }
-void gr_set_window_size(int w, int h){ screen_width = w; screen_height = h; SDL_SetWindowSize(window, w, h); }
 void gr_set_window_title(char* title){ SDL_SetWindowTitle(window, title); }
 
 void gr_popup_error(char* message){ SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "error", message, window); }
 void gr_popup_warning(char* message){ SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "warning", message, window); }
 void gr_popup_info(char* message){ SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "info", message, window); }
-
-int gr_get_window_width(){
-  int w;
-  SDL_GetWindowSize(window, &w, NULL);
-  return w;
-}
-int gr_get_window_height(){
-  int h;
-  SDL_GetWindowSize(window, NULL, &h);
-  return h;
-}
 
 /************/
 /** Colors **/
@@ -366,67 +382,8 @@ void gr_color_alpha(float a){
 /************/
 /** Images **/
 
-
-/**
-  TAKEN FROM SOIL.h (see http://www.lonesock.net/soil.html)
-  
-	flags you can pass into SOIL_load_OGL_texture()
-	and SOIL_create_OGL_texture().
-	(note that if SOIL_FLAG_DDS_LOAD_DIRECT is used
-	the rest of the flags with the exception of
-	SOIL_FLAG_TEXTURE_REPEATS will be ignored while
-	loading already-compressed DDS files.)
-
-	SOIL_FLAG_POWER_OF_TWO: force the image to be POT
-	SOIL_FLAG_MIPMAPS: generate mipmaps for the texture
-	SOIL_FLAG_TEXTURE_REPEATS: otherwise will clamp
-	SOIL_FLAG_MULTIPLY_ALPHA: for using (GL_ONE,GL_ONE_MINUS_SRC_ALPHA) blending
-	SOIL_FLAG_INVERT_Y: flip the image vertically
-	SOIL_FLAG_COMPRESS_TO_DXT: if the card can display them, will convert RGB to DXT1, RGBA to DXT5
-	SOIL_FLAG_DDS_LOAD_DIRECT: will load DDS files directly without _ANY_ additional processing
-	SOIL_FLAG_NTSC_SAFE_RGB: clamps RGB components to the range [16,235]
-	SOIL_FLAG_CoCg_Y: Google YCoCg; RGB=>CoYCg, RGBA=>CoCgAY
-	SOIL_FLAG_TEXTURE_RECTANGE: uses ARB_texture_rectangle ; pixel indexed & no repeat or MIPmaps or cubemaps
-**/
-enum
-{
-	IMG_POWER_OF_TWO       = SOIL_FLAG_POWER_OF_TWO,
-	IMG_MIPMAPS            = SOIL_FLAG_MIPMAPS,
-	IMG_TEXTURE_REPEATS    = SOIL_FLAG_TEXTURE_REPEATS,
-	IMG_MULTIPLY_ALPHA     = SOIL_FLAG_MULTIPLY_ALPHA,
-	IMG_INVERT_Y           = SOIL_FLAG_INVERT_Y,
-	IMG_COMPRESS_TO_DXT    = SOIL_FLAG_COMPRESS_TO_DXT,
-	IMG_DDS_LOAD_DIRECT    = SOIL_FLAG_DDS_LOAD_DIRECT,
-	IMG_NTSC_SAFE_RGB      = SOIL_FLAG_NTSC_SAFE_RGB,
-	IMG_COCG_Y             = SOIL_FLAG_CoCg_Y,
-	IMG_TEXTURE_RECTANGLE  = SOIL_FLAG_TEXTURE_RECTANGLE
-};
-
-/**
-	Creates a 2D OpenGL texture from raw image data.  Note that the raw data is
-	_NOT_ freed after the upload (so the user can load various versions).
-	\param data the raw data to be uploaded as an OpenGL texture
-	\param gr_width the gr_width of the image in pixels
-	\param gr_height the gr_height of the image in pixels
-	\param channels the number of channels: 1-luminous, 2-luminous/alpha, 3-RGB, 4-RGBA
-	\param reuse_texture_ID 0-generate a new texture ID, otherwise reuse the texture ID (overwriting the old texture)
-	\param flags can be any of SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_MIPMAPS | SOIL_FLAG_TEXTURE_REPEATS | SOIL_FLAG_MULTIPLY_ALPHA | SOIL_FLAG_INVERT_Y | SOIL_FLAG_COMPRESS_TO_DXT
-	\return 0-failed, otherwise returns the OpenGL texture handle
-**/
-/**
-unsigned int
-	SOIL_create_OGL_texture
-	(
-		const unsigned char *const data,
-		int gr_width, int gr_height, int channels,
-		unsigned int reuse_texture_ID,
-		unsigned int flags
-	);
-
-**/
-
-unsigned int gr_load_image_ram(const unsigned char* const data, unsigned int id, int gr_width, int gr_height, int channels, unsigned int flags){
-  return SOIL_create_OGL_texture(data, gr_width, gr_height, channels, id, flags);
+unsigned int gr_load_image_ram(const unsigned char* const data, unsigned int id, int width, int height, int channels, unsigned int flags){
+  return SOIL_create_OGL_texture(data, width, height, channels, id, flags);
 }
 
 unsigned int gr_load_image_ext(char* file, unsigned int id, unsigned int soil_load_flag, unsigned int soil_flags){
@@ -595,19 +552,20 @@ void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, 
   glTranslatef(-anx, -any, 0.0f);
   
   glEnable(GL_TEXTURE_2D);
-  if(use_texture_filtering)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  else
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  // if(use_texture_filtering)
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // else
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_filter);
   glBindTexture(GL_TEXTURE_2D, tex);
   glBegin(GL_QUADS);
-    /*glTexCoord2f(0.0, 0.0);*/ /*glTexCoord2f(1.0, 1.0);*/ glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0, 0.0);
-    /*glTexCoord2f(1.0, 0.0);*/ /*glTexCoord2f(0.0, 1.0);*/ glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 0.0, 0.0);
-    /*glTexCoord2f(1.0, 1.0);*/ /*glTexCoord2f(0.0, 0.0);*/ glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 0.0);
-    /*glTexCoord2f(0.0, 1.0);*/ /*glTexCoord2f(1.0, 0.0);*/ glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 1.0, 0.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0, 0.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 0.0, 0.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 0.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 1.0, 0.0);
   glEnd();
   glDisable(GL_TEXTURE_2D);
-  glFlush();
+  // glFlush();
 }
 
 void gr_draw_centered(unsigned int tex, float x, float y, float z, float angle, float sx, float sy){
@@ -624,7 +582,7 @@ void gr_draw_point(float x, float y, float z){
   glBegin(GL_POINTS);
     glVertex3f(x, y, z);
   glEnd();
-  glFlush();
+  // glFlush();
 }
 
 void gr_draw_line(float x0, float y0, float x1, float y1, float z){
@@ -634,7 +592,7 @@ void gr_draw_line(float x0, float y0, float x1, float y1, float z){
     glVertex3f(x0, y0, z);
     glVertex3f(x1, y1, z);
   glEnd();
-  glFlush();
+  // glFlush();
 }
 
 void gr_draw_line_sp(float x0, float y0, float z0, float x1, float y1, float z1){
@@ -644,11 +602,25 @@ void gr_draw_line_sp(float x0, float y0, float z0, float x1, float y1, float z1)
     glVertex3f(x0, y0, z0);
     glVertex3f(x1, y1, z1);
   glEnd();
-  glFlush();
+  // glFlush();
 }
 
+/***************************/
+/** Refreshing / Clearing **/
+
 void gr_refresh(){
+  // printf("gr_refresh screen %d %d window %d %d\n", screen_width, screen_height, window_width, window_height);
+  glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+  glBlitFramebuffer(0, 0, screen_width, screen_height, 
+                    sub_viewport_x0, sub_viewport_y0, 
+                    sub_viewport_x1, sub_viewport_y1, 
+                    GL_COLOR_BUFFER_BIT, GL_NEAREST);
+  glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
   SDL_GL_SwapWindow(window);
+  glViewport(0, 0, screen_width, screen_height);
+  // SDL_UpdateWindowSurface(window);
 }
 
 void gr_clear_depth(){
@@ -656,6 +628,11 @@ void gr_clear_depth(){
 }
 void gr_clear(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+void gr_clear_all(){
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
 }
 void gr_clear_color(float r, float g, float b, float a){
   glClearColor(r, g, b, a);
@@ -688,9 +665,8 @@ int gr_has_event(){
 Call gr_read_mouse() to update the mouse values then called the getters
 */
 void gr_read_mouse(){
-  // uint32_t field = SDL_GetRelativeMouseState(&mouse_x, &mouse_y);
+  SDL_GetRelativeMouseState(&mouse_x_delta, &mouse_y_delta);
   uint32_t field = SDL_GetMouseState(&mouse_x, &mouse_y);
-  // uint32_t field = SDL_GetMouseState(&mouse_x, &mouse_y);
   mouse_left   = SDL_BUTTON(SDL_BUTTON_LEFT);
   mouse_middle = SDL_BUTTON(SDL_BUTTON_MIDDLE);
   mouse_right  = SDL_BUTTON(SDL_BUTTON_RIGHT);
@@ -711,11 +687,14 @@ int gr_read(){
     SDL_PollEvent(&current_event);
   switch(current_event.type){
     case SDL_QUIT:
-      return GR_QUIT_EVENT;
+      return GR_CLOSE;
     case SDL_KEYDOWN:
     case SDL_KEYUP:
       return GR_KEY_EVENT;
     case SDL_WINDOWEVENT:
+      if(current_event.window.event == GR_WINDOW_RESIZED){
+        sync_window_size();
+      }
       return GR_WINDOW_EVENT;
     case SDL_MOUSEBUTTONDOWN:
     case SDL_MOUSEBUTTONUP:
@@ -744,6 +723,10 @@ int gr_key_pressed(){
 
 int gr_key(){
   return current_event.key.keysym.sym;
+}
+
+int gr_scancode(){
+  return current_event.key.keysym.scancode;
 }
 
 /**
@@ -800,46 +783,8 @@ int gr_window_event(){
   return current_event.window.event;
 }
 
-/**********/
-/** View **/
-
-void gr_view(float x, float y, float s, float ang){
-  glMatrixMode(GL_PROJECTION);
-  float sp = 1/s;
-  glLoadIdentity();
-  view_scale = s;
-  view_width = s*x_aspect_mod; view_height = s*y_aspect_mod;
-  view_left = x; view_right = x + view_width;
-  view_bottom = y; view_top = y + view_height;
-  glOrtho(view_left, view_right, view_bottom, view_top, 0, -max_depth);
-  // glScalef(sp, sp, 1);
-  glRotatef(ang, 0, 0, 1);
-  // glTranslatef(x, y, 0);
-}
-
-void gr_view_centered(float x, float y, float s, float ang){
-  glMatrixMode(GL_PROJECTION);
-  float sp = 1/s;
-  glLoadIdentity();
-  view_scale = s;
-  view_width = s*x_aspect_mod; view_height = s*y_aspect_mod;
-  view_left = x - view_width/2; view_right = x + view_width/2;
-  view_bottom = y - view_height/2; view_top = y + view_height/2;
-  glOrtho(view_left, view_right, view_bottom, view_top, 0, -max_depth);
-  // glScalef(sp, sp, 1);
-  glRotatef(ang, 0, 0, 1);
-  // glTranslatef(x, y, 0);
-}
-
-float gr_screen_to_world_x(int x){
-  return view_left + view_width * ( (float)x / (float)screen_width);
-}
-float gr_screen_to_world_y(int y){
-  return view_top - view_height * ( (float)y / (float)screen_height);
-}
-
-/********************/
-/** Initialization **/
+/***********************************/
+/** Initialization / Finalization **/
 
 int gr_open(){
   if(!is_open){
@@ -850,19 +795,43 @@ int gr_open(){
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
     resize_mix_chunk_list(64);
     
-    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+                              default_window_width, default_window_height, 
+                              SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if(window == NULL)
       init_error = init_error | IERROR_SDL_WINDOW;
     opengl_context = SDL_GL_CreateContext(window);
     if(opengl_context == NULL)
       init_error = init_error | IERROR_SDL_GL;
-    SDL_GetWindowSize(window, &screen_width, &screen_height);
-    calc_aspect();
+    if(!gladLoadGL()){
+      printf("glad failed to load\n");
+    }
     
+    // Creating FBO and RBOs
+    glGenRenderbuffers(1, &renderbuffer_color);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_color);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, default_screen_width, default_screen_height);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    
+    glGenRenderbuffers(1, &renderbuffer_depth); 
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_depth);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, default_screen_width, default_screen_height);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);   
+
+    glGenFramebuffers(1, &framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer_color);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer_depth);
+
     gr_activate_transparency(1);
     gr_activate_depth_testing(1);
     // glEnable(GL_CULL_FACE);
-    // glEnable(GL_BLEND);
+    // glEnable(GL_BLEND
+    
+    // SDL_GetWindowSize(window, &window_width, &window_height);
+    sync_window_size;
+    gr_set_screen_size(default_screen_width, default_screen_height);
+    gr_set_window_size(default_window_width, default_window_height);
   }
   return init_error;
 }
