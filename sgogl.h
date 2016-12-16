@@ -936,6 +936,7 @@ void gr_set_no_attenuation(int);
 /*************/
 /** Drawing **/
 
+void gr_screen_draw(unsigned int, float, float, float, float, float, float, float, float);
 void gr_draw(unsigned int, float, float, float, float, float, float, float, float);
 void gr_draw_centered(unsigned int, float, float, float, float, float, float);
 void gr_point_size(float);

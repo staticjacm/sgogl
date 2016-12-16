@@ -8,7 +8,7 @@ The design was very greatly influenced and inspired by BearLibTerminal (http://f
 
 This, however, isn't BLT, it's SGOGL. Good luck trying to use it. I understand it because I made it and I don't care if anyone else can or can't understand it. I don't mean to be hostile with that statement, btw. I only have any anticipation of **me** using it, not anyone else.
 
-Its kind of just like a proxy for ~~GLFW~~ SDL2 *and OpenGL* to make it easy(er) to make a window and start rendering 2D stuff.
+Its kind of just like a proxy for ~~GLFW~~ SDL2 *and OpenGL* ~~and glad~~ to make it easy(er) to make a window and start rendering 2D stuff.
 
 Now includes audio support (through SDL_mixer)!
 
@@ -64,4 +64,6 @@ SDL2: because SDL2 uses it for window creation, events, etc
 SOIL: Simple Opengl Image Loading Library, or something like that. I also used it too. It's pretty cool (http://www.lonesock.net/soil.html)
 
 SDL_mixer: the only audio library I've ever liked
+
+GLAD: to actually be able to load opengl stuff (no thanks to glew)
 

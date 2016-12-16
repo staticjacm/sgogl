@@ -196,8 +196,8 @@ void gr_set_screen_size(int w, int h){
 
 void gr_view(float x, float y, float s, float ang){
   glMatrixMode(GL_PROJECTION);
-  float sp = 1/s;
   glLoadIdentity();
+  float sp = 1/s;
   view_scale = s;
   view_width = s*screen_x_aspect_mod; view_height = s*screen_y_aspect_mod;
   view_left = x; view_right = x + view_width;
@@ -208,8 +208,8 @@ void gr_view(float x, float y, float s, float ang){
 
 void gr_view_centered(float x, float y, float s, float ang){
   glMatrixMode(GL_PROJECTION);
-  float sp = 1/s;
   glLoadIdentity();
+  float sp = 1/s;
   view_scale = s;
   view_width = s*screen_x_aspect_mod; view_height = s*screen_y_aspect_mod;
   view_left = x - view_width/2; view_right = x + view_width/2;
@@ -540,6 +540,42 @@ void gr_set_no_attenuation(int channel){
 /*************/
 /** Drawing **/
 
+/*
+  Draws image to screen without respect to the current view
+  x coordinates go from 0 to 1 always - ei: x pixel is x*screen_width
+  y coordinates go from 0 to 1/screen_aspect_ratio
+*/
+void gr_screen_draw(unsigned int tex, float x, float y, float z, float anx, float any, float angle, float sx, float sy){
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0.0f, 1.0f, 0.0f, 1.0f/screen_aspect_ratio, 0.0f, -10.0f);
+  
+  // printf("CLEAR\n");
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  glTranslatef(x, y, z);
+  glRotatef(angle, 0.0f, 0.0f, 1.0f);
+  glScalef(sx, sy, 1.0f);
+  glTranslatef(-anx, -any, 0.0f);
+  
+  glEnable(GL_TEXTURE_2D);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_filter);
+  glBindTexture(GL_TEXTURE_2D, tex);
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0, 0.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 0.0, 0.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 0.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 1.0, 0.0);
+  glEnd();
+  glDisable(GL_TEXTURE_2D);
+  
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  // glFlush();
+}
+float gr_static_ymax(){ return 1.0f/screen_aspect_ratio; }
+
 void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, float angle, float sx, float sy){
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -832,6 +868,8 @@ int gr_open(){
     sync_window_size;
     gr_set_screen_size(default_screen_width, default_screen_height);
     gr_set_window_size(default_window_width, default_window_height);
+    
+    glFinish();
   }
   return init_error;
 }
