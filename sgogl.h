@@ -731,6 +731,8 @@ void gr_set_screen_size(int, int);
 
 void gr_view(float, float, float, float);
 void gr_view_centered(float, float, float, float);
+void gr_view_3d_fxyn(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float);
+void gr_view_3d(float, float, float, float, float, float, float, float, float, float, float, float);
 
 float gr_screen_to_world_x(int);
 float gr_screen_to_world_y(int);
@@ -772,6 +774,9 @@ void gr_set_center_screen(int);
 void gr_set_stretch_screen(int);
 
 void gr_activate_events(int);
+
+void gr_point_size(float);
+void gr_round_points(int);
 
 void gr_set_max_depth(float);
 
@@ -933,16 +938,24 @@ void gr_set_mono(int);
 void gr_set_attenuation(int, int);
 void gr_set_no_attenuation(int);
 
+/***********/
+/** Text **/
+
+unsigned int gr_load_ttf(char*, float);
+void gr_draw_text(unsigned int, char*, float, float, float, float, float, float, float, float);
+void gr_screen_draw_text(unsigned int, char*, float, float, float, float, float, float, float, float);
+
 /*************/
 /** Drawing **/
 
 void gr_screen_draw(unsigned int, float, float, float, float, float, float, float, float);
 void gr_draw(unsigned int, float, float, float, float, float, float, float, float);
+void gr_draw_quad(unsigned int, float, float, float, float, float, float, float, float, float, float, float);
+void gr_draw_quad_solid(float, float, float, float, float, float, float, float, float);
 void gr_draw_centered(unsigned int, float, float, float, float, float, float);
-void gr_point_size(float);
 void gr_draw_point(float, float, float);
 void gr_draw_line(float, float, float, float, float);
-void gr_draw_line_sp(float, float, float, float, float, float);
+void gr_draw_line_3d(float, float, float, float, float, float);
 void gr_refresh();
 void gr_clear_depth();
 void gr_clear();

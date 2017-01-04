@@ -2,13 +2,15 @@
 Simple Graphics - OpenGL
 aka SGOGL
 
-Just my shitty little 2D graphics library I made partly for fun and partly for a simple graphics library for other projects. I used ~~GLFW~~ SDL2 and SOIL to make it
+Just my shitty little 2D graphics library I made partly for fun and partly for a simple graphics library for other projects. I used ~~GLFW~~ SDL2, SOIL, opengl, glad and stb_truetype to make it
 
 The design was very greatly influenced and inspired by BearLibTerminal (http://foo.wyrd.name/en:bearlibterminal). A truly great graphics library that is a beacon of simplicity
 
 This, however, isn't BLT, it's SGOGL. Good luck trying to use it. I understand it because I made it and I don't care if anyone else can or can't understand it. I don't mean to be hostile with that statement, btw. I only have any anticipation of **me** using it, not anyone else.
 
-Its kind of just like a proxy for ~~GLFW~~ SDL2 *and OpenGL* ~~and glad~~ to make it easy(er) to make a window and start rendering 2D stuff.
+Also, everything here on this page (the dlang stuff, mma stuff, examples, etc) is almost guaranteed to be somehow outdated. If you want me to update it just let me know (lol).
+
+Its kind of just like a proxy for ~~GLFW~~ SDL2 *and OpenGL* *and glad* *and stb_truetype.h* to make it easy(er) to make a window and start rendering 2D stuff.
 
 Now includes audio support (through SDL_mixer)!
 
@@ -66,4 +68,6 @@ SOIL: Simple Opengl Image Loading Library, or something like that. I also used i
 SDL_mixer: the only audio library I've ever liked
 
 GLAD: to actually be able to load opengl stuff (no thanks to glew)
+
+stb_truetype: to load and texturify ttf files https://github.com/nothings/stbstb
 

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 // #define GLEW_STATIC
 #include <glad/glad.h>
 #include <glad/glad.c>
@@ -6,9 +7,19 @@
 #include <SDL2/sdl.h>
 #include <SDL2/sdl_mixer.h>
 #include <soil.h>
+#define STB_TRUETYPE_IMPLEMENTATION
+#include "include/stb_truetype.h"
 #include "sgogl.h"
 // #include "include/glfw3.h"
 #define SDL_MAIN_HANDLED
+
+typedef struct {
+  char used;
+  int bitmap_width;
+  int bitmap_height;
+  unsigned int texture;
+  stbtt_bakedchar* stb_data;
+} font_data;
 
 float max_depth = 10.0f;
 int use_texture_filtering = 1;
@@ -50,6 +61,10 @@ const Uint8* keystates;
 int mouse_left, mouse_middle, mouse_right;
 Mix_Chunk** mix_chunk_list = NULL;
 int mix_chunk_list_length = 0;
+font_data* font_list = NULL;
+int font_list_length = 0;
+int is_3d = 0;
+float* pmat_3d;
 
 /******************/
 /** Sub-Viewport **/
@@ -282,6 +297,17 @@ void gr_activate_events(int val){
     SDL_InitSubSystem(SDL_INIT_EVENTS);
   else
     SDL_QuitSubSystem(SDL_INIT_EVENTS);
+}
+
+void gr_point_size(float s){
+  glPointSize(s);
+}
+
+void gr_round_points(int s){
+  if(s)
+    glEnable(GL_POINT_SMOOTH);
+  else
+    glDisable(GL_POINT_SMOOTH);
 }
 
 void gr_set_max_depth(float depth){
@@ -537,6 +563,152 @@ void gr_set_no_attenuation(int channel){
   Mix_SetDistance(channel, 0);
 }
 
+/**********/
+/** Text **/
+
+
+void resize_font_list(int size){
+  // I hope this does what I think it does otherwise there will be MEMORY LEAKS right here
+  if(size < font_list_length)
+    for(int i = size; i < font_list_length; i++){
+      if(font_list[i].used > 0){
+        glDeleteTextures(1, &(font_list[i].texture));
+        free(font_list[i].stb_data);
+      }
+    }
+  font_list = (font_data*)realloc(font_list, size * sizeof(font_data));
+  font_list_length = size;
+  for(int i = size; i < font_list_length; i++)
+    font_list[i].used = 0;
+}
+
+int find_available_font_list_id(){
+  // Search the list for a null list location
+  // There may be a better (faster) way to do this, but it probably isn't necessary
+  for(int i = 0; i < font_list_length; i++){
+    if(font_list[i].used == 0)
+      return i;
+  }
+  // If it reaches here a location wasn't found. So, create one by resizing the list:
+  resize_font_list(font_list_length * 2);
+  return font_list_length;
+}
+
+// Most of this code comes from stb's truetype library as included https://github.com/nothings/stb
+
+// enum {
+  // font_bitmap_width  = 2048,
+  // font_bitmap_height = 512,
+// };
+
+unsigned int gr_load_ttf(char* const file, float pixel_height){
+  FILE* ttf_file;
+  ttf_file = fopen(file, "rb");
+  if(ttf_file){
+    // 96 / 4 = 24
+    // 4*32
+    int bitmap_width  = 12*pixel_height;
+    int bitmap_height = 4*pixel_height;
+    
+    unsigned char* ttf_buffer = (unsigned char*)malloc(sizeof(unsigned char) * (1<<20));
+    unsigned char* temp_bitmap = (unsigned char*)malloc(sizeof(unsigned char) * (bitmap_width*bitmap_height));
+    stbtt_bakedchar* cdata = (stbtt_bakedchar*)malloc(sizeof(stbtt_bakedchar) * (96)); // ASCII 32..126 is 95 glyphs
+    unsigned int texture;
+  
+    fread(ttf_buffer, 1, 1<<20, ttf_file);
+    stbtt_BakeFontBitmap(ttf_buffer, 0, pixel_height, temp_bitmap, bitmap_width, bitmap_height, 32, 96, cdata); // no guarantee this fits!
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, bitmap_width, bitmap_height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, temp_bitmap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    unsigned int data_id = find_available_font_list_id();
+    font_list[data_id].used           = 1;
+    font_list[data_id].bitmap_width   = bitmap_width;
+    font_list[data_id].bitmap_height  = bitmap_height;
+    font_list[data_id].texture        = texture;
+    font_list[data_id].stb_data       = cdata;
+    
+    // for(int i = 0; i < 96; i++){
+    // printf("stb_data[%d] (%d, %d, %d, %d, %f, %f, %f)\n", i, cdata[i].x0, cdata[i].y0, cdata[i].x1, cdata[i].y1, cdata[i].xoff, cdata[i].yoff, cdata[i].xadvance);
+    // }
+    
+    free(ttf_buffer);
+    free(temp_bitmap);
+    return data_id;
+  }
+  else
+    return -1;
+}
+
+
+void gr_draw_text(unsigned int id, char *text, float x, float y, float z, float anx, float any, float angle, float sx, float sy){
+  
+  int bitmap_width = font_list[id].bitmap_width;
+  int bitmap_height = font_list[id].bitmap_height;
+  
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  // glOrtho(0.0f, 1.0f, 0.0f, 1.0f/screen_aspect_ratio, 0.0f, -10.0f);
+  
+  glTranslatef(x, y, z);
+  glRotatef(angle, 0.0f, 0.0f, 1.0f);
+  glScalef(sx/(float)bitmap_width, sy/(float)bitmap_height, 1.0f);
+  glTranslatef(-anx, -any, 0.0f);
+  
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, font_list[id].texture);
+  float xpos = 0, ypos = 0;
+  while(*text){
+    if(*text >= 32 && *text < 128){
+        // stbtt_aligned_quad q;
+        float pw = bitmap_width, ph = bitmap_height;
+        float ipw = 1.0f / pw, iph = 1.0f / ph;
+        stbtt_bakedchar *b = font_list[id].stb_data + (*text-32);
+        // int round_x = (int)floor((xpos + b->xoff) + 0.5f);
+        // int round_y = (int)floor((ypos + b->yoff) + 0.5f);
+        
+        // float x0 = round_x;
+        // float y0 = round_y;
+        // float x1 = round_x + b->x1 - b->x0;
+        // float y1 = round_y + b->y1 - b->y0;
+        float x0 = xpos;
+        float y0 = ypos;
+        float x1 = xpos + b->x1 - b->x0;
+        float y1 = ypos + b->y1 - b->y0;
+        
+        float s0 = b->x0 * ipw;
+        float t0 = b->y0 * iph;
+        float s1 = b->x1 * ipw;
+        float t1 = b->y1 * iph;
+        
+        xpos += b->xadvance;
+        // stbtt_GetBakedQuad(font_list[id].stb_data, 512, 512, *text-32, &x, &y, &q, 1);
+        // printf("quad ((%f, %f), (%f, %f))\n", x0, y0, x1, y1);
+        glBegin(GL_QUADS);
+           glTexCoord2f(s0, t1); glVertex2f(x0, y0);
+           glTexCoord2f(s1, t1); glVertex2f(x1, y0);
+           glTexCoord2f(s1, t0); glVertex2f(x1, y1);
+           glTexCoord2f(s0, t0); glVertex2f(x0, y1);  
+        glEnd();
+    }
+    ++text;
+  }
+  glDisable(GL_TEXTURE_2D);
+}
+
+void gr_screen_draw_text(unsigned int id, char *text, float x, float y, float z, float anx, float any, float angle, float sx, float sy){
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0.0f, 1.0f, 0.0f, 1.0f/screen_aspect_ratio, 0.0f, -10.0f);
+  
+  gr_draw_text(id, text, x, y, z, anx, any, angle, sx, sy);
+  
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+}
+
 /*************/
 /** Drawing **/
 
@@ -588,10 +760,6 @@ void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, 
   glTranslatef(-anx, -any, 0.0f);
   
   glEnable(GL_TEXTURE_2D);
-  // if(use_texture_filtering)
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  // else
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_filter);
   glBindTexture(GL_TEXTURE_2D, tex);
   glBegin(GL_QUADS);
@@ -604,12 +772,50 @@ void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, 
   // glFlush();
 }
 
-void gr_draw_centered(unsigned int tex, float x, float y, float z, float angle, float sx, float sy){
-  gr_draw(tex, x, y, z, 0.5f, 0.5f, angle, sx, sy);
+void gr_draw_quad(unsigned int tex, 
+                  float x0, float y0,
+                  float x1, float y1,
+                  float x2, float y2,
+                  float x3, float y3,
+                  float z,
+                  float anx, float any
+                 ){
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  glEnable(GL_TEXTURE_2D);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_filter);
+  glBindTexture(GL_TEXTURE_2D, tex);
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 1.0); glVertex3f(x0, y0, z);
+    glTexCoord2f(1.0, 1.0); glVertex3f(x1, y1, z);
+    glTexCoord2f(1.0, 0.0); glVertex3f(x2, y2, z);
+    glTexCoord2f(0.0, 0.0); glVertex3f(x3, y3, z);
+  glEnd();
+  glDisable(GL_TEXTURE_2D);
+  // glFlush();
 }
 
-void gr_point_size(float s){
-  glPointSize(s);
+void gr_draw_quad_solid(
+                  float x0, float y0,
+                  float x1, float y1,
+                  float x2, float y2,
+                  float x3, float y3,
+                  float z
+                 ){
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  glBegin(GL_QUADS);
+    glVertex3f(x0, y0, z);
+    glVertex3f(x1, y1, z);
+    glVertex3f(x2, y2, z);
+    glVertex3f(x3, y3, z);
+  glEnd();
+  // glFlush();
+}
+
+void gr_draw_centered(unsigned int tex, float x, float y, float z, float angle, float sx, float sy){
+  gr_draw(tex, x, y, z, 0.5f, 0.5f, angle, sx, sy);
 }
 
 void gr_draw_point(float x, float y, float z){
@@ -631,7 +837,7 @@ void gr_draw_line(float x0, float y0, float x1, float y1, float z){
   // glFlush();
 }
 
-void gr_draw_line_sp(float x0, float y0, float z0, float x1, float y1, float z1){
+void gr_draw_line_3d(float x0, float y0, float z0, float x1, float y1, float z1){
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glBegin(GL_LINES);
@@ -830,6 +1036,7 @@ int gr_open(){
     Mix_Init(0);
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
     resize_mix_chunk_list(64);
+    resize_font_list(8);
     
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
                               default_window_width, default_window_height, 
@@ -868,6 +1075,8 @@ int gr_open(){
     sync_window_size;
     gr_set_screen_size(default_screen_width, default_screen_height);
     gr_set_window_size(default_window_width, default_window_height);
+    
+    pmat_3d = (float*)malloc(sizeof(float)*16);
     
     glFinish();
   }
