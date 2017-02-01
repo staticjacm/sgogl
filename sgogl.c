@@ -539,6 +539,7 @@ int gr_paused(int channel){
   return Mix_Paused(channel);
 }
 void gr_stop(int channel){
+  // use channel = -1 for all channels
   Mix_HaltChannel(channel);
 }
 int gr_stopped(int channel){
@@ -748,6 +749,40 @@ void gr_screen_draw(unsigned int tex, float x, float y, float z, float anx, floa
 }
 float gr_static_ymax(){ return 1.0f/screen_aspect_ratio; }
 
+/*
+  Draw the portion given by the rectangle ((ix, iy), (ix + rx, iy + ry)) of an image to the screen
+  note gr_screen_draw is equivalent to gr_screen_draw_partial(tex, 0, 0, 1, 1, x, y, z, anx, any, angle, sx, sy)
+*/
+void gr_screen_draw_partial(unsigned int tex, float ix, float iy, float rx, float ry, float x, float y, float z, float anx, float any, float angle, float sx, float sy){
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0.0f, 1.0f, 0.0f, 1.0f/screen_aspect_ratio, 0.0f, -10.0f);
+  
+  // printf("CLEAR\n");
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  glTranslatef(x, y, z);
+  glRotatef(angle, 0.0f, 0.0f, 1.0f);
+  glScalef(sx, sy, 1.0f);
+  glTranslatef(-anx, -any, 0.0f);
+  
+  glEnable(GL_TEXTURE_2D);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_filter);
+  glBindTexture(GL_TEXTURE_2D, tex);
+  glBegin(GL_QUADS);
+    glTexCoord2f(ix     , iy + ry); glVertex3f(0.0, 0.0, 0.0);
+    glTexCoord2f(ix + rx, iy + ry); glVertex3f(1.0, 0.0, 0.0);
+    glTexCoord2f(ix + rx, iy     ); glVertex3f(1.0, 1.0, 0.0);
+    glTexCoord2f(ix     , iy     ); glVertex3f(0.0, 1.0, 0.0);
+  glEnd();
+  glDisable(GL_TEXTURE_2D);
+  
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  // glFlush();
+}
+
 void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, float angle, float sx, float sy){
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -767,6 +802,34 @@ void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, 
     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 0.0, 0.0);
     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 0.0);
     glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 1.0, 0.0);
+  glEnd();
+  glDisable(GL_TEXTURE_2D);
+  // glFlush();
+}
+
+/*
+  Draw the portion given by the rectanlge ((ix, iy), (ix + rx, iy + ry)) of an image to the world
+  note gr_draw is equivalent to gr_draw_parital(tex, 0, 0, 1, 1, x, y, z, anx, any, angle, sx, sy)
+*/
+void gr_draw_partial(unsigned int tex, float ix, float iy, float rx, float ry, float x, float y, float z, float anx, float any, float angle, float sx, float sy){
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  // Before rot -> sets center / global transforms / global frame
+  // After  rot -> sets pivot / local transforms / rotated frame
+  glTranslatef(x, y, z);
+  glRotatef(angle, 0.0f, 0.0f, 1.0f);
+  glScalef(sx, sy, 1.0);
+  glTranslatef(-anx, -any, 0.0f);
+  
+  glEnable(GL_TEXTURE_2D);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_filter);
+  glBindTexture(GL_TEXTURE_2D, tex);
+  glBegin(GL_QUADS);
+    glTexCoord2f(ix     , iy + ry); glVertex3f(0.0, 0.0, 0.0);
+    glTexCoord2f(ix + rx, iy + ry); glVertex3f(1.0, 0.0, 0.0);
+    glTexCoord2f(ix + rx, iy     ); glVertex3f(1.0, 1.0, 0.0);
+    glTexCoord2f(ix     , iy     ); glVertex3f(0.0, 1.0, 0.0);
   glEnd();
   glDisable(GL_TEXTURE_2D);
   // glFlush();
@@ -825,6 +888,23 @@ void gr_draw_point(float x, float y, float z){
     glVertex3f(x, y, z);
   glEnd();
   // glFlush();
+}
+
+void gr_screen_draw_line(float x0, float y0, float x1, float y1, float z){
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0.0f, 1.0f, 0.0f, 1.0f/screen_aspect_ratio, 0.0f, -10.0f);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  glBegin(GL_LINES);
+    glVertex3f(x0, y0, z);
+    glVertex3f(x1, y1, z);
+  glEnd();
+  
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
 }
 
 void gr_draw_line(float x0, float y0, float x1, float y1, float z){

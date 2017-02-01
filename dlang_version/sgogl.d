@@ -727,6 +727,8 @@ extern(C) void gr_set_screen_size(int, int);
 extern(C) {
   void gr_view(float, float, float, float);
   void gr_view_centered(float, float, float, float);
+  void gr_view_3d_fxyn(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float);
+  void gr_view_3d(float, float, float, float, float, float, float, float, float, float, float, float);
 
   float gr_screen_to_world_x(int);
   float gr_screen_to_world_y(int);
@@ -768,6 +770,9 @@ extern(C) {
   void gr_set_stretch_screen(int);
 
   void gr_activate_events(int);
+  
+  void gr_point_size(float);
+  void gr_round_points(int);
 
   void gr_set_max_depth(float);
 
@@ -879,17 +884,30 @@ void gr_set_panning(int channel, int pan){
   gr_set_panning(channel, pan, 254 - pan);
 }
 
+/***********/
+/** Text **/
+
+extern(C){
+  uint gr_load_ttf(immutable(char)*, float);
+  void gr_draw_text(uint, immutable(char)*, float, float, float, float, float, float, float, float);
+  void gr_screen_draw_text(uint, immutable(char)*, float, float, float, float, float, float, float, float);
+}
+
 /*************/
 /** Drawing **/
 
 extern(C) {
   void gr_screen_draw(uint, float, float, float, float, float, float, float, float);
+  void gr_screen_draw_partial(uint, float, float, float, float, float, float, float, float, float, float, float, float);
   void gr_draw(uint, float, float, float, float, float, float, float, float);
+  void gr_draw_partial(uint, float, float, float, float, float, float, float, float, float, float, float, float);
+  void gr_draw_quad(uint, float, float, float, float, float, float, float, float, float, float, float);
+  void gr_draw_quad_solid(float, float, float, float, float, float, float, float, float);
   void gr_draw_centered(uint, float, float, float, float, float, float);
-  void gr_point_size(float);
   void gr_draw_point(float, float, float);
+  void gr_screen_draw_line(float, float, float, float, float);
   void gr_draw_line(float, float, float, float, float);
-  void gr_draw_line_sp(float, float, float, float, float, float);
+  void gr_draw_line_3d(float, float, float, float, float, float);
   void gr_refresh();
   void gr_clear_depth();
   void gr_clear();

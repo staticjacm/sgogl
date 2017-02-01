@@ -949,11 +949,14 @@ void gr_screen_draw_text(unsigned int, char*, float, float, float, float, float,
 /** Drawing **/
 
 void gr_screen_draw(unsigned int, float, float, float, float, float, float, float, float);
+void gr_screen_draw_partial(unsigned int, float, float, float, float, float, float, float, float, float, float, float, float);
 void gr_draw(unsigned int, float, float, float, float, float, float, float, float);
+void gr_draw_partial(unsigned int, float, float, float, float, float, float, float, float, float, float, float, float);
 void gr_draw_quad(unsigned int, float, float, float, float, float, float, float, float, float, float, float);
 void gr_draw_quad_solid(float, float, float, float, float, float, float, float, float);
 void gr_draw_centered(unsigned int, float, float, float, float, float, float);
 void gr_draw_point(float, float, float);
+void gr_screen_draw_line(float, float, float, float, float);
 void gr_draw_line(float, float, float, float, float);
 void gr_draw_line_3d(float, float, float, float, float, float);
 void gr_refresh();
