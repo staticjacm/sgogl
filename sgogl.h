@@ -948,6 +948,8 @@ void gr_screen_draw_text(unsigned int, char*, float, float, float, float, float,
 /*************/
 /** Drawing **/
 
+float gr_screen_draw_height();
+
 void gr_screen_draw(unsigned int, float, float, float, float, float, float, float, float);
 void gr_screen_draw_partial(unsigned int, float, float, float, float, float, float, float, float, float, float, float, float);
 void gr_draw(unsigned int, float, float, float, float, float, float, float, float);

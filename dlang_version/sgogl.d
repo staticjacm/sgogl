@@ -897,6 +897,8 @@ extern(C){
 /** Drawing **/
 
 extern(C) {
+  float gr_screen_draw_height();
+  
   void gr_screen_draw(uint, float, float, float, float, float, float, float, float);
   void gr_screen_draw_partial(uint, float, float, float, float, float, float, float, float, float, float, float, float);
   void gr_draw(uint, float, float, float, float, float, float, float, float);

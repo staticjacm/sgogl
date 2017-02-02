@@ -714,6 +714,13 @@ void gr_screen_draw_text(unsigned int id, char *text, float x, float y, float z,
 /** Drawing **/
 
 /*
+  The max displayed y value when passed to gr_screen_draw* functions
+*/
+float gr_screen_draw_height(){
+  return 1.0f/screen_aspect_ratio;
+}
+
+/*
   Draws image to screen without respect to the current view
   x coordinates go from 0 to 1 always - ei: x pixel is x*screen_width
   y coordinates go from 0 to 1/screen_aspect_ratio
