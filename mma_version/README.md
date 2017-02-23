@@ -1,6 +1,6 @@
 # Mathematica/Wolfram Language Bindings
 
-This should ;) work...
+This ~~should~~ ;) work...
 
 ~~I haven't been able to test it because it requires x64 dlls so I have to recompile some dependencies which is a pain in the ass on wangblows~~
 
@@ -10,4 +10,6 @@ This should ;) work...
 
 ~~If it does work, however, then you have a simple 2d rendering environment that you can easily render images, lines and point in Mathematica which is really cool~~
 
-It **does** work and it appears to be great, have fun anyone who can make it work for themselves :D
+~~It **does** work and it appears to be great, have fun anyone who can make it work for themselves :D~~
+
+It is really **fuggin** old and needs updating. It probably won't work.

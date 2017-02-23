@@ -241,6 +241,46 @@ float gr_screen_to_world_y(int y){
   return view_top -  view_height * ((float)(y - sub_viewport_y0) / (float)sub_viewport_height);
 }
 
+void gr_set_model_matrix_mode(){
+  glMatrixMode(GL_MODELVIEW);
+}
+void gr_set_projection_matrix_mode(){
+  glMatrixMode(GL_PROJECTION);
+}
+void gr_load_identity(){
+  glLoadIdentity();
+}
+
+void gr_ortho(float left, float right, float bottom, float top, float near_depth, float far_depth){
+  glOrtho(left, right, bottom, top, near_depth, far_depth);
+}
+void gr_frustum(float left, float right, float bottom, float top, float near_depth, float far_depth){
+  glFrustum(left, right, bottom, top, near_depth, far_depth);
+}
+
+void gr_rotate(float angle, float x, float y, float z){
+  glRotatef(angle, x, y, z);
+}
+void gr_scale(float x, float y, float z){
+  glScalef(x, y, z);
+}
+void gr_translate(float x, float y, float z){
+  glTranslatef(x, y, z);
+}
+
+void gr_push_matrix(){
+  glPushMatrix();
+}
+void gr_pop_matrix(){
+  glPopMatrix();
+}
+void gr_load_matrix(float* matrix){
+  glLoadMatrixf(matrix);
+}
+void gr_multiply_matrix(float* matrix){
+  glMultMatrixf(matrix);
+}
+
 
 /*******************/
 /** Informational **/
@@ -252,8 +292,8 @@ float gr_screen_y_aspect_mod(){ return screen_y_aspect_mod; }
 
 int gr_window_width(){ return window_width; }
 int gr_window_height(){ return window_height; }
-float gr_width_window_aspect_mod(){ return window_x_aspect_mod; }
-float gr_height_window_aspect_mod(){ return window_y_aspect_mod; }
+float gr_window_x_aspect_mod(){ return window_x_aspect_mod; }
+float gr_window_y_aspect_mod(){ return window_y_aspect_mod; }
 
 float gr_view_scale(){ return view_scale; }
 float gr_view_width(){ return view_width; }
@@ -809,6 +849,40 @@ void gr_draw(unsigned int tex, float x, float y, float z, float anx, float any, 
     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 0.0, 0.0);
     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 0.0);
     glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 1.0, 0.0);
+  glEnd();
+  glDisable(GL_TEXTURE_2D);
+  // glFlush();
+}
+
+/*
+  Just like gr_draw but the top edge is slightly offset along the z axis
+  This is for making things appear stacked vertically in screen space
+*/
+void gr_draw_tilted(unsigned int tex, float x, float y, float z, float tilt, float anx, float any, float angle, float sx, float sy){
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  float skew_matrix[] = {1,     0,     0,     0,
+                         0,     1,     0,     0, 
+                         0, -tilt,     1,     0, 
+                         0,     0,     0,     1};
+  
+  // Before rot -> sets center / global transforms / global frame
+  // After  rot -> sets pivot / local transforms / rotated frame
+  glTranslatef(x, y, z);
+  glMultTransposeMatrixf(skew_matrix);
+  glRotatef(angle, 0.0f, 0.0f, 1.0f);
+  glScalef(sx, sy, 1.0);
+  glTranslatef(-anx, -any, 0.0f);
+  
+  glEnable(GL_TEXTURE_2D);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_filter);
+  glBindTexture(GL_TEXTURE_2D, tex);
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0, 0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 0.0, 0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 1.0, 0);
   glEnd();
   glDisable(GL_TEXTURE_2D);
   // glFlush();

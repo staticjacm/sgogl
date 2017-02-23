@@ -710,9 +710,6 @@ enum {
 
 void gr_debug_report();
 
-/******************/
-/** Sub-Viewport **/
-
 /*********************/
 /** Window Resizing **/
 
@@ -737,6 +734,22 @@ void gr_view_3d(float, float, float, float, float, float, float, float, float, f
 float gr_screen_to_world_x(int);
 float gr_screen_to_world_y(int);
 
+
+void gr_set_model_matrix_mode();
+void gr_set_projection_matrix_mode();
+void gr_load_identity();
+
+void gr_ortho(float, float, float, float, float, float);
+void gr_frustum(float, float, float, float, float, float);
+
+void gr_rotate(float, float, float, float);
+void gr_scale(float, float, float);
+void gr_translate(float, float, float);
+
+void gr_push_matrix();
+void gr_pop_matrix();
+void gr_load_matrix(float*);
+void gr_multiply_matrix(float*);
 
 
 /*******************/
@@ -953,6 +966,7 @@ float gr_screen_draw_height();
 void gr_screen_draw(unsigned int, float, float, float, float, float, float, float, float);
 void gr_screen_draw_partial(unsigned int, float, float, float, float, float, float, float, float, float, float, float, float);
 void gr_draw(unsigned int, float, float, float, float, float, float, float, float);
+void gr_draw_tilted(unsigned int, float, float, float, float, float, float, float, float, float);
 void gr_draw_partial(unsigned int, float, float, float, float, float, float, float, float, float, float, float, float);
 void gr_draw_quad(unsigned int, float, float, float, float, float, float, float, float, float, float, float);
 void gr_draw_quad_solid(float, float, float, float, float, float, float, float, float);
